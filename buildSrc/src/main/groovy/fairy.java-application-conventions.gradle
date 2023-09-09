@@ -1,0 +1,4 @@
+plugins {
+    id 'fairy.java-common-conventions'
+    id 'application'
+}

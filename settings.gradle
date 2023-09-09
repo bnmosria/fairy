@@ -1,0 +1,6 @@
+rootProject.name = 'fairy'
+
+include 'app'
+include 'utilities'
+include 'persistence'
+include 'problem-detail'
