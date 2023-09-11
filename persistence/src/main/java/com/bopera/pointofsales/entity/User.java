@@ -3,6 +3,7 @@ package com.bopera.pointofsales.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "osp_user")
 public class User implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
