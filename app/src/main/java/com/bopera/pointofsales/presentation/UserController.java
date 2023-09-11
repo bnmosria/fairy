@@ -3,11 +3,10 @@ package com.bopera.pointofsales.presentation;
 import com.bopera.pointofsales.entity.User;
 import com.bopera.pointofsales.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.bopera.pointofsales.exception.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -26,14 +25,15 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("{id}")
-    public Object user(@PathVariable("id") Integer id) {
-        Optional<User> user = userService.getUserById(id);
-
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException();
-        }
-
-        return ResponseEntity.ok(user);
+    @PostMapping("/addNewUser")
+    @PreAuthorize("hasAuthority('Admin')")
+    public void addNewUser(@RequestBody User userInfo) {
+        userService.addUser(userInfo);
     }
+
+    @GetMapping("/{id}/profile")
+    public String userProfile(@PathVariable String id) {
+        return "Welcome to User Profile for id: " + id;
+    }
+
 }
