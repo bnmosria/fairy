@@ -33,12 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests((authorizeHttpRequests) ->
-                    authorizeHttpRequests
-                            .requestMatchers("/auth/token").permitAll()
-                            .requestMatchers("/users/**").authenticated()
-                            .requestMatchers("/admin/**").authenticated()
+                authorizeHttpRequests
+                    .requestMatchers("/auth/token").permitAll()
+                    .requestMatchers("/users/**").authenticated()
+                    .requestMatchers("/admin/**").authenticated()
             ).sessionManagement((sessionManagement) ->
-                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)

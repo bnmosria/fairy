@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserInfoRepository extends CrudRepository<UserInfo, Integer> {
-	@Query(value = "select u.id, u.username, u.userpassword, r.name as role from osp_user u join osp_roles r where u.username = :username and u.roleid = r.id", nativeQuery = true)
+	@Query(value = "SELECT u.id, u.username, u.userpassword, r.name AS role FROM osp_user u JOIN osp_roles r WHERE u.username = :username AND u.roleid = r.id", nativeQuery = true)
 	Optional<UserInfo> findByUsername(@Param("username") String username);
 }

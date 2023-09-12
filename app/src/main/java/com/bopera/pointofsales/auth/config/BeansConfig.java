@@ -1,6 +1,5 @@
 package com.bopera.pointofsales.auth.config;
 
-import com.bopera.pointofsales.auth.filter.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,15 +14,10 @@ import java.util.List;
 
 @Configuration
 public class BeansConfig {
-    private final JwtAuthFilter authFilter;
-
     private final UserDetailsService userDetailsService;
+    private ProviderManager providerManager;
 
-    public BeansConfig(
-            JwtAuthFilter authFilter,
-            UserDetailsService userDetailsService) {
-
-        this.authFilter = authFilter;
+    public BeansConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -37,7 +31,7 @@ public class BeansConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(List<AuthenticationProvider> authenticationProviders) {
-        return new ProviderManager(authenticationProviders);
+        return providerManager;
     }
 
     @Bean
