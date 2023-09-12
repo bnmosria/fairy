@@ -15,7 +15,6 @@ import java.util.List;
 @Configuration
 public class BeansConfig {
     private final UserDetailsService userDetailsService;
-    private ProviderManager providerManager;
 
     public BeansConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -31,7 +30,7 @@ public class BeansConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(List<AuthenticationProvider> authenticationProviders) {
-        return providerManager;
+        return new ProviderManager(authenticationProviders);
     }
 
     @Bean
