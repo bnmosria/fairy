@@ -1,7 +1,7 @@
-package com.bopera.pointofsales.presentation;
+package com.bopera.pointofsales.user.presentation;
 
 import com.bopera.pointofsales.entity.User;
-import com.bopera.pointofsales.service.UserService;
+import com.bopera.pointofsales.user.service.LoginUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,23 +12,27 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final LoginUserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(LoginUserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> user() {
-        List<User> users = userService.getUsers();
+    @GetMapping("name-list")
+    public ResponseEntity<List<String>> getUserNameList() {
+        List<String> userNameList = userService.getLoginNames();
 
-        return ResponseEntity.ok(users);
+        if (userNameList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(userNameList);
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('Admin')")
     public void addNewUser(@RequestBody User userInfo) {
-        userService.addUser(userInfo);
+
     }
 
     @GetMapping("/{id}/profile")
