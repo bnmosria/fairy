@@ -2,13 +2,11 @@ package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.AuthRequest;
 import com.bopera.pointofsales.auth.model.Token;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 public class AuthService {

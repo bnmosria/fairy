@@ -11,6 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +35,10 @@ public class JwtService {
 	}
 
 	private Token createToken(Map<String, Object> claims, String userName) {
-		long currentTimeMillis = System.currentTimeMillis();
-		Date issuedAt = new Date(currentTimeMillis);
-		Date expiration = new Date(currentTimeMillis + 1000 * 60 * 30);
+		Instant instant = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+
+		Date issuedAt = Date.from(instant);
+		Date expiration = Date.from(instant.plus(10, ChronoUnit.HOURS));
 
 		String accessToken = Jwts.builder()
 				.setClaims(claims)
