@@ -1,7 +1,7 @@
-name: Java CI
+name: Check Project
 on: [push]
 jobs:
-  Check Project:
+  test_and_build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
