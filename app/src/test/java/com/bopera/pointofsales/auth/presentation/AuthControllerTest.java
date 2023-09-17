@@ -50,7 +50,7 @@ public class AuthControllerTest {
 
         doReturn(token).when(authService).authenticateAndGetToken(authRequest);
 
-        mockMvc.perform(post("/auth/token")
+        mockMvc.perform(post("/api/auth/token")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"username\":\"username\",\"password\":\"password\"}"))
                 .andExpect(status().isOk())
@@ -59,7 +59,7 @@ public class AuthControllerTest {
 
     @Test
     public void shouldReturnBadRequestResponseWhenInvalidAuthRequest() throws Exception {
-        mockMvc.perform(post("/auth/token")
+        mockMvc.perform(post("/api/auth/token")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("{\"username\":\"\",\"password\":\"\"}"))
                 .andExpect(status().isBadRequest());
