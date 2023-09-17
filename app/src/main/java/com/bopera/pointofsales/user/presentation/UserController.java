@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.user.presentation;
 
+import com.bopera.pointofsales.auth.model.LoginUser;
 import com.bopera.pointofsales.entity.User;
 import com.bopera.pointofsales.user.service.LoginUserService;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class UserController {
     }
 
     @GetMapping("name-list")
-    public ResponseEntity<List<String>> getUserNameList() {
-        List<String> userNameList = userService.getLoginNames();
+    public ResponseEntity<List<LoginUser>> getUserNameList() {
+        List<LoginUser> userNameList = userService.getLoginUserList();
 
         if (userNameList.isEmpty()) {
             return ResponseEntity.notFound().build();
