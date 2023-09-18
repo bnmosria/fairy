@@ -4,6 +4,7 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @Entity
@@ -31,5 +32,8 @@ public class Room implements Serializable {
 
     @Column(name = "sorting")
     private Integer sorting;
+
+    @OneToMany(mappedBy="room")
+    private Set<RoomTables> roomTables;
 
 }
