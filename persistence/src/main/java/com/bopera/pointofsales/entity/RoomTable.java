@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Data
 @Entity
 @Table(name = "osp_resttables")
-public class RoomTables {
+public class RoomTable {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +37,8 @@ public class RoomTables {
     @Column(name = "sorting")
     private Integer sorting;
 
-    @ManyToOne
-    @JoinColumn(name="roomid", nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomid")
     private Room room;
 
 }

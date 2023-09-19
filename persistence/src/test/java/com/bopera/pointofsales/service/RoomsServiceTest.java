@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +32,7 @@ class RoomsServiceTest {
     }
 
     @Test
-    void testAddRoomWhenRoomExistsThenSortingIncreases() {
+    void shouldAddRoomWhenRoomExistsThenSortingIncreases() {
         Room existingRoom = getRoom();
         existingRoom.setSorting(5);
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(existingRoom));
@@ -43,17 +44,17 @@ class RoomsServiceTest {
     }
 
     @Test
-    void testAddRoomWhenNoRoomsThenSortingIsOne() {
+    void shouldAddRoomWhenNoRoomsThenSortingIsZero() {
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.empty());
         Room newRoom = getRoom();
         roomsService.addRoom(newRoom);
         verify(roomRepository, times(1)).save(newRoom);
-        assertEquals(1, newRoom.getSorting());
+        assertEquals(0, newRoom.getSorting());
     }
 
 
     @Test
-    void testAddRoomWhenRoomAddedThenSortingValueIncrementedAndRoomSaved() {
+    void shouldAddRoomWhenRoomAddedThenSortingValueIncrementedAndRoomSaved() {
         Room newRoom = getRoom();
 
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(newRoom));
@@ -64,7 +65,7 @@ class RoomsServiceTest {
     }
 
     @Test
-    void testAddRoomWhenRoomAddedThenCorrectRoomDetailsReturned() {
+    void shouldAddRoomWhenRoomAddedThenCorrectRoomDetailsReturned() {
         Room newRoom = getRoom();
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(newRoom));
         RoomDetails roomDetails = roomsService.addRoom(newRoom);
@@ -101,6 +102,7 @@ class RoomsServiceTest {
         newRoom.setAbbreviation("az");
         newRoom.setSorting(5);
         newRoom.setId(1);
+        newRoom.setRoomTables(List.of());
         return newRoom;
     }
 

@@ -3,7 +3,7 @@ package com.bopera.pointofsales.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -12,5 +12,5 @@ public class RoomDetails {
     private String name;
     private String abbreviation;
     private int sorting;
-    private Set<RoomTableDetails> roomTableDetails;
+    private List<RoomTableDetails> roomTableDetails;
 }

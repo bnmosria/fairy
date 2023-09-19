@@ -7,6 +7,8 @@ import com.bopera.pointofsales.service.RoomsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class RoomsPlanService {
@@ -23,5 +25,9 @@ public class RoomsPlanService {
         newRoom.setAbbreviation(roomRequest.getAbbreviation());
 
         return this.roomsService.addRoom(newRoom);
+    }
+
+    public List<RoomDetails> retrieveAllRooms() {
+        return this.roomsService.retrieveAllRooms();
     }
 }

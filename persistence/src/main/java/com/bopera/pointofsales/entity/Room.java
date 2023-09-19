@@ -1,18 +1,16 @@
 package com.bopera.pointofsales.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.*;
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "osp_room")
-public class Room implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+public class Room {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +31,7 @@ public class Room implements Serializable {
     @Column(name = "sorting")
     private Integer sorting;
 
-    @OneToMany(mappedBy="room")
-    private Set<RoomTables> roomTables;
+    @OneToMany(targetEntity=RoomTable.class, fetch = FetchType.LAZY, mappedBy="room")
+    private List<RoomTable> roomTables;
 
 }

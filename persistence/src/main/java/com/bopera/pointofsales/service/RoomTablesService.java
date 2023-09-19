@@ -1,6 +1,5 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.RoomTables;
 import com.bopera.pointofsales.model.RoomTableDetails;
 import com.bopera.pointofsales.repository.RoomTablesRepository;
 import org.springframework.stereotype.Service;
