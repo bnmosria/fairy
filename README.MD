@@ -1,6 +1,7 @@
 
 # Fairy Point of Sales (POS) - Spring Boot Project (Gradle, Java 17)
-[![Check Project](https://github.com/bnmosria/fairy/actions/workflows/github-actions.yml/badge.svg)](https://github.com/bnmosria/fairy/actions/workflows/github-actions.yml)
+[![Test Project](https://github.com/bnmosria/fairy/actions/workflows/test-project.yml/badge.svg)](https://github.com/bnmosria/fairy/actions/workflows/test-project.yml)
+[![Dependency Check](https://github.com/bnmosria/fairy/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/bnmosria/fairy/actions/workflows/dependency-check.yml)
 
 ## Project Overview
 
