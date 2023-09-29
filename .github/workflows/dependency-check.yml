@@ -1,4 +1,4 @@
-name: Test Project
+name: Dependency Check
 on: [push]
 jobs:
   dependency-check:
@@ -6,8 +6,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build project with Maven
-        run: mvn clean install
+      - name: Build project with Gradle
+        run: ./gradlew clean build
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
