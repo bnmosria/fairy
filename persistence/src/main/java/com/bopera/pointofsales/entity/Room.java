@@ -3,6 +3,7 @@ package com.bopera.pointofsales.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,6 @@ public class Room {
     private Integer sorting;
 
     @OneToMany(targetEntity=RoomTable.class, fetch = FetchType.LAZY, mappedBy="room")
-    private List<RoomTable> roomTables;
+    private List<RoomTable> roomTables = new ArrayList<>();
 
 }
