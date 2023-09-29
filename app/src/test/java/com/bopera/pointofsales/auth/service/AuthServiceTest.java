@@ -37,29 +37,25 @@ public class AuthServiceTest {
 
     @Test
     public void shouldReturnATokenWhenUserIsAuthenticated() {
-        AuthRequest authRequest = new AuthRequest("username", "password");
         Token expectedToken = Token.builder().build();
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-        when(authentication.isAuthenticated()).thenReturn(true);
-        when(jwtService.generateToken(authRequest.getUsername())).thenReturn(expectedToken);
+        doReturn(expectedToken).when(jwtService).generateToken(any());
+        doReturn(authentication).when(authenticationManager)
+                .authenticate(any(UsernamePasswordAuthenticationToken.class));
+        doReturn(true).when(authentication).isAuthenticated();
 
-        Token actualToken = authService.authenticateAndGetToken(authRequest);
+        Token actualToken = authService.authenticateAndGetToken(mock(AuthRequest.class));
 
         assertThat(actualToken).isEqualTo(expectedToken);
-        verify(jwtService).generateToken(authRequest.getUsername());
     }
 
     @Test
     public void shouldThrowBadCredentialsExceptionWhenUserCanNotAuthenticate() {
-        AuthRequest authRequest = new AuthRequest("username", "password");
-
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
 
         when(authentication.isAuthenticated()).thenReturn(false);
 
-        assertThatThrownBy(() -> authService.authenticateAndGetToken(authRequest))
+        assertThatThrownBy(() -> authService.authenticateAndGetToken(mock(AuthRequest.class)))
                 .isInstanceOf(BadCredentialsException.class)
                 .hasMessage("invalid user request!");
     }

@@ -1,12 +1,15 @@
 package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.model.UserInfoDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -29,9 +33,13 @@ public class JwtService {
 		this.secret = secret;
 	}
 
-	public Token generateToken(String userName) {
+	public Token generateToken(UserInfoDetails userInfoDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return createToken(claims, userName);
+
+		userInfoDetails.getAuthorities()
+				.forEach(grantedAuthority -> claims.put("role", grantedAuthority.getAuthority()));
+
+		return createToken(claims, userInfoDetails.getUsername());
 	}
 
 	private Token createToken(Map<String, Object> claims, String userName) {
@@ -47,7 +55,10 @@ public class JwtService {
 				.setExpiration(expiration)
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 
-		return Token.builder().accessToken(accessToken).expiresIn(expiration).build();
+		return Token.builder()
+				.accessToken(accessToken)
+				.expiresIn(expiration)
+				.build();
 	}
 
 	private Key getSignKey() {

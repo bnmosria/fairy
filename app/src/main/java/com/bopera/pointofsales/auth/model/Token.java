@@ -9,7 +9,7 @@ import java.util.Date;
 @Builder
 public class Token {
     private final String tokenType = "bearer";
-
     private String accessToken;
     private Date expiresIn;
+    private String role;
 }

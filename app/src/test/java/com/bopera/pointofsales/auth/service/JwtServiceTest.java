@@ -1,11 +1,13 @@
 package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.model.UserInfoDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +27,11 @@ public class JwtServiceTest {
 
     @Test
     public void shouldGenerateTokenWithProvidedUserName() {
-        Token token = jwtService.generateToken(userName);
+        Token token = jwtService.generateToken(UserInfoDetails.builder()
+                .name(userName)
+                .password("foo")
+                .authorities(Collections.emptyList())
+                .build());
 
         assertThat(token.getAccessToken()).isNotNull();
         assertThat(token.getExpiresIn()).isAfterOrEqualTo(new Date());

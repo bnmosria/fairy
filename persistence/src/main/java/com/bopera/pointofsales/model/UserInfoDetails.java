@@ -1,28 +1,18 @@
 package com.bopera.pointofsales.model;
 
-import com.bopera.pointofsales.entity.UserInfo;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Builder
 public class UserInfoDetails implements UserDetails {
 
 	private final String name;
 	private final String password;
 	private final List<GrantedAuthority> authorities;
-
-	public UserInfoDetails(UserInfo userInfo) {
-		name = userInfo.getUsername();
-		password = userInfo.getUserpassword();
-		authorities = Arrays.stream(userInfo.getRole().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
-	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
