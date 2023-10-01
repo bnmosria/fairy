@@ -39,4 +39,12 @@ public class RoomsController {
         return ResponseEntity.ok(roomDetails);
     }
 
+
+    @DeleteMapping("/remove/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<Void> removeRoom(@PathVariable int id) {
+        this.roomsPlanService.removeRoom(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

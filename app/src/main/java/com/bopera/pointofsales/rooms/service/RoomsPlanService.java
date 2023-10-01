@@ -30,4 +30,9 @@ public class RoomsPlanService {
     public List<RoomDetails> retrieveAllRooms() {
         return this.roomsService.retrieveAllRooms();
     }
+
+    public void removeRoom(int roomId) {
+        log.info("The room with id {} will be removed", roomId);
+        this.roomsService.removeRoom(roomId);
+    }
 }

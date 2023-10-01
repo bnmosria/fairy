@@ -59,4 +59,8 @@ public class RoomsService {
                 .active(roomTable.getActive())
                 .build();
     }
+
+    public void removeRoom(int roomId) {
+        roomRepository.deleteById(roomId);
+    }
 }
