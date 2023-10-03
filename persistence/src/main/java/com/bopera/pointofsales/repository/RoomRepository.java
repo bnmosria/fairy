@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface RoomRepository extends BaseRepository<Room, Integer> {
     Optional<Room> findTopByOrderBySortingDesc();
 
-    List<Room> findAllByOrderBySorting();
+    List<Room> findAllByOrderBySortingDesc();
 }

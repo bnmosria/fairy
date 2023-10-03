@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.halls.service;
 
-import com.bopera.pointofsales.auth.model.HallRequest;
+import com.bopera.pointofsales.auth.model.EditHallRequest;
+import com.bopera.pointofsales.auth.model.SaveHallRequest;
 import com.bopera.pointofsales.entity.Room;
 import com.bopera.pointofsales.model.HallDetails;
 import com.bopera.pointofsales.service.RoomsService;
@@ -18,7 +19,7 @@ public class HallsPlanService {
         this.roomsService = roomsService;
     }
 
-    public HallDetails addHall(HallRequest roomRequest) {
+    public HallDetails addHall(SaveHallRequest roomRequest) {
         Room newRoom = new Room();
 
         newRoom.setRoomname(roomRequest.getName());
@@ -34,5 +35,17 @@ public class HallsPlanService {
     public void removeRoom(int roomId) {
         log.info("The room with id {} will be removed", roomId);
         this.roomsService.removeRoom(roomId);
+    }
+
+    public HallDetails editHall(EditHallRequest hallRequest) {
+        log.info("The room with id {} will be edited", hallRequest.getId());
+        return this.roomsService.editHall(
+            HallDetails.builder()
+                .abbreviation(hallRequest.getAbbreviation())
+                .id(hallRequest.getId())
+                .name(hallRequest.getName())
+                .sorting(hallRequest.getSorting())
+                .build()
+        );
     }
 }

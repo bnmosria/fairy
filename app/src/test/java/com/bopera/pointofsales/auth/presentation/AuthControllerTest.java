@@ -2,10 +2,9 @@ package com.bopera.pointofsales.auth.presentation;
 
 import com.bopera.pointofsales.auth.filter.JwtAuthFilter;
 import com.bopera.pointofsales.auth.model.AuthRequest;
-import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.auth.model.Jwt;
 import com.bopera.pointofsales.auth.service.AuthService;
 import com.bopera.pointofsales.auth.service.JwtService;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +45,7 @@ public class AuthControllerTest {
     @Test
     public void shouldReturnTokenWhenValidAuthRequestGiven() throws Exception {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        Token token = Token.builder().accessToken("accessToken").expiresIn(new Date()).build();
+        Jwt token = Jwt.builder().accessToken("accessToken").expiresIn(new Date()).build();
 
         doReturn(token).when(authService).authenticateAndGetToken(authRequest);
 

@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.auth.service;
 
-import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.auth.model.Jwt;
 import com.bopera.pointofsales.model.UserInfoDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,7 +30,7 @@ public class JwtService {
 		this.secret = secret;
 	}
 
-	public Token generateToken(UserInfoDetails userInfoDetails) {
+	public Jwt generateToken(UserInfoDetails userInfoDetails) {
 		Map<String, Object> claims = new HashMap<>();
 
 		userInfoDetails.getAuthorities()
@@ -39,7 +39,7 @@ public class JwtService {
 		return createToken(claims, userInfoDetails.getUsername());
 	}
 
-	private Token createToken(Map<String, Object> claims, String userName) {
+	private Jwt createToken(Map<String, Object> claims, String userName) {
 		Instant instant = LocalDateTime.now().toInstant(ZoneOffset.UTC);
 
 		Date issuedAt = Date.from(instant);
@@ -52,7 +52,7 @@ public class JwtService {
 				.setExpiration(expiration)
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 
-		return Token.builder()
+		return Jwt.builder()
 				.accessToken(accessToken)
 				.role((String) claims.get("role"))
 				.expiresIn(expiration)

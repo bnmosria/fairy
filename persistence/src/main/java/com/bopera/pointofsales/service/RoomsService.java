@@ -8,6 +8,7 @@ import com.bopera.pointofsales.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,7 +20,7 @@ public class RoomsService {
     }
 
     public List<HallDetails> retrieveAllRooms() {
-        return this.roomRepository.findAllByOrderBySorting()
+        return this.roomRepository.findAllByOrderBySortingDesc()
                 .stream().map(this::buildHallDetails)
                 .collect(Collectors.toList());
     }
@@ -34,6 +35,20 @@ public class RoomsService {
         this.roomRepository.save(room);
 
         return buildHallDetails(room);
+    }
+
+
+    public HallDetails editHall(HallDetails hallDetails) {
+        return this.roomRepository.findById(hallDetails.getId()).map(
+                room -> {
+                    room.setRoomname(hallDetails.getName());
+                    room.setAbbreviation(hallDetails.getAbbreviation());
+
+                    roomRepository.save(room);
+
+                    return hallDetails;
+                }
+            ).orElseThrow();
     }
 
     public void removeRoom(int roomId) {

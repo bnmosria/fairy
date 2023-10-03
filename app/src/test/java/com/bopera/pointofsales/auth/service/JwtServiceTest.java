@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.auth.service;
 
-import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.auth.model.Jwt;
 import com.bopera.pointofsales.model.UserInfoDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class JwtServiceTest {
 
     @Test
     public void shouldGenerateTokenWithProvidedUserName() {
-        Token token = jwtService.generateToken(UserInfoDetails.builder()
+        Jwt token = jwtService.generateToken(UserInfoDetails.builder()
                 .name(userName)
                 .password("foo")
                 .authorities(Collections.emptyList())

@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.AuthRequest;
-import com.bopera.pointofsales.auth.model.Token;
+import com.bopera.pointofsales.auth.model.Jwt;
 import com.bopera.pointofsales.model.UserInfoDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +20,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public Token authenticateAndGetToken(AuthRequest authRequest) {
+    public Jwt authenticateAndGetToken(AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HallRequest {
+public class EditHallRequest {
+	private int id;
 	@NotBlank
 	@Size(min = 3)
 	private String name;

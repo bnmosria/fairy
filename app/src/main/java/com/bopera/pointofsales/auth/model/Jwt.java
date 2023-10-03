@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class Token {
+public class Jwt {
     private final String tokenType = "bearer";
     private String accessToken;
     private Date expiresIn;
