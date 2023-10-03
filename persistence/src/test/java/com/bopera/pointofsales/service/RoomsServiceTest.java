@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.service;
 
 import com.bopera.pointofsales.entity.Room;
-import com.bopera.pointofsales.model.RoomDetails;
+import com.bopera.pointofsales.model.HallDetails;
 import com.bopera.pointofsales.repository.RoomRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ class RoomsServiceTest {
     void shouldAddRoomWhenRoomAddedThenCorrectRoomDetailsReturned() {
         Room newRoom = getRoom();
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(newRoom));
-        RoomDetails roomDetails = roomsService.addRoom(newRoom);
+        HallDetails roomDetails = roomsService.addRoom(newRoom);
 
         assertEquals(newRoom.getRoomname(), roomDetails.getName());
         assertEquals(newRoom.getAbbreviation(), roomDetails.getAbbreviation());
@@ -79,7 +79,7 @@ class RoomsServiceTest {
     void shouldReturnTheCorrectRoomDetailsWhenNewRoomIsCreated() {
         Room newRoom = getRoom();
 
-        RoomDetails roomDetails = roomsService.addRoom(newRoom);
+        HallDetails roomDetails = roomsService.addRoom(newRoom);
 
         assertEquals(roomDetails.getName(), newRoom.getRoomname());
     }
@@ -90,7 +90,7 @@ class RoomsServiceTest {
         newRoom.setSorting(5);
 
         doReturn(Optional.of(newRoom)).when(roomRepository).findTopByOrderBySortingDesc();
-        RoomDetails roomDetails = roomsService.addRoom(newRoom);
+        HallDetails roomDetails = roomsService.addRoom(newRoom);
 
         assertEquals(6, roomDetails.getSorting());
     }

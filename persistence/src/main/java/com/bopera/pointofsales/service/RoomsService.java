@@ -2,8 +2,8 @@ package com.bopera.pointofsales.service;
 
 import com.bopera.pointofsales.entity.Room;
 import com.bopera.pointofsales.entity.RoomTable;
-import com.bopera.pointofsales.model.RoomDetails;
-import com.bopera.pointofsales.model.RoomTableDetails;
+import com.bopera.pointofsales.model.HallDetails;
+import com.bopera.pointofsales.model.HallTableDetails;
 import com.bopera.pointofsales.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,29 +18,33 @@ public class RoomsService {
         this.roomRepository = roomRepository;
     }
 
-    public RoomDetails addRoom(Room room) {
+    public List<HallDetails> retrieveAllRooms() {
+        return this.roomRepository.findAllByOrderBySorting()
+                .stream().map(this::buildHallDetails)
+                .collect(Collectors.toList());
+    }
+
+    public HallDetails addRoom(Room room) {
         this.roomRepository.findTopByOrderBySortingDesc()
                 .ifPresentOrElse(
-                    top -> room.setSorting(top.getSorting() + 1),
-                    () -> room.setSorting(0)
+                        top -> room.setSorting(top.getSorting() + 1),
+                        () -> room.setSorting(0)
                 );
 
         this.roomRepository.save(room);
 
-        return buildRoomDetails(room);
+        return buildHallDetails(room);
     }
 
-    public List<RoomDetails> retrieveAllRooms() {
-        return this.roomRepository.findAllByOrderBySorting()
-                .stream().map(this::buildRoomDetails)
-                .collect(Collectors.toList());
+    public void removeRoom(int roomId) {
+        roomRepository.deleteById(roomId);
     }
 
-    private RoomDetails buildRoomDetails(Room room) {
-        return RoomDetails.builder()
-                .roomTableDetails(
+    private HallDetails buildHallDetails(Room room) {
+        return HallDetails.builder()
+                .hallTableDetails(
                     room.getRoomTables().stream()
-                            .map(this::buildRoomTableDetails)
+                            .map(this::buildHallTableDetails)
                             .collect(Collectors.toList())
                 )
                 .id(room.getId())
@@ -50,8 +54,8 @@ public class RoomsService {
                 .build();
     }
 
-    private RoomTableDetails buildRoomTableDetails(RoomTable roomTable) {
-        return RoomTableDetails.builder()
+    private HallTableDetails buildHallTableDetails(RoomTable roomTable) {
+        return HallTableDetails.builder()
                 .sorting(roomTable.getSorting())
                 .title(roomTable.getTableno())
                 .name(roomTable.getName())
@@ -60,7 +64,4 @@ public class RoomsService {
                 .build();
     }
 
-    public void removeRoom(int roomId) {
-        roomRepository.deleteById(roomId);
-    }
 }

@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.service;
 
 import com.bopera.pointofsales.entity.RoomTable;
-import com.bopera.pointofsales.model.RoomTableDetails;
+import com.bopera.pointofsales.model.HallTableDetails;
 import com.bopera.pointofsales.repository.RoomTablesRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,10 +35,10 @@ public class RoomTablesServiceTest {
     public void testGetAllByRoomIdWhenRoomIdIsValidThenReturnsCorrectRoomTableDetails() {
         RoomTable roomTable = getRoomTable();
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
 
         assertEquals(1, result.size());
-        RoomTableDetails details = result.get(0);
+        HallTableDetails details = result.get(0);
         assertEquals(roomTable.getId(), details.getId());
         assertEquals(roomTable.getName(), details.getName());
         assertEquals(roomTable.getTableno(), details.getTitle());
@@ -48,7 +48,7 @@ public class RoomTablesServiceTest {
     @Test
     public void testGetAllByRoomIdWhenRoomIdDoesNotExistThenReturnsEmptyList() {
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
         assertEquals(0, result.size());
     }
 
@@ -64,11 +64,11 @@ public class RoomTablesServiceTest {
         RoomTable roomTable = getRoomTable();
 
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
 
         assertEquals(1, result.size());
 
-        RoomTableDetails details = result.get(0);
+        HallTableDetails details = result.get(0);
 
         assertEquals(roomTable.getId(), details.getId());
         assertEquals(roomTable.getName(), details.getName());
@@ -79,7 +79,7 @@ public class RoomTablesServiceTest {
     @Test
     public void testGetAllByRoomIdWhenRoomIdDoesNotExistThenReturnEmptyList() {
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
         assertEquals(0, result.size());
     }
 
@@ -88,11 +88,11 @@ public class RoomTablesServiceTest {
         RoomTable roomTable = getRoomTable();
 
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
 
         assertEquals(1, result.size());
 
-        RoomTableDetails details = result.get(0);
+        HallTableDetails details = result.get(0);
 
         assertEquals(roomTable.getId(), details.getId());
         assertEquals(roomTable.getName(), details.getName());
@@ -103,7 +103,7 @@ public class RoomTablesServiceTest {
     @Test
     public void testGetAllByRoomIdWhenRepositoryReturnsEmptyListThenReturnsEmptyList() {
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
-        List<RoomTableDetails> result = roomTablesService.getAllByRoomId(1);
+        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
         assertEquals(0, result.size());
     }
 
