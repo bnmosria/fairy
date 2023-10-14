@@ -6,7 +6,7 @@ plugins {
     id 'java'
 }
 
-group = 'org.mvpsuite'
+group = 'com.bopera'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 

@@ -16,6 +16,8 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +34,23 @@ public class RoomTablesServiceTest {
     }
 
     @Test
-    public void testGetAllByRoomIdWhenRoomIdIsValidThenReturnsCorrectRoomTableDetails() {
+    public void shouldReturnSavedRoomTableWhenHallTableNotNull() {
+        RoomTable roomTable = new RoomTable();
+        when(roomTablesRepository.save(any(RoomTable.class))).thenReturn(roomTable);
+
+        RoomTable result = roomTablesService.saveRoomTable(HallTableDetails.builder().build());
+
+        assertEquals(roomTable, result);
+        verify(roomTablesRepository).save(any(RoomTable.class));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenHallTableNull() {
+        assertThrows(NoSuchElementException.class, () -> roomTablesService.saveRoomTable(null));
+    }
+
+    @Test
+    public void shouldGetAllByRoomIdWhenRoomIdIsValid() {
         RoomTable roomTable = getRoomTable();
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
         List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
@@ -46,21 +64,21 @@ public class RoomTablesServiceTest {
     }
 
     @Test
-    public void testGetAllByRoomIdWhenRoomIdDoesNotExistThenReturnsEmptyList() {
+    public void shouldReturnEmptyListWhenRoomIdDoesNotExist() {
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
         List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
         assertEquals(0, result.size());
     }
 
     @Test
-    public void testGetAllByRoomIdWhenRepositoryThrowsExceptionThenThrowsException() {
+    public void shouldThrowsExceptionWhenRepositoryThrowsException() {
         when(roomTablesRepository.findByRoomId(1)).thenThrow(new NoSuchElementException());
 
         assertThrows(NoSuchElementException.class, () -> roomTablesService.getAllByRoomId(1));
     }
 
     @Test
-    public void testGetAllByRoomIdWhenRoomIdIsValidThenReturnCorrectRoomTableDetails() {
+    public void shouldReturnCorrectRoomTableDetailsWhenRoomIdIsValid() {
         RoomTable roomTable = getRoomTable();
 
         when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
@@ -74,37 +92,6 @@ public class RoomTablesServiceTest {
         assertEquals(roomTable.getName(), details.getName());
         assertEquals(roomTable.getTableno(), details.getTitle());
         assertEquals(roomTable.getSorting(), details.getSorting());
-    }
-
-    @Test
-    public void testGetAllByRoomIdWhenRoomIdDoesNotExistThenReturnEmptyList() {
-        when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
-        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
-        assertEquals(0, result.size());
-    }
-
-    @Test
-    public void testGetAllByRoomIdWhenRepositoryReturnsListThenReturnsCorrectRoomTableDetails() {
-        RoomTable roomTable = getRoomTable();
-
-        when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
-        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
-
-        assertEquals(1, result.size());
-
-        HallTableDetails details = result.get(0);
-
-        assertEquals(roomTable.getId(), details.getId());
-        assertEquals(roomTable.getName(), details.getName());
-        assertEquals(roomTable.getTableno(), details.getTitle());
-        assertEquals(roomTable.getSorting(), details.getSorting());
-    }
-
-    @Test
-    public void testGetAllByRoomIdWhenRepositoryReturnsEmptyListThenReturnsEmptyList() {
-        when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.emptyList());
-        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
-        assertEquals(0, result.size());
     }
 
     @NotNull

@@ -9,6 +9,7 @@ import lombok.Data;
 public class HallTableDetails {
     private Integer id;
     private String title;
+    private String code;
     private String name;
     private Room room;
     private Integer active;

@@ -26,7 +26,7 @@ public class ProblemDetailBuilder {
     }
 
     private URI buildType() {
-        return URI.create("https://api.mvpsuite.org/" + javadocName(throwable.getClass()));
+        return URI.create("https://fairy.bopera.org/" + javadocName(throwable.getClass()));
     }
 
     private static String javadocName(Class<?> type) {
