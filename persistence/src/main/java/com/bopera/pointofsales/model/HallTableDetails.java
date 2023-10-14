@@ -11,7 +11,7 @@ public class HallTableDetails {
     private String title;
     private String code;
     private String name;
-    private Room room;
+    private Integer roomId;
     private Integer active;
     private Integer sorting;
 }

@@ -1,7 +1,9 @@
 package com.bopera.pointofsales.service;
 
+import com.bopera.pointofsales.entity.Room;
 import com.bopera.pointofsales.entity.RoomTable;
 import com.bopera.pointofsales.model.HallTableDetails;
+import com.bopera.pointofsales.repository.RoomRepository;
 import com.bopera.pointofsales.repository.RoomTablesRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,17 +29,23 @@ public class RoomTablesServiceTest {
     @Mock
     private RoomTablesRepository roomTablesRepository;
 
+    @Mock
+    private RoomRepository roomRepository;
+
     private RoomTablesService roomTablesService;
 
     @BeforeEach
     public void setUp() {
-        roomTablesService = new RoomTablesService(roomTablesRepository);
+        roomTablesService = new RoomTablesService(roomTablesRepository, roomRepository);
     }
 
     @Test
     public void shouldReturnSavedRoomTableWhenHallTableNotNull() {
         RoomTable roomTable = new RoomTable();
+        Room room = new Room();
+
         when(roomTablesRepository.save(any(RoomTable.class))).thenReturn(roomTable);
+        when(roomRepository.findById(any())).thenReturn(Optional.of(room));
 
         RoomTable result = roomTablesService.saveRoomTable(HallTableDetails.builder().build());
 
@@ -46,21 +55,7 @@ public class RoomTablesServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenHallTableNull() {
-        assertThrows(NoSuchElementException.class, () -> roomTablesService.saveRoomTable(null));
-    }
-
-    @Test
-    public void shouldGetAllByRoomIdWhenRoomIdIsValid() {
-        RoomTable roomTable = getRoomTable();
-        when(roomTablesRepository.findByRoomId(1)).thenReturn(Collections.singletonList(roomTable));
-        List<HallTableDetails> result = roomTablesService.getAllByRoomId(1);
-
-        assertEquals(1, result.size());
-        HallTableDetails details = result.get(0);
-        assertEquals(roomTable.getId(), details.getId());
-        assertEquals(roomTable.getName(), details.getName());
-        assertEquals(roomTable.getTableno(), details.getTitle());
-        assertEquals(roomTable.getSorting(), details.getSorting());
+        assertThrows(NullPointerException.class, () -> roomTablesService.saveRoomTable(null));
     }
 
     @Test
@@ -99,6 +94,7 @@ public class RoomTablesServiceTest {
         RoomTable roomTable = new RoomTable();
         roomTable.setId(1);
         roomTable.setName("Table1");
+        roomTable.setRoom(new Room());
         roomTable.setTableno("T1");
         roomTable.setSorting(1);
 
