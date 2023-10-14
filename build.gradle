@@ -1,5 +1,3 @@
-import com.bopera.pointofsales.ApplicationVersion
-
 buildscript {
     repositories {
         mavenCentral()
