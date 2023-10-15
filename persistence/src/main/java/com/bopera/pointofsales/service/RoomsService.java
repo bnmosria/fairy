@@ -1,14 +1,11 @@
 package com.bopera.pointofsales.service;
 
 import com.bopera.pointofsales.entity.Room;
-import com.bopera.pointofsales.entity.RoomTable;
 import com.bopera.pointofsales.model.HallDetails;
-import com.bopera.pointofsales.model.HallTableDetails;
 import com.bopera.pointofsales.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,62 +18,38 @@ public class RoomsService {
 
     public List<HallDetails> retrieveAllRooms() {
         return this.roomRepository.findAllByOrderBySortingDesc()
-                .stream().map(this::buildHallDetails)
-                .collect(Collectors.toList());
+            .stream().map(HallDetails::mapFromRoom)
+            .collect(Collectors.toList());
     }
 
-    public HallDetails addRoom(Room room) {
+    public HallDetails addRoom(HallDetails hallDetails) {
         this.roomRepository.findTopByOrderBySortingDesc()
-                .ifPresentOrElse(
-                        top -> room.setSorting(top.getSorting() + 1),
-                        () -> room.setSorting(0)
-                );
+            .ifPresentOrElse(
+                top -> hallDetails.setSorting(top.getSorting() + 1),
+                () -> hallDetails.setSorting(0)
+            );
 
-        this.roomRepository.save(room);
+        Room room = this.roomRepository.save(HallDetails.mapToRoom(hallDetails));
+        hallDetails.setId(room.getId());
 
-        return buildHallDetails(room);
-    }
-
-
-    public HallDetails editHall(HallDetails hallDetails) {
-        return this.roomRepository.findById(hallDetails.getId()).map(
-                room -> {
-                    room.setRoomname(hallDetails.getName());
-                    room.setAbbreviation(hallDetails.getAbbreviation());
-
-                    roomRepository.save(room);
-
-                    return hallDetails;
-                }
-            ).orElseThrow();
+        return hallDetails;
     }
 
     public void removeRoom(int roomId) {
         roomRepository.deleteById(roomId);
     }
 
-    private HallDetails buildHallDetails(Room room) {
-        return HallDetails.builder()
-                .hallTableDetails(
-                    room.getRoomTables().stream()
-                            .map(this::buildHallTableDetails)
-                            .collect(Collectors.toList())
-                )
-                .id(room.getId())
-                .name(room.getRoomname())
-                .abbreviation(room.getAbbreviation())
-                .sorting(room.getSorting())
-                .build();
-    }
+    public HallDetails editRoom(HallDetails hallDetails) {
+        return this.roomRepository.findById(hallDetails.getId()).map(
+            room -> {
+                room.setRoomname(hallDetails.getName());
+                room.setAbbreviation(hallDetails.getAbbreviation());
 
-    private HallTableDetails buildHallTableDetails(RoomTable roomTable) {
-        return HallTableDetails.builder()
-                .sorting(roomTable.getSorting())
-                .title(roomTable.getTableno())
-                .name(roomTable.getName())
-                .id(roomTable.getId())
-                .active(roomTable.getActive())
-                .build();
+                roomRepository.save(room);
+
+                return hallDetails;
+            }
+        ).orElseThrow();
     }
 
 }

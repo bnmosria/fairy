@@ -2,8 +2,10 @@ package com.bopera.pointofsales.halls.service;
 
 import com.bopera.pointofsales.auth.model.EditHallRequest;
 import com.bopera.pointofsales.auth.model.SaveHallRequest;
-import com.bopera.pointofsales.entity.Room;
+import com.bopera.pointofsales.auth.model.SaveHallTableRequest;
 import com.bopera.pointofsales.model.HallDetails;
+import com.bopera.pointofsales.model.HallTableDetails;
+import com.bopera.pointofsales.service.RoomTablesService;
 import com.bopera.pointofsales.service.RoomsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,18 +16,21 @@ import java.util.List;
 @Slf4j
 public class HallsPlanService {
     private final RoomsService roomsService;
+    private final RoomTablesService roomTablesService;
 
-    public HallsPlanService(RoomsService roomsService) {
+    public HallsPlanService(RoomsService roomsService, RoomTablesService roomTablesService) {
         this.roomsService = roomsService;
+        this.roomTablesService = roomTablesService;
     }
 
-    public HallDetails addHall(SaveHallRequest roomRequest) {
-        Room newRoom = new Room();
-
-        newRoom.setRoomname(roomRequest.getName());
-        newRoom.setAbbreviation(roomRequest.getAbbreviation());
-
-        return this.roomsService.addRoom(newRoom);
+    public HallDetails addHall(SaveHallRequest hallRequest) {
+        return this.roomsService.addRoom(
+            HallDetails.builder()
+                .name(hallRequest.getName())
+                .abbreviation(hallRequest.getAbbreviation())
+                .sorting(hallRequest.getSorting())
+                .build()
+        );
     }
 
     public List<HallDetails> retrieveAllRooms() {
@@ -39,12 +44,24 @@ public class HallsPlanService {
 
     public HallDetails editHall(EditHallRequest hallRequest) {
         log.info("The room with id {} will be edited", hallRequest.getId());
-        return this.roomsService.editHall(
+        return this.roomsService.editRoom(
             HallDetails.builder()
                 .abbreviation(hallRequest.getAbbreviation())
                 .id(hallRequest.getId())
                 .name(hallRequest.getName())
                 .sorting(hallRequest.getSorting())
+                .build()
+        );
+    }
+
+    public HallTableDetails addHallTable(SaveHallTableRequest hallTableRequest) {
+        return this.roomTablesService.saveRoomTable(
+            HallTableDetails.builder()
+                .roomId(hallTableRequest.getRoomId())
+                .name(hallTableRequest.getName())
+                .title(hallTableRequest.getTitle())
+                .code(hallTableRequest.getCode())
+                .active(hallTableRequest.getActive())
                 .build()
         );
     }

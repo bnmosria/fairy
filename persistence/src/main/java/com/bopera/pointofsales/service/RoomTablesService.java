@@ -8,7 +8,6 @@ import com.bopera.pointofsales.repository.RoomTablesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,22 +22,23 @@ public class RoomTablesService {
 
     public List<HallTableDetails> getAllByRoomId(Integer roomId) {
         return roomTablesRepository.findByRoomId(roomId)
-                .stream()
-                .map(roomTable -> HallTableDetails.builder()
-                        .id(roomTable.getId())
-                        .roomId(roomTable.getRoom().getId())
-                        .name(roomTable.getName())
-                        .title(roomTable.getTableno())
-                        .sorting(roomTable.getSorting())
-                        .build()
-                ).collect(Collectors.toList());
+            .stream()
+            .map(roomTable -> HallTableDetails.builder()
+                .id(roomTable.getId())
+                .roomId(roomTable.getRoom().getId())
+                .name(roomTable.getName())
+                .title(roomTable.getTableno())
+                .sorting(roomTable.getSorting())
+                .build()
+            ).collect(Collectors.toList());
     }
 
-    public RoomTable saveRoomTable(HallTableDetails hallTable) {
+    public HallTableDetails saveRoomTable(HallTableDetails hallTable) {
         return roomRepository.findById(hallTable.getRoomId())
-                .map(room -> mapToRoomTable(room, hallTable))
-                .map(roomTablesRepository::save)
-                .orElseThrow();
+            .map(room -> mapToRoomTable(room, hallTable))
+            .map(roomTablesRepository::save)
+            .map(HallTableDetails::mapFromRoomTable)
+            .orElseThrow();
     }
 
     private RoomTable mapToRoomTable(Room room, HallTableDetails tableDetails) {

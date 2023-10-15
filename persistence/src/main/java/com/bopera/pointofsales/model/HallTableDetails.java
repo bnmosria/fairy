@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.model;
 
-import com.bopera.pointofsales.entity.Room;
+import com.bopera.pointofsales.entity.RoomTable;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +14,16 @@ public class HallTableDetails {
     private Integer roomId;
     private Integer active;
     private Integer sorting;
+
+    public static HallTableDetails mapFromRoomTable(RoomTable roomTable) {
+        return HallTableDetails.builder()
+            .roomId(roomTable.getId())
+            .sorting(roomTable.getSorting())
+            .title(roomTable.getTableno())
+            .code(roomTable.getCode())
+            .name(roomTable.getName())
+            .id(roomTable.getId())
+            .active(roomTable.getActive())
+            .build();
+    }
 }

@@ -2,8 +2,10 @@ package com.bopera.pointofsales.halls.presentation;
 
 import com.bopera.pointofsales.auth.model.EditHallRequest;
 import com.bopera.pointofsales.auth.model.SaveHallRequest;
+import com.bopera.pointofsales.auth.model.SaveHallTableRequest;
 import com.bopera.pointofsales.model.HallDetails;
 import com.bopera.pointofsales.halls.service.HallsPlanService;
+import com.bopera.pointofsales.model.HallTableDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +26,7 @@ public class HallsController {
     @GetMapping
     public ResponseEntity<List<HallDetails>> getAll() {
         return ResponseEntity.ok(
-                this.hallsPlanService.retrieveAllRooms()
+            this.hallsPlanService.retrieveAllRooms()
         );
     }
 
@@ -59,4 +61,15 @@ public class HallsController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/table/add")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<HallTableDetails> addNewHallTable(@Valid @RequestBody SaveHallTableRequest saveHallTableRequest) {
+        HallTableDetails hallDetails = this.hallsPlanService.addHallTable(saveHallTableRequest);
+
+        if (0 == hallDetails.getId()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(hallDetails);
+    }
 }

@@ -40,16 +40,17 @@ public class RoomTablesServiceTest {
     }
 
     @Test
-    public void shouldReturnSavedRoomTableWhenHallTableNotNull() {
+    public void shouldReturnSavedMappedRoomTableWhenHallTableNotNull() {
         RoomTable roomTable = new RoomTable();
         Room room = new Room();
+        HallTableDetails expected = HallTableDetails.builder().build();
 
         when(roomTablesRepository.save(any(RoomTable.class))).thenReturn(roomTable);
         when(roomRepository.findById(any())).thenReturn(Optional.of(room));
 
-        RoomTable result = roomTablesService.saveRoomTable(HallTableDetails.builder().build());
+        HallTableDetails result = roomTablesService.saveRoomTable(HallTableDetails.builder().build());
 
-        assertEquals(roomTable, result);
+        assertEquals(expected, result);
         verify(roomTablesRepository).save(any(RoomTable.class));
     }
 

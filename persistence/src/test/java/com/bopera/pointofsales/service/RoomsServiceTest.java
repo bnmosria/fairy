@@ -32,67 +32,39 @@ class RoomsServiceTest {
     }
 
     @Test
-    void shouldAddRoomWhenRoomExistsThenSortingIncreases() {
-        Room existingRoom = getRoom();
-        existingRoom.setSorting(5);
-        when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(existingRoom));
-        Room newRoom = getRoom();
-
-        roomsService.addRoom(newRoom);
-        verify(roomRepository, times(1)).save(newRoom);
-        assertEquals(6, newRoom.getSorting());
-    }
-
-    @Test
     void shouldAddRoomWhenNoRoomsThenSortingIsZero() {
+        Room newRoom = getRoom();
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.empty());
-        Room newRoom = getRoom();
-        roomsService.addRoom(newRoom);
-        verify(roomRepository, times(1)).save(newRoom);
-        assertEquals(0, newRoom.getSorting());
-    }
+        when(roomRepository.save(any())).thenReturn(newRoom);
+        HallDetails hallDetails = roomsService.addRoom(
+            HallDetails.builder()
+                .name("a new room")
+                .abbreviation("az")
+                .build()
+        );
 
-
-    @Test
-    void shouldAddRoomWhenRoomAddedThenSortingValueIncrementedAndRoomSaved() {
-        Room newRoom = getRoom();
-
-        when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(newRoom));
-        roomsService.addRoom(newRoom);
-
-        verify(roomRepository, times(1)).save(newRoom);
-        assertEquals(6, newRoom.getSorting());
+        assertEquals(newRoom.getRoomname(), hallDetails.getName());
+        assertEquals(newRoom.getAbbreviation(), hallDetails.getAbbreviation());
+        assertEquals(0, hallDetails.getSorting());
+        assertEquals(1, hallDetails.getId());
     }
 
     @Test
-    void shouldAddRoomWhenRoomAddedThenCorrectRoomDetailsReturned() {
+    void shouldAddRoomAndReturnCorrectHallDetailsWithSortingIncreased() {
         Room newRoom = getRoom();
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.of(newRoom));
-        HallDetails roomDetails = roomsService.addRoom(newRoom);
+        when(roomRepository.save(any())).thenReturn(newRoom);
+        HallDetails hallDetails = roomsService.addRoom(
+            HallDetails.builder()
+                .name("a new room")
+                .abbreviation("az")
+                .build()
+        );
 
-        assertEquals(newRoom.getRoomname(), roomDetails.getName());
-        assertEquals(newRoom.getAbbreviation(), roomDetails.getAbbreviation());
-        assertEquals(6, roomDetails.getSorting());
-    }
-
-    @Test
-    void shouldReturnTheCorrectRoomDetailsWhenNewRoomIsCreated() {
-        Room newRoom = getRoom();
-
-        HallDetails roomDetails = roomsService.addRoom(newRoom);
-
-        assertEquals(roomDetails.getName(), newRoom.getRoomname());
-    }
-
-    @Test
-    void shouldSetTheCorrectSortingForRoomWhenNewRoomIsCreated() {
-        Room newRoom = getRoom();
-        newRoom.setSorting(5);
-
-        doReturn(Optional.of(newRoom)).when(roomRepository).findTopByOrderBySortingDesc();
-        HallDetails roomDetails = roomsService.addRoom(newRoom);
-
-        assertEquals(6, roomDetails.getSorting());
+        assertEquals(newRoom.getRoomname(), hallDetails.getName());
+        assertEquals(newRoom.getAbbreviation(), hallDetails.getAbbreviation());
+        assertEquals(6, hallDetails.getSorting());
+        assertEquals(1, hallDetails.getId());
     }
 
     @NotNull
