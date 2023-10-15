@@ -17,7 +17,7 @@ public class HallTableDetails {
 
     public static HallTableDetails mapFromRoomTable(RoomTable roomTable) {
         return HallTableDetails.builder()
-            .roomId(roomTable.getId())
+            .roomId(roomTable.getRoom().getId())
             .sorting(roomTable.getSorting())
             .title(roomTable.getTableno())
             .code(roomTable.getCode())
