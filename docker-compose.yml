@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: fairy-app
+    ports:
+      - '8400:8400'
+    expose:
+      - 8400
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ordersprinter
+      - SPRING_DATASOURCE_USERNAME=os
+      - SPRING_DATASOURCE_PASSWORD=secret
+  mysql:
+    container_name: fairy-mysql
+    image: bitnami/mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_USER=os
+      - MYSQL_PASSWORD=secret
+    ports:
+      - '3306:3306'
+    expose:
+      - 3306
+    volumes:
+      - ./docker/mysql/data:/bitnami/mysql/data
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d/:ro

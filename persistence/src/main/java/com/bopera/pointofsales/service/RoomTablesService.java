@@ -41,6 +41,27 @@ public class RoomTablesService {
             .orElseThrow();
     }
 
+
+    public HallTableDetails updateRoomTable(HallTableDetails hallTableDetails) {
+        return roomTablesRepository.findById(hallTableDetails.getId()).map(
+            roomTable -> {
+                roomTable.setTableno(hallTableDetails.getTitle());
+                roomTable.setName(hallTableDetails.getName());
+                roomTable.setCode(hallTableDetails.getCode());
+                roomTable.setActive(hallTableDetails.getActive());
+                roomTable.setSorting(hallTableDetails.getSorting());
+
+                roomTablesRepository.save(roomTable);
+
+                return hallTableDetails;
+            }
+        ).orElseThrow();
+    }
+
+    public void removeHallTable(int id) {
+        this.roomTablesRepository.deleteById(id);
+    }
+
     private RoomTable mapToRoomTable(Room room, HallTableDetails tableDetails) {
         RoomTable roomTable = new RoomTable();
 
@@ -53,4 +74,5 @@ public class RoomTablesService {
 
         return roomTable;
     }
+
 }

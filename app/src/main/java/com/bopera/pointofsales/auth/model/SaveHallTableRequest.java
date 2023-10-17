@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveHallTableRequest {
+	private Integer id;
+
 	@NotBlank
 	@Size(min = 3)
 	private String title;

@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.halls.presentation;
 
 import com.bopera.pointofsales.auth.model.EditHallRequest;
+import com.bopera.pointofsales.auth.model.EditHallTableRequest;
 import com.bopera.pointofsales.auth.model.SaveHallRequest;
 import com.bopera.pointofsales.auth.model.SaveHallTableRequest;
 import com.bopera.pointofsales.model.HallDetails;
@@ -63,13 +64,26 @@ public class HallsController {
 
     @PostMapping("/table/add")
     @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<HallTableDetails> addNewHallTable(@Valid @RequestBody SaveHallTableRequest saveHallTableRequest) {
-        HallTableDetails hallDetails = this.hallsPlanService.addHallTable(saveHallTableRequest);
+    public ResponseEntity<HallTableDetails> addNewHallTable(@Valid @RequestBody SaveHallTableRequest hallTableRequest) {
+        HallTableDetails hallDetails = this.hallsPlanService.addHallTable(hallTableRequest);
 
         if (0 == hallDetails.getId()) {
             return ResponseEntity.internalServerError().build();
         }
 
         return ResponseEntity.ok(hallDetails);
+    }
+
+    @PutMapping("/table/edit")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<HallTableDetails> editHallTable(@Valid @RequestBody EditHallTableRequest hallTableRequest) {
+        return ResponseEntity.ok(this.hallsPlanService.editHallTable(hallTableRequest));
+    }
+
+    @DeleteMapping("/table/remove/{id}")
+    @PreAuthorize("hasAuthority('Admin')")
+    public ResponseEntity<Void> removeHallTable(@PathVariable int id) {
+        this.hallsPlanService.removeHallTable(id);
+        return ResponseEntity.noContent().build();
     }
 }

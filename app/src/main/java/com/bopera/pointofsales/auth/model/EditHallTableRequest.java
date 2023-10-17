@@ -1,7 +1,5 @@
 package com.bopera.pointofsales.auth.model;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EditHallRequest extends SaveHallRequest {
-	private int id;
+public class EditHallTableRequest extends SaveHallTableRequest {
+    private Integer id;
 }

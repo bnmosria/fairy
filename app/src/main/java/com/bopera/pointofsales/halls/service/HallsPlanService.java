@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.halls.service;
 
 import com.bopera.pointofsales.auth.model.EditHallRequest;
+import com.bopera.pointofsales.auth.model.EditHallTableRequest;
 import com.bopera.pointofsales.auth.model.SaveHallRequest;
 import com.bopera.pointofsales.auth.model.SaveHallTableRequest;
 import com.bopera.pointofsales.model.HallDetails;
@@ -9,6 +10,7 @@ import com.bopera.pointofsales.service.RoomTablesService;
 import com.bopera.pointofsales.service.RoomsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class HallsPlanService {
 
     public HallDetails editHall(EditHallRequest hallRequest) {
         log.info("The room with id {} will be edited", hallRequest.getId());
-        return this.roomsService.editRoom(
+        return this.roomsService.updateRoom(
             HallDetails.builder()
                 .abbreviation(hallRequest.getAbbreviation())
                 .id(hallRequest.getId())
@@ -64,5 +66,23 @@ public class HallsPlanService {
                 .active(hallTableRequest.getActive())
                 .build()
         );
+    }
+
+    public HallTableDetails editHallTable(SaveHallTableRequest hallTableRequest) {
+        return this.roomTablesService.updateRoomTable(
+            HallTableDetails.builder()
+                .id(hallTableRequest.getId())
+                .roomId(hallTableRequest.getRoomId())
+                .name(hallTableRequest.getName())
+                .title(hallTableRequest.getTitle())
+                .code(hallTableRequest.getCode())
+                .active(hallTableRequest.getActive())
+                .sorting(hallTableRequest.getSorting())
+                .build()
+        );
+    }
+
+    public void removeHallTable(int id) {
+        this.roomTablesService.removeHallTable(id);
     }
 }

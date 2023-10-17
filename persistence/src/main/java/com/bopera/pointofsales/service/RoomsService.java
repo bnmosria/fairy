@@ -39,7 +39,7 @@ public class RoomsService {
         roomRepository.deleteById(roomId);
     }
 
-    public HallDetails editRoom(HallDetails hallDetails) {
+    public HallDetails updateRoom(HallDetails hallDetails) {
         return this.roomRepository.findById(hallDetails.getId()).map(
             room -> {
                 room.setRoomname(hallDetails.getName());
