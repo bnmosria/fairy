@@ -62,28 +62,4 @@ public class HallsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/table/add")
-    @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<HallTableDetails> addNewHallTable(@Valid @RequestBody SaveHallTableRequest hallTableRequest) {
-        HallTableDetails hallDetails = this.hallsPlanService.addHallTable(hallTableRequest);
-
-        if (0 == hallDetails.getId()) {
-            return ResponseEntity.internalServerError().build();
-        }
-
-        return ResponseEntity.ok(hallDetails);
-    }
-
-    @PutMapping("/table/edit")
-    @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<HallTableDetails> editHallTable(@Valid @RequestBody EditHallTableRequest hallTableRequest) {
-        return ResponseEntity.ok(this.hallsPlanService.editHallTable(hallTableRequest));
-    }
-
-    @DeleteMapping("/table/remove/{id}")
-    @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<Void> removeHallTable(@PathVariable int id) {
-        this.hallsPlanService.removeHallTable(id);
-        return ResponseEntity.noContent().build();
-    }
 }

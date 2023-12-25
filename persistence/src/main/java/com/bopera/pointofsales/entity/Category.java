@@ -9,20 +9,21 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "rooms")
-public class Room {
+@Table(name = "categories")
+public class Category {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "room_name", nullable = false)
-    private String roomName;
+    @Column(name = "category_name", nullable = false)
+    private String categoryName;
 
-    private int sorting;
+    @Column(name = "description")
+    private String description;
 
-    @OneToMany(mappedBy = "room")
-    private Set<RoomTable> tables = new HashSet<>();
+    @OneToMany(mappedBy = "category")
+    private Set<MenuItem> menuItems = new HashSet<>();
 
 }

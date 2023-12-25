@@ -20,7 +20,7 @@ public class SaveHallTableRequest {
 	private String name;
 
 	@Digits(integer = 10, fraction = 0)
-	private Integer roomId;
+	private Long roomId;
 	private Integer active;
 	private Integer sorting;
 }

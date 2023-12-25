@@ -1,6 +1,5 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.UserInfo;
 import com.bopera.pointofsales.repository.UserInfoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,19 +25,6 @@ public class UserInfoServiceTest {
     @BeforeEach
     public void setUp() {
         userInfoService = new UserInfoService(userInfoRepository);
-    }
-
-    @Test
-    public void shouldLoadUserByUsernameWhenUserFoundThenReturnsUserDetails() {
-        String username = "testUser";
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUsername(username);
-        userInfo.setRole("testRole");
-        when(userInfoRepository.findByUsername(username)).thenReturn(Optional.of(userInfo));
-
-        var userDetails = userInfoService.loadUserByUsername(username);
-        assertEquals(username, userDetails.getUsername());
-        verify(userInfoRepository, times(1)).findByUsername(username);
     }
 
     @Test

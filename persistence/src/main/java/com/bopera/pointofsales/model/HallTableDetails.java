@@ -7,23 +7,17 @@ import lombok.Data;
 @Data
 @Builder
 public class HallTableDetails {
-    private Integer id;
+    private Long id;
     private String title;
     private String code;
     private String name;
-    private Integer roomId;
+    private Long roomId;
     private Integer active;
     private Integer sorting;
 
     public static HallTableDetails mapFromRoomTable(RoomTable roomTable) {
         return HallTableDetails.builder()
-            .roomId(roomTable.getRoom().getId())
-            .sorting(roomTable.getSorting())
-            .title(roomTable.getTableno())
-            .code(roomTable.getCode())
-            .name(roomTable.getName())
             .id(roomTable.getId())
-            .active(roomTable.getActive())
             .build();
     }
 }

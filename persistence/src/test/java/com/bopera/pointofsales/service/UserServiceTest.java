@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.LoginUser;
+import com.bopera.pointofsales.entity.User;
 import com.bopera.pointofsales.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,16 +34,13 @@ public class UserServiceTest {
 
     @Test
     public void testGetUserListWhenUserRepositoryReturnsListThenReturnSameList() {
-        // Arrange
-        LoginUser user1 = new LoginUser(1, "user1");
-        LoginUser user2 = new LoginUser(2, "user2");
-        List<LoginUser> expectedUsers = Arrays.asList(user1, user2);
+        User user1 = new User();
+        User user2 = new User();
+        List<User> expectedUsers = Arrays.asList(user1, user2);
         when(userRepository.findLoginUserList()).thenReturn(Optional.of(expectedUsers));
 
-        // Act
-        List<LoginUser> actualUsers = userService.getUserList();
+        List<User> actualUsers = userService.getUserList();
 
-        // Assert
         assertEquals(expectedUsers, actualUsers);
         verify(userRepository, times(1)).findLoginUserList();
     }
@@ -55,22 +52,6 @@ public class UserServiceTest {
 
         // Act & Assert
         assertThrows(NoSuchElementException.class, () -> userService.getUserList());
-        verify(userRepository, times(1)).findLoginUserList();
-    }
-
-    @Test
-    public void testGetUserListWhenUsersExistThenReturnList() {
-        // Arrange
-        LoginUser user1 = new LoginUser(1, "user1");
-        LoginUser user2 = new LoginUser(2, "user2");
-        List<LoginUser> expectedUsers = Arrays.asList(user1, user2);
-        when(userRepository.findLoginUserList()).thenReturn(Optional.of(expectedUsers));
-
-        // Act
-        List<LoginUser> actualUsers = userService.getUserList();
-
-        // Assert
-        assertEquals(expectedUsers, actualUsers);
         verify(userRepository, times(1)).findLoginUserList();
     }
 

@@ -1,44 +1,26 @@
 package com.bopera.pointofsales.entity;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "osp_resttables")
+@Table(name = "tables")
 public class RoomTable {
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "tableno", nullable = false)
-    private String tableno;
+    @Column(name = "table_number", nullable = false)
+    private Integer tableNumber;
 
-    @Column(name = "code")
-    private String code;
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "area")
-    private Integer area;
-
-    @Column(name = "active")
-    private Integer active;
-
-    @Column(name = "allowoutorder")
-    private Integer allowoutorder;
-
-    @Column(name = "removed")
-    private Integer removed;
-
-    @Column(name = "sorting")
-    private Integer sorting;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomid")
+    @ManyToOne
+    @JoinColumn(name = "room_id")
     private Room room;
 
 }

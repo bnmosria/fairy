@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class EditHallRequest extends SaveHallRequest {
-	private int id;
+	private long id;
 }

@@ -35,15 +35,14 @@ public class RoomsService {
         return hallDetails;
     }
 
-    public void removeRoom(int roomId) {
+    public void removeRoom(long roomId) {
         roomRepository.deleteById(roomId);
     }
 
     public HallDetails updateRoom(HallDetails hallDetails) {
         return this.roomRepository.findById(hallDetails.getId()).map(
             room -> {
-                room.setRoomname(hallDetails.getName());
-                room.setAbbreviation(hallDetails.getAbbreviation());
+                room.setRoomName(hallDetails.getName());
 
                 roomRepository.save(room);
 

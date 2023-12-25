@@ -29,7 +29,6 @@ public class HallsPlanService {
         return this.roomsService.addRoom(
             HallDetails.builder()
                 .name(hallRequest.getName())
-                .abbreviation(hallRequest.getAbbreviation())
                 .sorting(hallRequest.getSorting())
                 .build()
         );
@@ -48,41 +47,10 @@ public class HallsPlanService {
         log.info("The room with id {} will be edited", hallRequest.getId());
         return this.roomsService.updateRoom(
             HallDetails.builder()
-                .abbreviation(hallRequest.getAbbreviation())
                 .id(hallRequest.getId())
                 .name(hallRequest.getName())
                 .sorting(hallRequest.getSorting())
                 .build()
         );
-    }
-
-    public HallTableDetails addHallTable(SaveHallTableRequest hallTableRequest) {
-        return this.roomTablesService.saveRoomTable(
-            HallTableDetails.builder()
-                .roomId(hallTableRequest.getRoomId())
-                .name(hallTableRequest.getName())
-                .title(hallTableRequest.getTitle())
-                .code(hallTableRequest.getCode())
-                .active(hallTableRequest.getActive())
-                .build()
-        );
-    }
-
-    public HallTableDetails editHallTable(SaveHallTableRequest hallTableRequest) {
-        return this.roomTablesService.updateRoomTable(
-            HallTableDetails.builder()
-                .id(hallTableRequest.getId())
-                .roomId(hallTableRequest.getRoomId())
-                .name(hallTableRequest.getName())
-                .title(hallTableRequest.getTitle())
-                .code(hallTableRequest.getCode())
-                .active(hallTableRequest.getActive())
-                .sorting(hallTableRequest.getSorting())
-                .build()
-        );
-    }
-
-    public void removeHallTable(int id) {
-        this.roomTablesService.removeHallTable(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.UserInfo;
+import com.bopera.pointofsales.entity.User;
 import com.bopera.pointofsales.model.UserInfoDetails;
 import com.bopera.pointofsales.repository.UserInfoRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,19 +27,19 @@ public class UserInfoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserInfo userInfo = repository.findByUsername(username)
+        User userInfo = repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
 
         return UserInfoDetails.builder()
                 .name(userInfo.getUsername())
-                .password(userInfo.getUserpassword())
+                .password(userInfo.getPassword())
                 .authorities(buildAuthorities(userInfo))
                 .build();
     }
 
-    private List<GrantedAuthority> buildAuthorities(UserInfo userInfo) {
+    private List<GrantedAuthority> buildAuthorities(User userInfo) {
 
-        return Arrays.stream(userInfo.getRole().split(","))
+        return Arrays.stream("admin".split(","))
                 .takeWhile(Predicate.not(String::isBlank))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
