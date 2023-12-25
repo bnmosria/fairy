@@ -11,5 +11,5 @@ public class Jwt {
     private final String tokenType = "bearer";
     private String accessToken;
     private Date expiresIn;
-    private String role;
+    private String roles;
 }

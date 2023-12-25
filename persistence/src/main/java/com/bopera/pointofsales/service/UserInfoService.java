@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.service;
 
+import com.bopera.pointofsales.entity.Role;
 import com.bopera.pointofsales.entity.User;
 import com.bopera.pointofsales.model.UserInfoDetails;
 import com.bopera.pointofsales.repository.UserInfoRepository;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -39,10 +39,11 @@ public class UserInfoService implements UserDetailsService {
 
     private List<GrantedAuthority> buildAuthorities(User userInfo) {
 
-        return Arrays.stream("admin".split(","))
-                .takeWhile(Predicate.not(String::isBlank))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return userInfo.getRoles().stream()
+            .map(Role::getRoleName)
+            .takeWhile(Predicate.not(String::isBlank))
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
     }
 
 }

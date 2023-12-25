@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserInfoRepository extends BaseRepository<User, Integer> {
-	@Query(value = "SELECT u.id, u.username, u.password FROM users", nativeQuery = true)
+	@Query(value = "SELECT * FROM users WHERE active = 1", nativeQuery = true)
 	Optional<User> findByUsername(@Param("username") String username);
 }

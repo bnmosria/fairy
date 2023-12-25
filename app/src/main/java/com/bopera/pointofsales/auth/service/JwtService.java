@@ -34,7 +34,7 @@ public class JwtService {
 		Map<String, Object> claims = new HashMap<>();
 
 		userInfoDetails.getAuthorities()
-				.forEach(grantedAuthority -> claims.put("role", grantedAuthority.getAuthority()));
+				.forEach(grantedAuthority -> claims.put("roles", grantedAuthority.getAuthority()));
 
 		return createToken(claims, userInfoDetails.getUsername());
 	}
@@ -54,7 +54,7 @@ public class JwtService {
 
 		return Jwt.builder()
 				.accessToken(accessToken)
-				.role((String) claims.get("role"))
+				.roles((String) claims.get("roles"))
 				.expiresIn(expiration)
 				.build();
 	}
