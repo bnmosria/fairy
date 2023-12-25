@@ -13,20 +13,20 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class JwtServiceTest {
+class JwtServiceTest {
 
     private JwtService jwtService;
 
     private String userName;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         jwtService = new JwtService("0110001111000011101001010101011111100000000011110010101111000011");
         userName = "testUser";
     }
 
     @Test
-    public void shouldGenerateTokenWithProvidedUserName() {
+    void shouldGenerateTokenWithProvidedUserName() {
         Jwt token = jwtService.generateToken(UserInfoDetails.builder()
                 .name(userName)
                 .password("foo")
