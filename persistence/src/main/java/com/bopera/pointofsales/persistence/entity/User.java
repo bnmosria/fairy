@@ -1,13 +1,19 @@
 package com.bopera.pointofsales.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 

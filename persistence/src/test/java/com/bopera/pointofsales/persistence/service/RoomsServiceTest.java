@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.service;
+package com.bopera.pointofsales.persistence.service;
 
 import com.bopera.pointofsales.persistence.entity.Room;
 import com.bopera.pointofsales.persistence.model.HallDetails;

@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.service;
+package com.bopera.pointofsales.persistence.service;
 
 import com.bopera.pointofsales.persistence.repository.UserInfoRepository;
 import com.bopera.pointofsales.persistence.service.UserInfoService;
