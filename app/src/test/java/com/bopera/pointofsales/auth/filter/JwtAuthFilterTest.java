@@ -36,7 +36,7 @@ public class JwtAuthFilterTest {
     private JwtAuthFilter jwtAuthFilter;
 
     @Test
-    public void testDoFilterInternalWhenAuthorizationHeaderIsNull() throws Exception {
+    public void shouldNotDoFilterInternalWhenAuthorizationHeaderIsNull() throws Exception {
         when(request.getHeader("Authorization")).thenReturn(null);
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
@@ -46,7 +46,7 @@ public class JwtAuthFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWhenAuthorizationHeaderDoesNotStartWithBearer() throws Exception {
+    public void shouldDoFilterInternalWhenAuthorizationHeaderDoesNotStartWithBearer() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Invalid header");
 
         jwtAuthFilter.doFilterInternal(request, response, filterChain);
@@ -56,7 +56,7 @@ public class JwtAuthFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWhenJwtTokenIsInvalid() throws Exception {
+    public void shouldNotDoFilterInternalWhenJwtTokenIsInvalid() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Bearer invalidToken");
         when(jwtService.extractUsername("invalidToken")).thenReturn("username");
         when(userDetailsService.loadUserByUsername("username")).thenReturn(mock(UserDetails.class));
@@ -70,7 +70,7 @@ public class JwtAuthFilterTest {
     }
 
     @Test
-    public void testDoFilterInternalWhenJwtTokenIsValid() throws Exception {
+    public void shouldDoFilterInternalWhenJwtTokenIsValid() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Bearer validToken");
         when(jwtService.extractUsername("validToken")).thenReturn("username");
         UserDetails userDetails = mock(UserDetails.class);

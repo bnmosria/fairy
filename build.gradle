@@ -14,3 +14,7 @@ allprojects {
     group = 'com.bopera'
     version = ''
 }
+
+dependencyCheck {
+    autoUpdate = true
+}

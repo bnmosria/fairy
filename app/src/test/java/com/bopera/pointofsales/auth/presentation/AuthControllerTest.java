@@ -1,8 +1,8 @@
 package com.bopera.pointofsales.auth.presentation;
 
 import com.bopera.pointofsales.auth.filter.JwtAuthFilter;
-import com.bopera.pointofsales.auth.model.AuthRequest;
-import com.bopera.pointofsales.auth.model.Jwt;
+import com.bopera.pointofsales.auth.model.request.AuthRequest;
+import com.bopera.pointofsales.auth.model.response.AuthResponse;
 import com.bopera.pointofsales.auth.service.AuthService;
 import com.bopera.pointofsales.auth.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,13 +51,13 @@ class AuthControllerTest {
     }
 
     @Test
-    void testLoginWithValidCredentials() {
+    void shouldLoginWithValidCredentials() {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        Jwt jwt = Jwt.builder().build();
+        AuthResponse jwt = AuthResponse.builder().build();
 
         when(authService.authenticateAndGetToken(authRequest)).thenReturn(jwt);
 
-        ResponseEntity<Jwt> response = authController.login(authRequest);
+        ResponseEntity<AuthResponse> response = authController.login(authRequest);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(jwt, response.getBody());
@@ -66,12 +66,12 @@ class AuthControllerTest {
     }
 
     @Test
-    void testLoginWithInvalidCredentials() {
+    void shouldNotLoginWithInvalidCredentials() {
         AuthRequest authRequest = new AuthRequest("username", "password");
         when(authService.authenticateAndGetToken(authRequest))
             .thenThrow(new BadCredentialsException("Invalid credentials"));
 
-        ResponseEntity<Jwt> response = authController.login(authRequest);
+        ResponseEntity<AuthResponse> response = authController.login(authRequest);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
         verify(authService, times(1))
@@ -79,11 +79,11 @@ class AuthControllerTest {
     }
 
     @Test
-    void testLoginWithNullToken() {
+    void shouldNotLoginWithNullToken() {
         AuthRequest authRequest = new AuthRequest("username", "password");
         when(authService.authenticateAndGetToken(authRequest)).thenReturn(null);
 
-        ResponseEntity<Jwt> response = authController.login(authRequest);
+        ResponseEntity<AuthResponse> response = authController.login(authRequest);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
         verify(authService, times(1))
@@ -94,7 +94,7 @@ class AuthControllerTest {
     @Test
     void shouldReturnTokenWhenValidAuthRequestGiven() throws Exception {
         AuthRequest authRequest = new AuthRequest("username", "password");
-        Jwt token = Jwt.builder().accessToken("accessToken").expiresIn(new Date()).build();
+        AuthResponse token = AuthResponse.builder().accessToken("accessToken").expiresIn(new Date()).build();
 
         doReturn(token).when(authService).authenticateAndGetToken(authRequest);
 
@@ -112,4 +112,5 @@ class AuthControllerTest {
                     .content("{\"username\":\"\",\"password\":\"\"}"))
                 .andExpect(status().isBadRequest());
     }
+
 }

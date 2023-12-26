@@ -1,7 +1,8 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.User;
-import com.bopera.pointofsales.repository.UserRepository;
+import com.bopera.pointofsales.persistence.entity.User;
+import com.bopera.pointofsales.persistence.repository.UserRepository;
+import com.bopera.pointofsales.persistence.service.PersistenceUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService userService;
+    private PersistenceUserService userService;
 
     @BeforeEach
     public void setUp() {
@@ -33,7 +34,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserListWhenUserRepositoryReturnsListThenReturnSameList() {
+    public void shouldReturnsAnUserListWhenUserExists() {
         User user1 = new User();
         User user2 = new User();
         List<User> expectedUsers = Arrays.asList(user1, user2);
@@ -46,21 +47,9 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserListWhenUserRepositoryReturnsEmptyOptionalThenThrowNoSuchElementException() {
-        // Arrange
+    public void shouldReturnAnEmptyListReturningAnExceptionWhenNoUsersExist() {
         when(userRepository.findLoginUserList()).thenReturn(Optional.empty());
 
-        // Act & Assert
-        assertThrows(NoSuchElementException.class, () -> userService.getUserList());
-        verify(userRepository, times(1)).findLoginUserList();
-    }
-
-    @Test
-    public void testGetUserListWhenNoUsersExistThenThrowException() {
-        // Arrange
-        when(userRepository.findLoginUserList()).thenReturn(Optional.empty());
-
-        // Act & Assert
         assertThrows(NoSuchElementException.class, () -> userService.getUserList());
         verify(userRepository, times(1)).findLoginUserList();
     }

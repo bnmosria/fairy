@@ -37,12 +37,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-            .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests((authorizeHttpRequests) ->
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
                     .requestMatchers("/api/auth/token", "/api/users/name-list").permitAll()
                     .requestMatchers("/api/users/**", "/api/admin/**", "/api/halls/**").authenticated()
-            ).sessionManagement((sessionManagement) ->
+            ).sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider)
@@ -50,7 +50,7 @@ public class SecurityConfig {
             .build();
     }
 
-    CorsConfigurationSource corsConfigurationSource() {
+    private CorsConfigurationSource corsConfigurationSource() {
         final var configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT"));

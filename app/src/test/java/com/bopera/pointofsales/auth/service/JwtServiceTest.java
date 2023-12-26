@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.auth.service;
 
-import com.bopera.pointofsales.auth.model.Jwt;
-import com.bopera.pointofsales.model.UserInfoDetails;
+import com.bopera.pointofsales.auth.model.response.AuthResponse;
+import com.bopera.pointofsales.persistence.model.UserInfoDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class JwtServiceTest {
 
     @Test
     void shouldGenerateTokenWithProvidedUserName() {
-        Jwt token = jwtService.generateToken(UserInfoDetails.builder()
+        AuthResponse token = jwtService.generateToken(UserInfoDetails.builder()
                 .name(userName)
                 .password("foo")
                 .authorities(Collections.emptyList())

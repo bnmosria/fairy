@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.auth.service;
 
-import com.bopera.pointofsales.auth.model.AuthRequest;
-import com.bopera.pointofsales.auth.model.Jwt;
+import com.bopera.pointofsales.auth.model.request.AuthRequest;
+import com.bopera.pointofsales.auth.model.response.AuthResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,13 +37,13 @@ public class AuthServiceTest {
 
     @Test
     public void shouldReturnATokenWhenUserIsAuthenticated() {
-        Jwt expectedToken = Jwt.builder().build();
+        AuthResponse expectedToken = AuthResponse.builder().build();
         doReturn(expectedToken).when(jwtService).generateToken(any());
         doReturn(authentication).when(authenticationManager)
                 .authenticate(any(UsernamePasswordAuthenticationToken.class));
         doReturn(true).when(authentication).isAuthenticated();
 
-        Jwt actualToken = authService.authenticateAndGetToken(mock(AuthRequest.class));
+        AuthResponse actualToken = authService.authenticateAndGetToken(mock(AuthRequest.class));
 
         assertThat(actualToken).isEqualTo(expectedToken);
     }

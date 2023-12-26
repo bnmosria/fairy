@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.auth.presentation;
 
-import com.bopera.pointofsales.auth.model.AuthRequest;
-import com.bopera.pointofsales.auth.model.Jwt;
+import com.bopera.pointofsales.auth.model.request.AuthRequest;
+import com.bopera.pointofsales.auth.model.response.AuthResponse;
 import com.bopera.pointofsales.auth.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<Jwt> login(@RequestBody AuthRequest authRequest) {
-        Jwt token;
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+        AuthResponse token;
 
         try {
             token = authService.authenticateAndGetToken(authRequest);

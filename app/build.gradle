@@ -27,6 +27,7 @@ configurations {
 dependencies {
     implementation project(":persistence")
     implementation project(":problem-detail")
+    implementation project(":utilities")
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'

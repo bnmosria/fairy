@@ -1,16 +1,12 @@
 package com.bopera.pointofsales.halls.service;
 
-import com.bopera.pointofsales.auth.model.EditHallRequest;
-import com.bopera.pointofsales.auth.model.EditHallTableRequest;
-import com.bopera.pointofsales.auth.model.SaveHallRequest;
-import com.bopera.pointofsales.auth.model.SaveHallTableRequest;
-import com.bopera.pointofsales.model.HallDetails;
-import com.bopera.pointofsales.model.HallTableDetails;
-import com.bopera.pointofsales.service.RoomTablesService;
-import com.bopera.pointofsales.service.RoomsService;
+import com.bopera.pointofsales.halls.model.request.EditHallRequest;
+import com.bopera.pointofsales.halls.model.request.SaveHallRequest;
+import com.bopera.pointofsales.persistence.model.HallDetails;
+import com.bopera.pointofsales.persistence.service.RoomTablesService;
+import com.bopera.pointofsales.persistence.service.RoomsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 

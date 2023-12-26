@@ -1,8 +1,9 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.entity.Room;
-import com.bopera.pointofsales.model.HallDetails;
-import com.bopera.pointofsales.repository.RoomRepository;
+import com.bopera.pointofsales.persistence.entity.Room;
+import com.bopera.pointofsales.persistence.model.HallDetails;
+import com.bopera.pointofsales.persistence.repository.RoomRepository;
+import com.bopera.pointofsales.persistence.service.RoomsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

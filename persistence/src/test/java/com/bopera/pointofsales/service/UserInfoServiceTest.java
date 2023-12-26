@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.service;
 
-import com.bopera.pointofsales.repository.UserInfoRepository;
+import com.bopera.pointofsales.persistence.repository.UserInfoRepository;
+import com.bopera.pointofsales.persistence.service.UserInfoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
