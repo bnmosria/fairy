@@ -27,7 +27,6 @@ configurations {
 dependencies {
     implementation project(":persistence")
     implementation project(":problem-detail")
-    implementation project(":utilities")
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -46,7 +45,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation platform('org.testcontainers:testcontainers-bom:1.17.2')
+
+    implementation platform('org.testcontainers:testcontainers-bom:1.17.2')
 }
 
 test {
