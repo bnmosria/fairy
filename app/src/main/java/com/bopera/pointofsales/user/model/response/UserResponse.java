@@ -1,15 +1,11 @@
 package com.bopera.pointofsales.user.model.response;
 
 import com.bopera.pointofsales.persistence.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
-@Setter
-@Getter
+@Data
 @Builder
 @AllArgsConstructor
 public class UserResponse {

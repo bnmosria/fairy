@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,15 +35,15 @@ public class DbUserService implements UserService {
 
     @Override
     public UserResponse create(CreateUser createUser) {
-        User newUser = new User();
+        User user = User.builder()
+            .username(createUser.getUsername())
+            .password(passwordEncoder.encode(createUser.getPassword()))
+            .active(createUser.getActive())
+            .build();
 
-        newUser.setUsername(createUser.getUsername());
-        newUser.setActive(1);
-        newUser.setPassword(passwordEncoder.encode(createUser.getPassword()));
-
-        return new UserResponse(
-            persistenceUserService.save(newUser)
-        );
+        return Optional.of(persistenceUserService.save(user))
+            .map(UserResponse::new)
+            .orElseThrow();
     }
 
     @Override
@@ -63,6 +64,8 @@ public class DbUserService implements UserService {
         return persistenceUserService.findById(updateUser.getId())
             .map(user -> {
                 user.setUsername(updateUser.getUsername());
+                user.setActive(updateUser.getActive());
+
                 persistenceUserService.save(user);
 
                 return user;
@@ -72,8 +75,8 @@ public class DbUserService implements UserService {
     }
 
     @Override
-    public UserResponse updatePassword(long id, String newPassword) throws ResourceNotFoundException {
-        return persistenceUserService.findById(id)
+    public void updatePassword(long id, String newPassword) throws ResourceNotFoundException {
+        persistenceUserService.findById(id)
             .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 persistenceUserService.save(user);

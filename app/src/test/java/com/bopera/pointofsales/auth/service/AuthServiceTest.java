@@ -5,6 +5,7 @@ import com.bopera.pointofsales.auth.model.response.AuthResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
+class AuthServiceTest {
 
     @Mock
     private JwtService jwtService;
@@ -28,15 +29,11 @@ public class AuthServiceTest {
     @Mock
     private Authentication authentication;
 
+    @InjectMocks
     private AuthService authService;
 
-    @BeforeEach
-    public void setUp() {
-        authService = new AuthService(jwtService, authenticationManager);
-    }
-
     @Test
-    public void shouldReturnATokenWhenUserIsAuthenticated() {
+    void shouldReturnATokenWhenUserIsAuthenticated() {
         AuthResponse expectedToken = AuthResponse.builder().build();
         doReturn(expectedToken).when(jwtService).generateToken(any());
         doReturn(authentication).when(authenticationManager)
@@ -49,7 +46,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void shouldThrowBadCredentialsExceptionWhenUserCanNotAuthenticate() {
+    void shouldThrowBadCredentialsExceptionWhenUserCanNotAuthenticate() {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
 
