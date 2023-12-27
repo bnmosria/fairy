@@ -3,7 +3,7 @@ package com.bopera.pointofsales.persistence.service;
 import com.bopera.pointofsales.persistence.entity.Role;
 import com.bopera.pointofsales.persistence.entity.User;
 import com.bopera.pointofsales.persistence.model.UserInfoDetails;
-import com.bopera.pointofsales.persistence.repository.UserInfoRepository;
+import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserInfoService implements UserDetailsService {
 
-    private final UserInfoRepository repository;
+    private final UserRepository repository;
 
-    public UserInfoService(UserInfoRepository repository) {
+    public UserInfoService(UserRepository repository) {
         this.repository = repository;
     }
 

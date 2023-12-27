@@ -5,53 +5,51 @@ import com.bopera.pointofsales.persistence.entity.User;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.Collections;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class UserInfoServiceTest {
+@DataJpaTest
+@ActiveProfiles("test")
+@Transactional
+@EnableJpaRepositories("com.bopera.pointofsales.persistence.repository")
+class UserInfoServiceIT {
 
-    @Mock
+    @Autowired
     private UserRepository userRepository;
 
     private UserInfoService userInfoService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         userInfoService = new UserInfoService(userRepository);
     }
 
     @Test
-    public void shouldThrowsExceptionWhenUserNotFound() {
-        String username = "testUser";
-        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
-
-        assertThrows(UsernameNotFoundException.class, () -> userInfoService.loadUserByUsername(username));
-        verify(userRepository, times(1)).findByUsername(username);
-    }
-
-    @Test
-    void shouldLoadUserByUsernameWithExistingUser() {
-        String username = "testUser";
-        String password = "testPassword";
+    void shouldReturnsUserDetailsByUsernameWithExistingUser() {
+        String username = "user";
+        String password = "password";
         Role role = new Role();
         role.setRoleName("ROLE_USER");
 
         User user = User.builder().username(username)
             .password(password)
+            .active(1)
             .roles(Set.of(role))
             .build();
 
-        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+        userRepository.save(user);
 
         UserDetails userDetails = userInfoService.loadUserByUsername(username);
 
@@ -60,8 +58,11 @@ public class UserInfoServiceTest {
         assertEquals(password, userDetails.getPassword());
         assertEquals(1, userDetails.getAuthorities().size());
         assertEquals(role.getRoleName(), userDetails.getAuthorities().iterator().next().getAuthority());
-
-        verify(userRepository, times(1)).findByUsername(username);
     }
 
+    @Test
+    void shouldThrowsUsernameNotFoundExceptionWithNonExistingUser() {
+        String username = "nonExistingUser";
+        assertThrows(UsernameNotFoundException.class, () -> userInfoService.loadUserByUsername(username));
+    }
 }
