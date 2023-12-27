@@ -23,11 +23,11 @@ public class UserInfoServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    private UserInfoService userInfoService;
+    private PersistenceUserInfoService userInfoService;
 
     @BeforeEach
     public void setUp() {
-        userInfoService = new UserInfoService(userRepository);
+        userInfoService = new PersistenceUserInfoService(userRepository);
     }
 
     @Test

@@ -6,16 +6,13 @@ import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,11 +26,11 @@ class UserInfoServiceIT {
     @Autowired
     private UserRepository userRepository;
 
-    private UserInfoService userInfoService;
+    private PersistenceUserInfoService userInfoService;
 
     @BeforeEach
     void setUp() {
-        userInfoService = new UserInfoService(userRepository);
+        userInfoService = new PersistenceUserInfoService(userRepository);
     }
 
     @Test
