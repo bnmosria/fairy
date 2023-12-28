@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.persistence.entity;
 
+import com.bopera.pointofsales.persistence.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -18,20 +19,23 @@ import java.util.Set;
 public class Order {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "table_id")
-    private Integer tableId;
+    @ManyToOne
+    @JoinColumn(name = "table_id")
+    private RoomTable tableId;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private OrderStatus status;
 
-    @Column(name = "total_amount", nullable = false)
+    @Column(name = "total_amount")
     private BigDecimal totalAmount = BigDecimal.valueOf(0.0);
 
     @Column(name = "timestamp")

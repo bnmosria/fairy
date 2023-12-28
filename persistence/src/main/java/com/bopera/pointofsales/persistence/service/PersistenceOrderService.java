@@ -20,19 +20,38 @@ public class PersistenceOrderService {
     }
 
     public void addMenuItemToOrder(Order order, MenuItem menuItem, int quantity) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrder(order);
-        orderItem.setMenuItem(menuItem);
-        orderItem.setQuantity(quantity);
-        orderItem.setSubtotal(menuItem.getPrice().multiply(BigDecimal.valueOf(quantity)));
+        OrderItem existingOrderItem = getOrderItemByMenuItem(order, menuItem);
 
-        order.getOrderItems().add(orderItem);
-        menuItem.getOrderItems().add(orderItem);
+        if (existingOrderItem != null) {
+            int newQuantity = existingOrderItem.getQuantity() + quantity;
+            BigDecimal newSubtotal = menuItem.getPrice().multiply(BigDecimal.valueOf(newQuantity));
 
-        BigDecimal total = order.getTotalAmount().add(orderItem.getSubtotal());
+            existingOrderItem.setQuantity(newQuantity);
+            existingOrderItem.setSubtotal(newSubtotal);
+        } else {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setMenuItem(menuItem);
+            orderItem.setQuantity(quantity);
+            orderItem.setSubtotal(menuItem.getPrice().multiply(BigDecimal.valueOf(quantity)));
+
+            order.getOrderItems().add(orderItem);
+            menuItem.getOrderItems().add(orderItem);
+        }
+
+        BigDecimal total = order.getOrderItems().stream()
+            .map(OrderItem::getSubtotal)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         order.setTotalAmount(total);
 
         ordersRepository.save(order);
+    }
+
+    private OrderItem getOrderItemByMenuItem(Order order, MenuItem menuItem) {
+        return order.getOrderItems().stream()
+            .filter(orderItem -> orderItem.getMenuItem().equals(menuItem))
+            .findFirst()
+            .orElse(null);
     }
 }
