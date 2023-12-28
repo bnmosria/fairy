@@ -7,19 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 
 @DataJpaTest
-@ActiveProfiles("test")
-@Transactional
-@EnableJpaRepositories
-public class UserRepositoryTest {
+class UsersRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -28,7 +23,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         User user1 = User.builder()
             .username("admin1")
             .password("password1")
@@ -46,14 +41,14 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void shouldFindTheLoginUsersOfActiveUsers() {
+    void shouldFindTheLoginUsersOfActiveUsers() {
         Optional<List<User>> userList = userRepository.findLoginUserList();
         Assertions.assertTrue(userList.isPresent());
         Assertions.assertEquals(1, userList.get().size());
     }
 
     @Test
-    public void shouldReturnsAnUserByUsername() {
+    void shouldReturnsAnUserByUsername() {
         boolean exists = userRepository.existsByUsername("admin1");
         Assertions.assertTrue(exists);
     }

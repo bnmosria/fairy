@@ -2,7 +2,10 @@ package com.bopera.pointofsales.persistence.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -10,6 +13,9 @@ import java.util.Set;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "menu_items")
 public class MenuItem {
 

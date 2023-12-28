@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @Transactional
 @EnableJpaRepositories("com.bopera.pointofsales.persistence.repository")
-class UserInfoServiceIT {
+class PersistenceUserInfoServiceIT {
 
     @Autowired
     private UserRepository userRepository;
