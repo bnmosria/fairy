@@ -3,10 +3,13 @@ package com.bopera.pointofsales.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
