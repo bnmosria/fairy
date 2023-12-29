@@ -2,8 +2,6 @@ package com.bopera.pointofsales.user.service;
 
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
 import com.bopera.pointofsales.domain.service.PersistenceUserService;
-import com.bopera.pointofsales.user.model.request.UpdateUser;
-import com.bopera.pointofsales.user.model.response.UserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +21,4 @@ public class LoginUserService {
                 loginUser -> LoginUserResponse.builder().name(loginUser.getUsername()
             ).build()).toList();
     }
-
-    public UserResponse update(UpdateUser updateUser) {
-        return UserResponse.builder().build();
-    }
-
 }
