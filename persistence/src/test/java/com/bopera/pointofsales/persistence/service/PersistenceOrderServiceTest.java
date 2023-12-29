@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -28,6 +27,57 @@ class PersistenceOrderServiceTest {
 
     @InjectMocks
     private PersistenceOrderService persistenceOrderService;
+
+    @Test
+    void testRemoveMenuItemFromOrderWhenQuantityGreaterThanOneThenRemoveOne() {
+        Order order = new Order();
+        MenuItem menuItem = new MenuItem();
+        menuItem.setPrice(BigDecimal.valueOf(10));
+        int quantity = 2;
+
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
+
+        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
+        assertEquals(1, orderItems.size());
+
+        OrderItem orderItem = orderItems.get(0);
+        assertEquals(order, orderItem.getOrder());
+        assertEquals(menuItem, orderItem.getMenuItem());
+        assertEquals(quantity - 1, orderItem.getQuantity());
+        assertEquals(BigDecimal.valueOf(10), orderItem.getSubtotal());
+
+        verify(ordersRepository, times(2)).save(order);
+    }
+
+    @Test
+    void testRemoveMenuItemFromOrderWhenQuantityIsOneThenRemoveItem() {
+        Order order = new Order();
+        MenuItem menuItem = new MenuItem();
+        menuItem.setPrice(BigDecimal.valueOf(10));
+        int quantity = 1;
+
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
+
+        assertEquals(0, order.getOrderItems().size());
+
+        verify(ordersRepository, times(2)).save(order);
+    }
+
+    @Test
+    void testRemoveMenuItemFromOrderWhenMenuItemNotInOrderThenDoNothing() {
+        Order order = new Order();
+        MenuItem menuItem = new MenuItem();
+        menuItem.setPrice(BigDecimal.valueOf(10));
+
+        persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
+
+        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
+        assertEquals(0, orderItems.size());
+
+        verify(ordersRepository, times(0)).save(order);
+    }
 
     @Test
     void shouldAddTheOrderItemsToTheOrderCorrectly() {
@@ -85,20 +135,19 @@ class PersistenceOrderServiceTest {
         int quantity1 = 3;
 
         persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+
         persistenceOrderService.addMenuItemToOrder(order, menuItem1, quantity1);
         persistenceOrderService.addMenuItemToOrder(order, menuItem1, 1);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
+        assertEquals(2, order.getOrderItems().size());
 
-        assertEquals(2, orderItems.size());
-
-        OrderItem orderItem = orderItems.get(0);
+        OrderItem orderItem = order.getOrderItems().get(0);
         assertEquals(order, orderItem.getOrder());
         assertEquals(menuItem, orderItem.getMenuItem());
         assertEquals(quantity, orderItem.getQuantity());
         assertEquals(BigDecimal.valueOf(20), orderItem.getSubtotal());
 
-        OrderItem orderItem1 = orderItems.get(1);
+        OrderItem orderItem1 = order.getOrderItems().get(1);
         assertEquals(order, orderItem1.getOrder());
         assertEquals(menuItem1, orderItem1.getMenuItem());
         assertEquals(4, orderItem1.getQuantity());
@@ -108,5 +157,4 @@ class PersistenceOrderServiceTest {
 
         assertEquals(BigDecimal.valueOf(40), order.getTotalAmount());
     }
-
 }

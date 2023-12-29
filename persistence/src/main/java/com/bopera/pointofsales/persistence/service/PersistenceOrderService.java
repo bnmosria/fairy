@@ -39,13 +39,41 @@ public class PersistenceOrderService {
             menuItem.getOrderItems().add(orderItem);
         }
 
-        BigDecimal total = order.getOrderItems().stream()
-            .map(OrderItem::getSubtotal)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotalAmount(getTotal(order));
+        ordersRepository.save(order);
+    }
 
-        order.setTotalAmount(total);
+    public void removeMenuItemFromOrder(Order order, MenuItem menuItem) {
+        OrderItem orderItem = getOrderItemByMenuItem(order, menuItem);
+
+        if (orderItem == null) {
+            return;
+        }
+
+        int orderItemQuantity = orderItem.getQuantity();
+
+        if (orderItemQuantity > 1) {
+            orderItem.setQuantity(orderItemQuantity - 1);
+            orderItem.setSubtotal(
+                menuItem.getPrice().multiply(
+                    BigDecimal.valueOf(orderItem.getQuantity())
+                )
+            );
+
+            order.setTotalAmount(getTotal(order));
+            ordersRepository.save(order);
+
+            return;
+        }
+
+        order.getOrderItems().remove(orderItem);
+        menuItem.getOrderItems().remove(orderItem);
+        orderItem.setOrder(null);
+        orderItem.setMenuItem(null);
+        order.setTotalAmount(getTotal(order));
 
         ordersRepository.save(order);
+
     }
 
     private OrderItem getOrderItemByMenuItem(Order order, MenuItem menuItem) {
@@ -53,5 +81,11 @@ public class PersistenceOrderService {
             .filter(orderItem -> orderItem.getMenuItem().equals(menuItem))
             .findFirst()
             .orElse(null);
+    }
+
+    private BigDecimal getTotal(Order order) {
+        return order.getOrderItems().stream()
+            .map(OrderItem::getSubtotal)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
