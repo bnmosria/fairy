@@ -1,0 +1,49 @@
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagement}"
+    id 'java'
+}
+
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = "api"
+}
+
+bootJar {
+    launchScript()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    implementation project(":domain")
+    implementation project(":problem-detail")
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.projectlombok:lombok'
+    implementation "io.jsonwebtoken:jjwt-api:${jsonWebTokenVersion}"
+    implementation "io.jsonwebtoken:jjwt-impl:${jsonWebTokenVersion}"
+    implementation "io.jsonwebtoken:jjwt-jackson:${jsonWebTokenVersion}"
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

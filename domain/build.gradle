@@ -21,10 +21,10 @@ dependencyManagement {
 }
 
 dependencies {
+    implementation project(":persistence")
     implementation project(":problem-detail")
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation platform('org.testcontainers:testcontainers-bom:1.17.2')
 
     compileOnly 'org.projectlombok:lombok:1.18.28'
@@ -34,8 +34,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:mysql'
     testImplementation 'com.h2database:h2:2.2.224'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
 }
