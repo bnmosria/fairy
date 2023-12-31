@@ -19,7 +19,7 @@ class LoginUserController {
         this.userService = userService;
     }
 
-    @GetMapping("name-list")
+    @GetMapping("nameList")
     ResponseEntity<List<LoginUserResponse>> getUserNameList() {
         List<LoginUserResponse> userNameList = userService.getUserList()
             .stream().map(

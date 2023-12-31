@@ -44,7 +44,7 @@ class LoginUserControllerIT {
 
         when(userService.getUserList()).thenReturn(expectedUserList);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/name-list")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/nameList")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("John"))
@@ -57,7 +57,7 @@ class LoginUserControllerIT {
         List<UserDetails> emptyUserList = new ArrayList<>();
 
         when(userService.getUserList()).thenReturn(emptyUserList);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/name-list")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/nameList")
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isNotFound());
     }

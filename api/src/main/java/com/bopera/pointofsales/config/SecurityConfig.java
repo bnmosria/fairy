@@ -40,9 +40,10 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
-                    .requestMatchers("/api/auth/token", "/api/users/name-list").permitAll()
+                    .requestMatchers("/api/auth/token", "/api/users/nameList").permitAll()
                     .requestMatchers("/api/users/**", "/api/admin/**", "/api/halls/**").authenticated()
-            ).sessionManagement(sessionManagement ->
+            )
+            .sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider)
@@ -62,5 +63,4 @@ public class SecurityConfig {
 
         return source;
     }
-
 }

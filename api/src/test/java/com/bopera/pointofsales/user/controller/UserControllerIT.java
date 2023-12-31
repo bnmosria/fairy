@@ -123,11 +123,22 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_NON_ROLE"})
-    void ShouldDenyAccess_WhenUserDoesNotHaveStaffRole() throws Exception {
+    @WithMockUser(authorities = {"ROLE_NONE_ROLE"})
+    void ShouldDenyAccess_WhenUserHasNoneRole() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
+                .with(csrf())
                 .param("currentPassword", "currentPassword")
                 .param("newPassword", "newPassword"))
             .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    void ShouldUpdatePassword_WhenUserHasAdminRole() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
+                .with(csrf())
+                .param("currentPassword", "currentPassword")
+                .param("newPassword", "newPassword"))
+            .andExpect(status().isOk());
     }
 }
