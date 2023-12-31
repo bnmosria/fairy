@@ -3,8 +3,8 @@ package com.bopera.pointofsales.halls.service;
 import com.bopera.pointofsales.halls.model.request.EditHallRequest;
 import com.bopera.pointofsales.halls.model.request.SaveHallRequest;
 import com.bopera.pointofsales.domain.model.HallDetails;
-import com.bopera.pointofsales.domain.service.PersistenceRoomTableService;
-import com.bopera.pointofsales.domain.service.PersistenceRoomService;
+import com.bopera.pointofsales.domain.service.RoomTableService;
+import com.bopera.pointofsales.domain.service.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class HallsPlanService {
-    private final PersistenceRoomService roomsService;
-    private final PersistenceRoomTableService roomTablesService;
+    private final RoomService roomsService;
+    private final RoomTableService roomTablesService;
 
-    public HallsPlanService(PersistenceRoomService roomsService, PersistenceRoomTableService roomTablesService) {
+    public HallsPlanService(RoomService roomsService, RoomTableService roomTablesService) {
         this.roomsService = roomsService;
         this.roomTablesService = roomTablesService;
     }

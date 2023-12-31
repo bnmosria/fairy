@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
 @Service
-public class PersistenceOrderService {
+public class OrderService {
 
     private final OrdersRepository ordersRepository;
 
     @Autowired
-    public PersistenceOrderService(OrdersRepository ordersRepository) {
+    public OrderService(OrdersRepository ordersRepository) {
         this.ordersRepository = ordersRepository;
     }
 

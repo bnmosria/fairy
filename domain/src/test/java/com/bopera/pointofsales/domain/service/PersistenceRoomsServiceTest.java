@@ -23,11 +23,11 @@ class PersistenceRoomsServiceTest {
     private RoomRepository roomRepository;
 
     @InjectMocks
-    private PersistenceRoomService roomsService;
+    private RoomService roomsService;
 
     @BeforeEach
     void setUp() {
-        roomsService = new PersistenceRoomService(roomRepository);
+        roomsService = new RoomService(roomRepository);
     }
 
     @Test

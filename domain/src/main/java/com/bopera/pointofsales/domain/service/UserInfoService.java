@@ -16,11 +16,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
-public class PersistenceUserInfoService implements UserDetailsService {
+public class UserInfoService implements UserDetailsService {
 
     private final UserRepository repository;
 
-    public PersistenceUserInfoService(UserRepository repository) {
+    public UserInfoService(UserRepository repository) {
         this.repository = repository;
     }
 

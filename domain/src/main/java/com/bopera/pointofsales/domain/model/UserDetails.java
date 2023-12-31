@@ -25,6 +25,5 @@ public class UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.active = user.getActive();
-        this.roles = user.getRoles();
     }
 }

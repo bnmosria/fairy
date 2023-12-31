@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.interfaces.MenuItemServiceInterface;
 import com.bopera.pointofsales.persistence.entity.MenuItem;
 import com.bopera.pointofsales.persistence.repository.MenuItemsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PersistenceMenuItemService {
+public class MenuItemService implements MenuItemServiceInterface {
 
     private final MenuItemsRepository menuItemsRepository;
 
     @Autowired
-    public PersistenceMenuItemService(MenuItemsRepository menuItemsRepository) {
+    public MenuItemService(MenuItemsRepository menuItemsRepository) {
         this.menuItemsRepository = menuItemsRepository;
     }
 

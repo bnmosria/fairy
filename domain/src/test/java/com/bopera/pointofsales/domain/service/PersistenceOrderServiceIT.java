@@ -22,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EntityScan("com.bopera.pointofsales.persistence.entity")
 class PersistenceOrderServiceIT {
 
-    private PersistenceOrderService persistenceOrderService;
+    private OrderService persistenceOrderService;
 
     @Autowired
     private OrdersRepository ordersRepository;
 
     @BeforeEach
     public void setup() {
-        persistenceOrderService = new PersistenceOrderService(ordersRepository);
+        persistenceOrderService = new OrderService(ordersRepository);
     }
 
     @Test

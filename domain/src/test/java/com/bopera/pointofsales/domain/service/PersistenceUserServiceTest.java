@@ -1,7 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.model.UserDetails;
-import com.bopera.pointofsales.domain.service.PersistenceUserService;
 import com.bopera.pointofsales.persistence.entity.User;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

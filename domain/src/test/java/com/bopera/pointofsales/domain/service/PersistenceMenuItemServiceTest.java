@@ -23,7 +23,7 @@ class PersistenceMenuItemServiceTest {
     private MenuItemsRepository menuItemsRepository;
 
     @InjectMocks
-    private PersistenceMenuItemService persistenceMenuItemService;
+    private MenuItemService persistenceMenuItemService;
 
     @Test
     void shouldSaveMenuItemAndReturnItem() {

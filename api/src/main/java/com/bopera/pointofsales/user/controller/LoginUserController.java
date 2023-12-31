@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.user.controller;
 
+import com.bopera.pointofsales.domain.service.PersistenceUserService;
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
-import com.bopera.pointofsales.user.service.LoginUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,17 +11,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-public class LoginUserController {
+class LoginUserController {
 
-    private final LoginUserService userService;
+    private final PersistenceUserService userService;
 
-    public LoginUserController(LoginUserService userService) {
+    LoginUserController(PersistenceUserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("name-list")
-    public ResponseEntity<List<LoginUserResponse>> getUserNameList() {
-        List<LoginUserResponse> userNameList = userService.getLoginUserList();
+    ResponseEntity<List<LoginUserResponse>> getUserNameList() {
+        List<LoginUserResponse> userNameList = userService.getUserList()
+            .stream().map(
+                userDetails -> LoginUserResponse.builder()
+                    .name(userDetails.getUsername()
+            ).build()).toList();
 
         if (userNameList.isEmpty()) {
             return ResponseEntity.notFound().build();

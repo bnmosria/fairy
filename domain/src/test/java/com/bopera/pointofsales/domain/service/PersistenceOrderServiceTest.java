@@ -24,7 +24,7 @@ class PersistenceOrderServiceTest {
     private OrdersRepository ordersRepository;
 
     @InjectMocks
-    private PersistenceOrderService persistenceOrderService;
+    private OrderService persistenceOrderService;
 
     @Test
     void testRemoveMenuItemFromOrderWhenQuantityGreaterThanOneThenRemoveOne() {
