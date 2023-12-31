@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,11 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
-@SpringBootTest(classes = {LoginUserControllerIT.class})
+@SpringBootTest(classes = {LoginUserController.class})
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 @ContextConfiguration(classes = {
     PersistenceUserService.class,
 })
@@ -37,6 +35,7 @@ class LoginUserControllerIT {
     private PersistenceUserService userService;
 
     @Test
+    @WithMockUser
     void shouldReturnsListOfUserNamesWhenUserListIsNotEmpty() throws Exception {
         List<UserDetails> expectedUserList = List.of(
             UserDetails.builder().username("John").build(),
@@ -46,7 +45,6 @@ class LoginUserControllerIT {
         when(userService.getUserList()).thenReturn(expectedUserList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/name-list")
-                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("John"))
@@ -54,6 +52,7 @@ class LoginUserControllerIT {
     }
 
     @Test
+    @WithMockUser
     void shouldReturnsNotFoundWhenUserListIsEmpty() throws Exception {
         List<UserDetails> emptyUserList = new ArrayList<>();
 

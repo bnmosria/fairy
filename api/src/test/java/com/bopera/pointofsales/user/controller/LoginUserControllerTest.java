@@ -5,8 +5,9 @@ import com.bopera.pointofsales.domain.service.PersistenceUserService;
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class LoginUserControllerTest {
 
     @Mock
@@ -24,18 +26,22 @@ class LoginUserControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         userController = new LoginUserController(userService);
     }
 
     @Test
     void shouldReturnsListOfUserNamesWhenUserListIsNotEmpty() {
-        List<UserDetails> expectedUserList = List.of(
+        List<UserDetails> userDetailsList = List.of(
             UserDetails.builder().username("John").build(),
             UserDetails.builder().username("Jane").build()
         );
 
-        when(userService.getUserList()).thenReturn(expectedUserList);
+        when(userService.getUserList()).thenReturn(userDetailsList);
+
+        List<LoginUserResponse> expectedUserList = userDetailsList.stream().map(
+            userDetails -> LoginUserResponse.builder()
+                .name(userDetails.getUsername()
+                ).build()).toList();
 
         ResponseEntity<List<LoginUserResponse>> response = userController.getUserNameList();
 
