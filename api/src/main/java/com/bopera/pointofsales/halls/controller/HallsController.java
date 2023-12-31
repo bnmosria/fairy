@@ -29,7 +29,7 @@ public class HallsController {
         );
     }
 
-    @PostMapping("/add")
+    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HallDetails> addNewHall(@Valid @RequestBody SaveHallRequest hallRequest) {
         HallDetails hallDetails = this.hallsPlanService.addHall(hallRequest);
@@ -41,7 +41,7 @@ public class HallsController {
         return ResponseEntity.ok(hallDetails);
     }
 
-    @PutMapping("/edit")
+    @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HallDetails> editHall(@Valid @RequestBody EditHallRequest hallRequest) {
         HallDetails hallDetails = this.hallsPlanService.editHall(hallRequest);
@@ -53,7 +53,7 @@ public class HallsController {
         return ResponseEntity.ok(hallDetails);
     }
 
-    @DeleteMapping("/remove/{id}")
+    @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> removeHall(@PathVariable int id) {
         this.hallsPlanService.removeRoom(id);
