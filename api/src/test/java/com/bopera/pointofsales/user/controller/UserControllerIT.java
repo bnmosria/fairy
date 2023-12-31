@@ -45,7 +45,7 @@ class UserControllerIT {
 
     @Test
     @WithMockUser(authorities = {"ROLE_ADMIN"})
-    void testCreateUser() throws Exception {
+    void ShouldCreateUser_Correctly() throws Exception {
         CreateUser createUser = new CreateUser();
         createUser.setUsername("testUser");
         createUser.setActive(1);
@@ -56,7 +56,7 @@ class UserControllerIT {
 
         when(userService.save(any())).thenReturn(userDetails);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/users/create")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"testUser\",\"active\":1,\"password\":\"password\"}"))
@@ -66,7 +66,7 @@ class UserControllerIT {
 
     @Test
     @WithMockUser(authorities = {"ROLE_ADMIN"})
-    void testUpdateUser() throws Exception {
+    void ShouldUpdateUser_Correctly() throws Exception {
         UpdateUser updateUser = new UpdateUser();
         updateUser.setId(1L);
         updateUser.setUsername("updatedUser");
@@ -84,16 +84,17 @@ class UserControllerIT {
 
     @Test
     @WithMockUser(authorities = {"ROLE_ADMIN"})
-    void testDeleteUser() throws Exception {
+    void ShouldDeleteUser_Correctly() throws Exception {
         doNothing().when(userService).delete(1L);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/1").with(csrf()))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/1")
+                .with(csrf()))
             .andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(authorities = {"ROLE_STAFF"})
-    void testUpdatePasswordWhenCurrentPasswordIsCorrectThenPasswordUpdated() throws Exception {
+    void ShouldUpdatePassword_WhenCurrentPasswordIsCorrect() throws Exception {
         doNothing().when(userService).updatePassword("currentPassword", "newPassword");
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
@@ -106,7 +107,7 @@ class UserControllerIT {
 
     @Test
     @WithMockUser(authorities = {"ROLE_STAFF"})
-    void testUpdatePasswordWhenCurrentPasswordIsIncorrectThenPasswordNotUpdated() throws Exception {
+    void ShouldNotUpdatedPassword_WhenCurrentPasswordIsIncorrect_ThenReturnsBadRequest() throws Exception {
         doThrow(new HttpClientErrorException(
             HttpStatus.BAD_REQUEST,
             "Current password is incorrect"
@@ -122,8 +123,8 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
-    void testUpdatePasswordWhenUserDoesNotHaveStaffRoleThenAccessDenied() throws Exception {
+    @WithMockUser(authorities = {"ROLE_NON_ROLE"})
+    void ShouldDenyAccess_WhenUserDoesNotHaveStaffRole() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
                 .param("currentPassword", "currentPassword")
                 .param("newPassword", "newPassword"))

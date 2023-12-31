@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/create", consumes = {"application/json"})
+    @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUser createUser) {
         return ResponseEntity.ok(
@@ -31,7 +31,7 @@ public class UserController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserResponse> update(@RequestBody UpdateUser updateUser) {
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUser updateUser) {
         return ResponseEntity.ok(
             new UserResponse(
                 userService.save(updateUser.mapToUserDetails())
@@ -43,7 +43,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
         userService.delete(id);
-
         return ResponseEntity.noContent().build();
     }
 
