@@ -44,7 +44,7 @@ class UserControllerIT {
     private UserServiceInterface userService;
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     void ShouldCreateUser_Correctly() throws Exception {
         CreateUser createUser = new CreateUser();
         createUser.setUsername("testUser");
@@ -65,7 +65,7 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     void ShouldUpdateUser_Correctly() throws Exception {
         UpdateUser updateUser = new UpdateUser();
         updateUser.setId(1L);
@@ -83,7 +83,7 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     void ShouldDeleteUser_Correctly() throws Exception {
         doNothing().when(userService).delete(1L);
 
@@ -93,7 +93,7 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_STAFF"})
+    @WithMockUser(roles = {"STAFF"})
     void ShouldUpdatePassword_WhenCurrentPasswordIsCorrect() throws Exception {
         doNothing().when(userService).updatePassword("currentPassword", "newPassword");
 
@@ -106,7 +106,7 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_STAFF"})
+    @WithMockUser(roles = {"STAFF"})
     void ShouldNotUpdatedPassword_WhenCurrentPasswordIsIncorrect_ThenReturnsBadRequest() throws Exception {
         doThrow(new HttpClientErrorException(
             HttpStatus.BAD_REQUEST,
@@ -123,17 +123,16 @@ class UserControllerIT {
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_NONE_ROLE"})
-    void ShouldDenyAccess_WhenUserHasNoneRole() throws Exception {
+    @WithMockUser(roles = {"GUEST"})
+    void ShouldDenyAccess_WhenRoleNotAllowed() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
-                .with(csrf())
                 .param("currentPassword", "currentPassword")
                 .param("newPassword", "newPassword"))
             .andExpect(status().isForbidden());
     }
 
     @Test
-    @WithMockUser(authorities = {"ROLE_ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     void ShouldUpdatePassword_WhenUserHasAdminRole() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/users/updatePassword")
                 .with(csrf())

@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUser createUser) {
         return ResponseEntity.ok(
             new UserResponse(
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUser updateUser) {
         return ResponseEntity.ok(
             new UserResponse(
@@ -39,14 +39,14 @@ public class UserController {
         );
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_STAFF')")
+    @PreAuthorize("hasRole('STAFF')")
     @PutMapping("/updatePassword")
     public ResponseEntity<String> updatePassword(
         @RequestParam String currentPassword,
