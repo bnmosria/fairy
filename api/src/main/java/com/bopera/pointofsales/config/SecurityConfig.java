@@ -41,7 +41,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
                     .requestMatchers("/api/auth/token", "/api/users/nameList").permitAll()
-                    .requestMatchers("/api/users/**", "/api/admin/**", "/api/halls/**").authenticated()
+                    .requestMatchers("/api/users/**", "/api/admin/**", "/api/rooms/**").authenticated()
             )
             .sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
