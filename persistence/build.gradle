@@ -8,7 +8,7 @@ plugins {
 
 group = 'com.bopera'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = "${javaVersion}"
 
 repositories {
     mavenCentral()
