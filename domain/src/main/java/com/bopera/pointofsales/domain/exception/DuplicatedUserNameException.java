@@ -1,11 +1,10 @@
 package com.bopera.pointofsales.domain.exception;
 
 import org.springframework.http.HttpStatus;
-import problem.member.Detail;
-import problem.member.Status;
-import problem.member.Title;
+import org.springframework.web.client.HttpClientErrorException;
 
-@Status(HttpStatus.CONFLICT)
-@Detail("The given user name is already in use. Please select another one")
-@Title("Duplicated user name")
-public class DuplicatedUserNameException extends RuntimeException {}
+public class DuplicatedUserNameException extends HttpClientErrorException {
+    public DuplicatedUserNameException(String statusText) {
+        super(HttpStatus.BAD_REQUEST, statusText);
+    }
+}

@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.rooms.model.request;
+package com.bopera.pointofsales.room.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EditRoomRequest extends SaveRoomRequest {
-	private long id;
+public class EditRoomTableRequest extends SaveRoomTableRequest {
+    private Integer id;
 }

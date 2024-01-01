@@ -28,7 +28,6 @@ configurations {
 
 dependencies {
     implementation project(":domain")
-    implementation project(":problem-detail")
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'

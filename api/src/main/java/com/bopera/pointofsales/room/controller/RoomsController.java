@@ -1,8 +1,8 @@
-package com.bopera.pointofsales.rooms.controller;
+package com.bopera.pointofsales.room.controller;
 
 import com.bopera.pointofsales.domain.interfaces.RoomServiceInterface;
-import com.bopera.pointofsales.rooms.model.request.EditRoomRequest;
-import com.bopera.pointofsales.rooms.model.request.SaveRoomRequest;
+import com.bopera.pointofsales.room.model.request.EditRoomRequest;
+import com.bopera.pointofsales.room.model.request.SaveRoomRequest;
 import com.bopera.pointofsales.domain.model.Room;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

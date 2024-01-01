@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.rooms.model.request;
+package com.bopera.pointofsales.room.model.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
