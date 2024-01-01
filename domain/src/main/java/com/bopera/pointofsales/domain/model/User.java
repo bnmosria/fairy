@@ -18,7 +18,7 @@ public class User {
     private String username;
     private String password;
     private Integer active;
-    private Set<Role> roles = new HashSet<>();
+    private final Set<Role> roles = new HashSet<>();
 
     public User(UserEntity user) {
         this.id = user.getId();

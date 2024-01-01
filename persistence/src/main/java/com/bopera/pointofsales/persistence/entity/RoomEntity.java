@@ -23,6 +23,6 @@ public class RoomEntity {
     private int sorting;
 
     @OneToMany(mappedBy = "room")
-    private Set<RoomTableEntity> tables = new HashSet<>();
+    private final Set<RoomTableEntity> tables = new HashSet<>();
 
 }

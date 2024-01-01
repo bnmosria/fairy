@@ -47,23 +47,20 @@ public class PersistenceUserService implements UserServiceInterface {
     }
 
     public User save(User userDetails) {
-        Set<RoleEntity> persistenceRoles = userDetails.getRoles()
-            .stream().map(role -> {
-                RoleEntity persistenceRole = new RoleEntity();
-                persistenceRole.setRoleName(role.getName());
-                return persistenceRole;
-            }).collect(Collectors.toSet());
+        UserEntity userEntity = UserEntity.builder()
+            .username(userDetails.getUsername())
+            .password(userDetails.getUsername())
+            .active(userDetails.getActive())
+            .build();
 
-        return new User(
-            userRepository.save(
-                UserEntity.builder()
-                    .username(userDetails.getUsername())
-                    .password(userDetails.getUsername())
-                    .roles(persistenceRoles)
-                    .active(userDetails.getActive())
-                    .build()
-            )
-        );
+        userDetails.getRoles().forEach(role -> {
+            RoleEntity persistenceRole = new RoleEntity();
+            persistenceRole.setRoleName(role.getName());
+
+            userEntity.addRole(persistenceRole);
+        });
+
+        return new User(userRepository.save(userEntity));
     }
 
     public Optional<User> findById(long id) {

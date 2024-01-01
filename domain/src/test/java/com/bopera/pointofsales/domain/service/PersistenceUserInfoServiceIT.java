@@ -43,8 +43,9 @@ class PersistenceUserInfoServiceIT {
         UserEntity user = UserEntity.builder().username(username)
             .password(password)
             .active(1)
-            .roles(Set.of(role))
             .build();
+
+        Set.of(role).forEach(user::addRole);
 
         userRepository.save(user);
 

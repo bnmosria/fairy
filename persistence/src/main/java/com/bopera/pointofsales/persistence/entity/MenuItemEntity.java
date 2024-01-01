@@ -36,6 +36,6 @@ public class MenuItemEntity {
     private CategoryEntity category;
 
     @OneToMany(mappedBy = "menuItem")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    private final Set<OrderItem> orderItems = new HashSet<>();
 
 }

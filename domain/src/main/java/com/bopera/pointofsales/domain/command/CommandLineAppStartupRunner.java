@@ -39,16 +39,17 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (!userRepository.existsByUsername("admin")) {
-            PermissionEntity adminPermission = permissionRepository.findByPermissionName("ADMIN_ACCESS").orElseGet(() -> {
+            PermissionEntity adminPermission = permissionRepository.findByPermissionName("administer").orElseGet(() -> {
                 PermissionEntity permission = new PermissionEntity();
-                permission.setPermissionName("ADMIN_ACCESS");
+                permission.setPermissionName("administer");
                 return permissionRepository.save(permission);
             });
 
             RoleEntity adminRole = roleRepository.findByRoleName("ROLE_ADMIN").orElseGet(() -> {
                 RoleEntity role = new RoleEntity();
                 role.setRoleName("ROLE_ADMIN");
-                role.setPermissions(Set.of(adminPermission));
+
+                Set.of(adminPermission).forEach(role::addPermission);
 
                 return roleRepository.save(role);
             });
@@ -57,7 +58,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
             adminUser.setUsername("admin");
             adminUser.setActive(1);
             adminUser.setPassword(passwordEncoder.encode("secret"));
-            adminUser.setRoles(Set.of(adminRole));
+
+            Set.of(adminRole).forEach(adminUser::addRole);
+
             userRepository.save(adminUser);
         }
     }

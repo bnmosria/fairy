@@ -24,6 +24,6 @@ public class CategoryEntity {
     private String description;
 
     @OneToMany(mappedBy = "category")
-    private Set<MenuItemEntity> menuItems = new HashSet<>();
+    private final Set<MenuItemEntity> menuItems = new HashSet<>();
 
 }

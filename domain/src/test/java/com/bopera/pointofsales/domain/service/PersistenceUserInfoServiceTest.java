@@ -40,16 +40,18 @@ public class PersistenceUserInfoServiceTest {
     }
 
     @Test
-    void shouldLoadUserByUsernameWithExistingUser() {
+    void ShouldLoadUserByUsername_WhenUserExists() {
         String username = "testUser";
         String password = "testPassword";
         RoleEntity role = new RoleEntity();
         role.setRoleName("ROLE_USER");
 
-        UserEntity user = UserEntity.builder().username(username)
+        UserEntity user = UserEntity.builder()
+            .username(username)
             .password(password)
-            .roles(Set.of(role))
             .build();
+
+        Set.of(role).forEach(user::addRole);
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 

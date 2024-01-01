@@ -28,6 +28,10 @@ public class RoleEntity {
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<PermissionEntity> permissions = new HashSet<>();;
 
+    private final Set<PermissionEntity> permissions = new HashSet<>();
+
+    public void addPermission(PermissionEntity permission) {
+        this.permissions.add(permission);
+    }
 }
