@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.user.controller;
 
-import com.bopera.pointofsales.domain.service.PersistenceUserService;
+import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +13,9 @@ import java.util.List;
 @RequestMapping("/api/users")
 class LoginUserController {
 
-    private final PersistenceUserService userService;
+    private final UserServiceInterface userService;
 
-    LoginUserController(PersistenceUserService userService) {
+    LoginUserController(UserServiceInterface userService) {
         this.userService = userService;
     }
 

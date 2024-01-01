@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.user.controller;
 
+import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.domain.model.UserDetails;
-import com.bopera.pointofsales.domain.service.PersistenceUserService;
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 class LoginUserControllerTest {
 
     @Mock
-    private PersistenceUserService userService;
+    private UserServiceInterface userService;
 
     private LoginUserController userController;
 

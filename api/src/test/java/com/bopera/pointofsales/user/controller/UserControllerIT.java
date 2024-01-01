@@ -1,9 +1,7 @@
 package com.bopera.pointofsales.user.controller;
 
-import com.bopera.pointofsales.auth.service.JwtService;
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.domain.model.UserDetails;
-import com.bopera.pointofsales.domain.service.PersistenceUserService;
 import com.bopera.pointofsales.user.model.request.CreateUser;
 import com.bopera.pointofsales.user.model.request.UpdateUser;
 import org.junit.jupiter.api.Test;
@@ -15,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.HttpClientErrorException;
@@ -30,10 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {UserController.class})
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {
-    JwtService.class,
-    PersistenceUserService.class,
-})
 @EnableWebMvc
 class UserControllerIT {
 
