@@ -2,6 +2,7 @@ package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.persistence.entity.Role;
 import com.bopera.pointofsales.persistence.entity.User;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,12 +47,19 @@ public class PersistenceUserService implements UserServiceInterface {
     }
 
     public UserDetails save(UserDetails userDetails) {
+        Set<Role> persistenceRoles = userDetails.getRoles()
+            .stream().map(role -> {
+                Role persistenceRole = new Role();
+                persistenceRole.setRoleName(role.getName());
+                return persistenceRole;
+            }).collect(Collectors.toSet());
+
         return new UserDetails(
             userRepository.save(
                 User.builder()
                     .username(userDetails.getUsername())
                     .password(userDetails.getUsername())
-                    .roles(userDetails.getRoles())
+                    .roles(persistenceRoles)
                     .active(userDetails.getActive())
                     .build()
             )
