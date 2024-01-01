@@ -11,11 +11,9 @@ import java.util.stream.Collectors;
 @Service
 public class RoomTableService {
     private final RoomTablesRepository roomTablesRepository;
-    private final RoomRepository roomRepository;
 
     public RoomTableService(RoomTablesRepository roomTablesRepository, RoomRepository roomRepository) {
         this.roomTablesRepository = roomTablesRepository;
-        this.roomRepository = roomRepository;
     }
 
     public List<HallTableDetails> getAllByRoomId(Integer roomId) {

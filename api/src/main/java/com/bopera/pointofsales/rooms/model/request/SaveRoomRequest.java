@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveHallRequest {
+public class SaveRoomRequest {
 	@NotBlank
 	@Size(min = 3)
 	private String name;

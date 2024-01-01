@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class EditHallRequest extends SaveHallRequest {
+public class EditRoomRequest extends SaveRoomRequest {
 	private long id;
 }

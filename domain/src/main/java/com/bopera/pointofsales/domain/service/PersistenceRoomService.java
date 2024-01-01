@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RoomService implements RoomServiceInterface {
+public class PersistenceRoomService implements RoomServiceInterface {
     private final RoomRepository roomRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public PersistenceRoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
