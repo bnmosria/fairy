@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.halls.model.request;
+package com.bopera.pointofsales.rooms.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

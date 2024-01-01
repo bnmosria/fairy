@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.domain.model.HallDetails;
+import com.bopera.pointofsales.domain.model.RoomDetails;
 import com.bopera.pointofsales.persistence.entity.Room;
 import com.bopera.pointofsales.persistence.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +38,8 @@ class PersistenceRoomsServiceTest {
 
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.empty());
         when(roomRepository.save(any())).thenReturn(newRoom);
-        HallDetails hallDetails = roomsService.addRoom(
-            HallDetails.builder()
+        RoomDetails hallDetails = roomsService.addRoom(
+            RoomDetails.builder()
                 .name("a new room")
                 .build()
         );

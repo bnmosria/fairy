@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.domain.model.HallDetails;
+import com.bopera.pointofsales.domain.interfaces.RoomServiceInterface;
+import com.bopera.pointofsales.domain.model.RoomDetails;
 import com.bopera.pointofsales.persistence.entity.Room;
 import com.bopera.pointofsales.persistence.repository.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -9,44 +10,48 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RoomService {
+public class RoomService implements RoomServiceInterface {
     private final RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-    public List<HallDetails> retrieveAllRooms() {
+    @Override
+    public List<RoomDetails> retrieveAllRooms() {
         return roomRepository.findAllByOrderBySortingDesc()
-            .stream().map(HallDetails::mapFromRoom)
+            .stream().map(RoomDetails::mapFromRoom)
             .collect(Collectors.toList());
     }
 
-    public HallDetails addRoom(HallDetails hallDetails) {
+    @Override
+    public RoomDetails addRoom(RoomDetails roomDetails) {
         roomRepository.findTopByOrderBySortingDesc()
             .ifPresentOrElse(
-                top -> hallDetails.setSorting(top.getSorting() + 1),
-                () -> hallDetails.setSorting(0)
+                top -> roomDetails.setSorting(top.getSorting() + 1),
+                () -> roomDetails.setSorting(0)
             );
 
-        Room room = roomRepository.save(HallDetails.mapToRoom(hallDetails));
-        hallDetails.setId(room.getId());
+        Room room = roomRepository.save(RoomDetails.mapToRoom(roomDetails));
+        roomDetails.setId(room.getId());
 
-        return hallDetails;
+        return roomDetails;
     }
 
+    @Override
     public void removeRoom(long roomId) {
         roomRepository.deleteById(roomId);
     }
 
-    public HallDetails updateRoom(HallDetails hallDetails) {
-        return roomRepository.findById(hallDetails.getId()).map(
+    @Override
+    public RoomDetails updateRoom(RoomDetails roomDetails) {
+        return roomRepository.findById(roomDetails.getId()).map(
             room -> {
-                room.setRoomName(hallDetails.getName());
+                room.setRoomName(roomDetails.getName());
 
                 roomRepository.save(room);
 
-                return hallDetails;
+                return roomDetails;
             }
         ).orElseThrow();
     }
