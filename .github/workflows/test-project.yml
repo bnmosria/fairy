@@ -12,7 +12,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v4
+        uses: gradle/gradle-build-action@v2
       - name: Run Gradle tests
         run: ./gradlew test
       - name: Run Gradle build
