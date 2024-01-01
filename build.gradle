@@ -15,7 +15,7 @@ allprojects {
     version = ''
 
     ext {
-        set('javaVersion', '21')
+        set('javaVersion', JavaVersion.VERSION_21)
         set('springBootVersion', '3.2.1')
         set('jsonWebTokenVersion', '0.11.5')
         set('springDependencyManagement', '1.1.4')

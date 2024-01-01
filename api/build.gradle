@@ -4,7 +4,9 @@ plugins {
     id 'java'
 }
 
-sourceCompatibility = "${javaVersion}"
+java {
+    sourceCompatibility = javaVersion
+}
 
 repositories {
     mavenCentral()
