@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.domain.model.RoomDetails;
-import com.bopera.pointofsales.persistence.entity.Room;
+import com.bopera.pointofsales.domain.model.Room;
+import com.bopera.pointofsales.persistence.entity.RoomEntity;
 import com.bopera.pointofsales.persistence.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,14 +32,14 @@ class PersistenceRoomsServiceTest {
 
     @Test
     void shouldAddRoomWhenNoRoomsThenSortingIsZero() {
-        Room newRoom = new Room();
+        RoomEntity newRoom = new RoomEntity();
         newRoom.setId(1L);
         newRoom.setRoomName("a new room");
 
         when(roomRepository.findTopByOrderBySortingDesc()).thenReturn(Optional.empty());
         when(roomRepository.save(any())).thenReturn(newRoom);
-        RoomDetails hallDetails = roomsService.addRoom(
-            RoomDetails.builder()
+        Room hallDetails = roomsService.addRoom(
+            Room.builder()
                 .name("a new room")
                 .build()
         );

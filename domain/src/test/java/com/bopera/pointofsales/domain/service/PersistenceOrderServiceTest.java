@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.MenuItem;
-import com.bopera.pointofsales.persistence.entity.Order;
+import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
+import com.bopera.pointofsales.persistence.entity.OrderEntity;
 import com.bopera.pointofsales.persistence.entity.OrderItem;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,8 @@ class PersistenceOrderServiceTest {
 
     @Test
     void testRemoveMenuItemFromOrderWhenQuantityGreaterThanOneThenRemoveOne() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -50,8 +50,8 @@ class PersistenceOrderServiceTest {
 
     @Test
     void testRemoveMenuItemFromOrderWhenQuantityIsOneThenRemoveItem() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 1;
 
@@ -65,8 +65,8 @@ class PersistenceOrderServiceTest {
 
     @Test
     void testRemoveMenuItemFromOrderWhenMenuItemNotInOrderThenDoNothing() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
 
         persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
@@ -79,8 +79,8 @@ class PersistenceOrderServiceTest {
 
     @Test
     void shouldAddTheOrderItemsToTheOrderCorrectly() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -100,8 +100,8 @@ class PersistenceOrderServiceTest {
 
     @Test
     public void shouldUpdateExistingOrderItemWhenExistingMenuItemSameQuantity() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -123,11 +123,11 @@ class PersistenceOrderServiceTest {
 
     @Test
     public void shouldAddNewOrderItemWhenExistingMenuItemDifferentQuantity() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
 
-        MenuItem menuItem1 = new MenuItem();
+        MenuItemEntity menuItem1 = new MenuItemEntity();
         menuItem1.setPrice(BigDecimal.valueOf(5));
         int quantity = 2;
         int quantity1 = 3;

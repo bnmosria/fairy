@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.user.controller;
 
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import com.bopera.pointofsales.user.model.request.CreateUser;
 import com.bopera.pointofsales.user.model.request.UpdateUser;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class UserControllerIT {
         createUser.setActive(1);
         createUser.setPassword("password");
 
-        UserDetails userDetails = createUser.mapToUserDetails();
+        User userDetails = createUser.mapToUserDetails();
         userDetails.setId(234L);
 
         when(userService.save(any())).thenReturn(userDetails);

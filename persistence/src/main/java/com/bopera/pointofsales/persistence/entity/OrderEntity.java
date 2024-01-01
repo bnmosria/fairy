@@ -3,7 +3,6 @@ package com.bopera.pointofsales.persistence.entity;
 import com.bopera.pointofsales.persistence.enums.OrderStatus;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +13,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "orders")
-public class Order {
+public class OrderEntity {
 
     @Id
     @Column(name = "id")
@@ -23,11 +22,11 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     @ManyToOne
     @JoinColumn(name = "table_id")
-    private RoomTable tableId;
+    private RoomTableEntity tableId;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

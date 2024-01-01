@@ -3,7 +3,7 @@ package com.bopera.pointofsales.rooms.controller;
 import com.bopera.pointofsales.domain.interfaces.RoomServiceInterface;
 import com.bopera.pointofsales.rooms.model.request.EditRoomRequest;
 import com.bopera.pointofsales.rooms.model.request.SaveRoomRequest;
-import com.bopera.pointofsales.domain.model.RoomDetails;
+import com.bopera.pointofsales.domain.model.Room;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +23,7 @@ public class RoomsController {
 
     @GetMapping
     @PreAuthorize("hasRole('STAFF')")
-    public ResponseEntity<List<RoomDetails>> getAll() {
+    public ResponseEntity<List<Room>> getAll() {
         return ResponseEntity.ok(
             this.roomService.retrieveAllRooms()
         );
@@ -31,10 +31,10 @@ public class RoomsController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RoomDetails> addNewHall(@Valid @RequestBody SaveRoomRequest hallRequest) {
+    public ResponseEntity<Room> addNewHall(@Valid @RequestBody SaveRoomRequest hallRequest) {
 
-        RoomDetails roomDetails = this.roomService.addRoom(
-            RoomDetails.builder()
+        Room roomDetails = this.roomService.addRoom(
+            Room.builder()
                 .name(hallRequest.getName())
                 .sorting(hallRequest.getSorting())
                 .build()
@@ -49,9 +49,9 @@ public class RoomsController {
 
     @PutMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<RoomDetails> updateRoom(@Valid @RequestBody EditRoomRequest hallRequest) {
-        RoomDetails roomDetails = this.roomService.updateRoom(
-            RoomDetails.builder()
+    public ResponseEntity<Room> updateRoom(@Valid @RequestBody EditRoomRequest hallRequest) {
+        Room roomDetails = this.roomService.updateRoom(
+            Room.builder()
                 .id(hallRequest.getId())
                 .name(hallRequest.getName())
                 .sorting(hallRequest.getSorting())

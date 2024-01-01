@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "tables")
-public class RoomTable {
+public class RoomTableEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -21,6 +21,6 @@ public class RoomTable {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    private Room room;
+    private RoomEntity room;
 
 }

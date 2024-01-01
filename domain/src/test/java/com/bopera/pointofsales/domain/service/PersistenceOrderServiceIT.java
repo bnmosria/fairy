@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.MenuItem;
-import com.bopera.pointofsales.persistence.entity.Order;
+import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
+import com.bopera.pointofsales.persistence.entity.OrderEntity;
 import com.bopera.pointofsales.persistence.entity.OrderItem;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +34,8 @@ class PersistenceOrderServiceIT {
 
     @Test
     void shouldAddTheOrderItemsToTheOrderCorrectly() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -53,8 +53,8 @@ class PersistenceOrderServiceIT {
 
     @Test
     public void shouldAddMenuItemToOrderWhenNewMenuItem() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -64,8 +64,8 @@ class PersistenceOrderServiceIT {
 
     @Test
     public void shouldAddMenuItemToOrderWhenExistingMenuItemSameQuantity() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
@@ -78,9 +78,9 @@ class PersistenceOrderServiceIT {
 
     @Test
     public void shouldAddMenuItemToOrderWhenExistingMenuItemDifferentQuantity() {
-        Order order = new Order();
-        MenuItem menuItem = new MenuItem();
-        MenuItem menuItem1 = new MenuItem();
+        OrderEntity order = new OrderEntity();
+        MenuItemEntity menuItem = new MenuItemEntity();
+        MenuItemEntity menuItem1 = new MenuItemEntity();
 
         menuItem.setPrice(BigDecimal.valueOf(10));
         menuItem1.setPrice(BigDecimal.valueOf(5));

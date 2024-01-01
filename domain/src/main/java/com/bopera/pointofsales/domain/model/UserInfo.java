@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Builder
-public class UserInfoDetails implements UserDetails {
+public class UserInfo implements UserDetails {
 
 	private final String name;
 	private final String password;

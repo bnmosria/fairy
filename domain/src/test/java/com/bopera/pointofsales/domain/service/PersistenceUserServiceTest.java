@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
-import com.bopera.pointofsales.persistence.entity.User;
+import com.bopera.pointofsales.domain.model.User;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,18 +35,18 @@ public class PersistenceUserServiceTest {
 
     @Test
     public void shouldReturnsAnUserListWhenUserExists() {
-        User user1 = new User();
-        User user2 = new User();
-        List<User> returnedUsers = Arrays.asList(user1, user2);
+        UserEntity user1 = new UserEntity();
+        UserEntity user2 = new UserEntity();
+        List<UserEntity> returnedUsers = Arrays.asList(user1, user2);
 
-        List<UserDetails> expectedUserDetails = Arrays.asList(
-            new UserDetails(user1),
-            new UserDetails(user2)
+        List<User> expectedUserDetails = Arrays.asList(
+            new User(user1),
+            new User(user2)
         );
 
         when(userRepository.findLoginUserList()).thenReturn(Optional.of(returnedUsers));
 
-        List<UserDetails> actualUserDetails = userService.getUserList();
+        List<User> actualUserDetails = userService.getUserList();
 
         assertEquals(expectedUserDetails, actualUserDetails);
         verify(userRepository, times(1)).findLoginUserList();

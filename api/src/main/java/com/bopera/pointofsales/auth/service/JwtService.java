@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.response.AuthResponse;
-import com.bopera.pointofsales.domain.model.UserInfoDetails;
+import com.bopera.pointofsales.domain.model.UserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -30,7 +30,7 @@ public class JwtService {
 		this.secret = secret;
 	}
 
-	public AuthResponse generateToken(UserInfoDetails userInfoDetails) {
+	public AuthResponse generateToken(UserInfo userInfoDetails) {
 		Map<String, Object> claims = new HashMap<>();
 
 		userInfoDetails.getAuthorities()

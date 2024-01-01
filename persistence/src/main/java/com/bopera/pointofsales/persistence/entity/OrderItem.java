@@ -2,7 +2,6 @@ package com.bopera.pointofsales.persistence.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,10 +26,10 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "menu_item_id")
-    private MenuItem menuItem;
+    private MenuItemEntity menuItem;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderEntity order;
 
 }

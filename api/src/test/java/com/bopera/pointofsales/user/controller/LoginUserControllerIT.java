@@ -1,9 +1,8 @@
 package com.bopera.pointofsales.user.controller;
 
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,9 +33,9 @@ class LoginUserControllerIT {
     @Test
     @WithMockUser
     void shouldReturnsListOfUserNamesWhenUserListIsNotEmpty() throws Exception {
-        List<UserDetails> expectedUserList = List.of(
-            UserDetails.builder().username("John").build(),
-            UserDetails.builder().username("Jane").build()
+        List<User> expectedUserList = List.of(
+            User.builder().username("John").build(),
+            User.builder().username("Jane").build()
         );
 
         when(userService.getUserList()).thenReturn(expectedUserList);
@@ -51,7 +50,7 @@ class LoginUserControllerIT {
     @Test
     @WithMockUser
     void shouldReturnsNotFoundWhenUserListIsEmpty() throws Exception {
-        List<UserDetails> emptyUserList = new ArrayList<>();
+        List<User> emptyUserList = new ArrayList<>();
 
         when(userService.getUserList()).thenReturn(emptyUserList);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users/nameList")

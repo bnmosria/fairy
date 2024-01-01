@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.MenuItem;
+import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 import com.bopera.pointofsales.persistence.repository.MenuItemsRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +33,11 @@ class PersistenceMenuItemServiceIT {
 
     @Test
     void shouldSaveMenuItem() {
-        MenuItem menuItem = new MenuItem();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setName("Test Item");
         menuItem.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItem savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
+        MenuItemEntity savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
 
         Assertions.assertNotNull(savedMenuItem.getId());
         Assertions.assertEquals("Test Item", savedMenuItem.getName());
@@ -46,14 +46,14 @@ class PersistenceMenuItemServiceIT {
 
     @Test
     void shouldUpdateMenuItem() {
-        MenuItem menuItem = new MenuItem();
+        MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setName("Test Item");
         menuItem.setDescription("Test Item description");
         menuItem.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItem savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
+        MenuItemEntity savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
 
-        MenuItem updatedMenuItem = persistenceMenuItemService
+        MenuItemEntity updatedMenuItem = persistenceMenuItemService
             .findMenuItemById(savedMenuItem.getId())
             .map(menuItem1 -> {
                 menuItem1.setName("Foo Item");
@@ -65,14 +65,14 @@ class PersistenceMenuItemServiceIT {
 
     @Test
     void shouldFindMenuItemById() {
-        MenuItem menuItem = new MenuItem();
+        MenuItemEntity menuItem = new MenuItemEntity();
 
         menuItem.setName("Test Item");
         menuItem.setDescription("Test Item description");
         menuItem.setPrice(BigDecimal.valueOf(10.99));
         persistenceMenuItemService.saveMenuItem(menuItem);
 
-        List<MenuItem> foundMenuItem = persistenceMenuItemService
+        List<MenuItemEntity> foundMenuItem = persistenceMenuItemService
             .findMenuItemByName("Test Item");
 
         Assertions.assertNotNull(foundMenuItem.get(0));
@@ -82,21 +82,21 @@ class PersistenceMenuItemServiceIT {
 
     @Test
     void shouldFindAllMenuItems() {
-        MenuItem menuItem1 = new MenuItem();
+        MenuItemEntity menuItem1 = new MenuItemEntity();
         menuItem1.setName("Item 1");
         menuItem1.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItem menuItem2 = new MenuItem();
+        MenuItemEntity menuItem2 = new MenuItemEntity();
         menuItem2.setName("Item 2");
         menuItem2.setPrice(BigDecimal.valueOf(15.99));
 
-        List<MenuItem> menuItems = new ArrayList<>();
+        List<MenuItemEntity> menuItems = new ArrayList<>();
         menuItems.add(menuItem1);
         menuItems.add(menuItem2);
 
         persistenceMenuItemService.saveMenuItems(menuItems);
 
-        List<MenuItem> foundMenuItems = persistenceMenuItemService.findAllMenuItems();
+        List<MenuItemEntity> foundMenuItems = persistenceMenuItemService.findAllMenuItems();
 
         Assertions.assertEquals(2, foundMenuItems.size());
 

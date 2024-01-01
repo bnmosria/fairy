@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "inventory")
-public class Inventory {
+public class InventoryEntity {
 
     @Id
     @Column(name = "id", nullable = false)

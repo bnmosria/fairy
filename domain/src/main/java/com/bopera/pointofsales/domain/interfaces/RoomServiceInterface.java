@@ -1,15 +1,15 @@
 package com.bopera.pointofsales.domain.interfaces;
 
-import com.bopera.pointofsales.domain.model.RoomDetails;
+import com.bopera.pointofsales.domain.model.Room;
 
 import java.util.List;
 
 public interface RoomServiceInterface {
-    List<RoomDetails> retrieveAllRooms();
+    List<Room> retrieveAllRooms();
 
-    RoomDetails addRoom(RoomDetails roomDetails);
+    Room addRoom(Room roomDetails);
 
     void removeRoom(long roomId);
 
-    RoomDetails updateRoom(RoomDetails roomDetails);
+    Room updateRoom(Room roomDetails);
 }

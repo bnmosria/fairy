@@ -1,22 +1,22 @@
 package com.bopera.pointofsales.domain.interfaces;
 
-import com.bopera.pointofsales.persistence.entity.MenuItem;
+import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MenuItemServiceInterface {
-    MenuItem saveMenuItem(MenuItem menuItem);
+    MenuItemEntity saveMenuItem(MenuItemEntity menuItem);
 
-    List<MenuItem> saveMenuItems(List<MenuItem> menuItems);
+    List<MenuItemEntity> saveMenuItems(List<MenuItemEntity> menuItems);
 
-    MenuItem updateMenuItem(MenuItem menuItem);
+    MenuItemEntity updateMenuItem(MenuItemEntity menuItem);
 
     void deleteMenuItem(Long id);
 
-    List<MenuItem> findMenuItemByName(String menuItemName);
+    List<MenuItemEntity> findMenuItemByName(String menuItemName);
 
-    Optional<MenuItem> findMenuItemById(Long id);
+    Optional<MenuItemEntity> findMenuItemById(Long id);
 
-    List<MenuItem> findAllMenuItems();
+    List<MenuItemEntity> findAllMenuItems();
 }

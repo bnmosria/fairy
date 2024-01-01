@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.user.model.request;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +16,8 @@ public class CreateUser implements RequestUser {
     private String password;
 
     @Override
-    public UserDetails mapToUserDetails() {
-        return UserDetails.builder()
+    public User mapToUserDetails() {
+        return User.builder()
             .username(getUsername())
             .password(getPassword())
             .active(getActive())

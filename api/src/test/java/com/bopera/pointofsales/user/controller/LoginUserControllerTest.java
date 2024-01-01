@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.user.controller;
 
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import com.bopera.pointofsales.user.model.response.LoginUserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +31,9 @@ class LoginUserControllerTest {
 
     @Test
     void shouldReturnsListOfUserNamesWhenUserListIsNotEmpty() {
-        List<UserDetails> userDetailsList = List.of(
-            UserDetails.builder().username("John").build(),
-            UserDetails.builder().username("Jane").build()
+        List<User> userDetailsList = List.of(
+            User.builder().username("John").build(),
+            User.builder().username("Jane").build()
         );
 
         when(userService.getUserList()).thenReturn(userDetailsList);

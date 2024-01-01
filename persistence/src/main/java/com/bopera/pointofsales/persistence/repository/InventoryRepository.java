@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.persistence.repository;
 
-import com.bopera.pointofsales.persistence.entity.Inventory;
+import com.bopera.pointofsales.persistence.entity.InventoryEntity;
 
-public interface InventoryRepository extends BaseRepository<Inventory, Long> {
+public interface InventoryRepository extends BaseRepository<InventoryEntity, Long> {
 
 }

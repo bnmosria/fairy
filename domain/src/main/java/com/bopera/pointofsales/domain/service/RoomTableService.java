@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.domain.model.HallTableDetails;
+import com.bopera.pointofsales.domain.model.RoomTable;
 import com.bopera.pointofsales.persistence.repository.RoomTablesRepository;
 import com.bopera.pointofsales.persistence.repository.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,10 @@ public class RoomTableService {
         this.roomTablesRepository = roomTablesRepository;
     }
 
-    public List<HallTableDetails> getAllByRoomId(Integer roomId) {
+    public List<RoomTable> getAllByRoomId(Integer roomId) {
         return roomTablesRepository.findByRoomId(roomId)
             .stream()
-            .map(roomTable -> HallTableDetails.builder()
+            .map(roomTable -> RoomTable.builder()
                 .id(roomTable.getId())
                 .build()
             ).collect(Collectors.toList());

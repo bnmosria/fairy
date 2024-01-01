@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.user.model.request;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 
 public interface RequestUser {
-    UserDetails mapToUserDetails();
+    User mapToUserDetails();
 }

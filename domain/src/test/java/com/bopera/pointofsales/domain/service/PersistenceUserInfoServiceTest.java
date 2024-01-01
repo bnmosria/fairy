@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.Role;
-import com.bopera.pointofsales.persistence.entity.User;
+import com.bopera.pointofsales.persistence.entity.RoleEntity;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,10 +43,10 @@ public class PersistenceUserInfoServiceTest {
     void shouldLoadUserByUsernameWithExistingUser() {
         String username = "testUser";
         String password = "testPassword";
-        Role role = new Role();
+        RoleEntity role = new RoleEntity();
         role.setRoleName("ROLE_USER");
 
-        User user = User.builder().username(username)
+        UserEntity user = UserEntity.builder().username(username)
             .password(password)
             .roles(Set.of(role))
             .build();

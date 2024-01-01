@@ -1,7 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.MenuItem;
-import com.bopera.pointofsales.persistence.entity.Order;
+import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
+import com.bopera.pointofsales.persistence.entity.OrderEntity;
 import com.bopera.pointofsales.persistence.entity.OrderItem;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class OrderService {
         this.ordersRepository = ordersRepository;
     }
 
-    public void addMenuItemToOrder(Order order, MenuItem menuItem, int quantity) {
+    public void addMenuItemToOrder(OrderEntity order, MenuItemEntity menuItem, int quantity) {
         OrderItem existingOrderItem = getOrderItemByMenuItem(order, menuItem);
 
         if (existingOrderItem != null) {
@@ -43,7 +43,7 @@ public class OrderService {
         ordersRepository.save(order);
     }
 
-    public void removeMenuItemFromOrder(Order order, MenuItem menuItem) {
+    public void removeMenuItemFromOrder(OrderEntity order, MenuItemEntity menuItem) {
         OrderItem orderItem = getOrderItemByMenuItem(order, menuItem);
 
         if (orderItem == null) {
@@ -76,14 +76,14 @@ public class OrderService {
 
     }
 
-    private OrderItem getOrderItemByMenuItem(Order order, MenuItem menuItem) {
+    private OrderItem getOrderItemByMenuItem(OrderEntity order, MenuItemEntity menuItem) {
         return order.getOrderItems().stream()
             .filter(orderItem -> orderItem.getMenuItem().equals(menuItem))
             .findFirst()
             .orElse(null);
     }
 
-    private BigDecimal getTotal(Order order) {
+    private BigDecimal getTotal(OrderEntity order) {
         return order.getOrderItems().stream()
             .map(OrderItem::getSubtotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add);

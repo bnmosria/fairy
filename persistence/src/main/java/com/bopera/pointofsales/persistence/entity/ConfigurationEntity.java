@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "config")
-public class Config {
+public class ConfigurationEntity {
 
     @Id
     @Column(name = "id", nullable = false)

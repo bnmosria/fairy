@@ -1,13 +1,12 @@
 package com.bopera.pointofsales.persistence.repository;
 
-import com.bopera.pointofsales.persistence.entity.User;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +23,12 @@ class UsersRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        User user1 = User.builder()
+        UserEntity user1 = UserEntity.builder()
             .username("admin1")
             .password("password1")
             .active(1)
             .build();
-        User user2 = User.builder()
+        UserEntity user2 = UserEntity.builder()
             .username("admin2")
             .password("password2")
             .active(0)
@@ -42,7 +41,7 @@ class UsersRepositoryTest {
 
     @Test
     void shouldFindTheLoginUsersOfActiveUsers() {
-        Optional<List<User>> userList = userRepository.findLoginUserList();
+        Optional<List<UserEntity>> userList = userRepository.findLoginUserList();
         Assertions.assertTrue(userList.isPresent());
         Assertions.assertEquals(1, userList.get().size());
     }

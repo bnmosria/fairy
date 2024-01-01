@@ -1,9 +1,9 @@
 package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
-import com.bopera.pointofsales.domain.model.UserDetails;
-import com.bopera.pointofsales.persistence.entity.Role;
-import com.bopera.pointofsales.persistence.entity.User;
+import com.bopera.pointofsales.domain.model.User;
+import com.bopera.pointofsales.persistence.entity.RoleEntity;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,11 +33,11 @@ public class PersistenceUserService implements UserServiceInterface {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<UserDetails> getUserList() {
+    public List<User> getUserList() {
         return userRepository.findLoginUserList()
             .map(
                 users -> users.stream()
-                    .map(UserDetails::new).collect(Collectors.toList())
+                    .map(User::new).collect(Collectors.toList())
             )
             .orElseThrow();
     }
@@ -46,17 +46,17 @@ public class PersistenceUserService implements UserServiceInterface {
         userRepository.deleteById(id);
     }
 
-    public UserDetails save(UserDetails userDetails) {
-        Set<Role> persistenceRoles = userDetails.getRoles()
+    public User save(User userDetails) {
+        Set<RoleEntity> persistenceRoles = userDetails.getRoles()
             .stream().map(role -> {
-                Role persistenceRole = new Role();
+                RoleEntity persistenceRole = new RoleEntity();
                 persistenceRole.setRoleName(role.getName());
                 return persistenceRole;
             }).collect(Collectors.toSet());
 
-        return new UserDetails(
+        return new User(
             userRepository.save(
-                User.builder()
+                UserEntity.builder()
                     .username(userDetails.getUsername())
                     .password(userDetails.getUsername())
                     .roles(persistenceRoles)
@@ -66,9 +66,9 @@ public class PersistenceUserService implements UserServiceInterface {
         );
     }
 
-    public Optional<UserDetails> findById(long id) {
+    public Optional<User> findById(long id) {
         return userRepository.findById(id)
-            .map(UserDetails::new);
+            .map(User::new);
     }
 
     public void updatePassword(String currentPassword, String newPassword) {

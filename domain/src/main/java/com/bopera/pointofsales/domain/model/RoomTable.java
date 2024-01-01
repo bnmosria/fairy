@@ -1,12 +1,12 @@
 package com.bopera.pointofsales.domain.model;
 
-import com.bopera.pointofsales.persistence.entity.RoomTable;
+import com.bopera.pointofsales.persistence.entity.RoomTableEntity;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class HallTableDetails {
+public class RoomTable {
     private Long id;
     private String title;
     private String code;
@@ -15,8 +15,8 @@ public class HallTableDetails {
     private Integer active;
     private Integer sorting;
 
-    public static HallTableDetails mapFromRoomTable(RoomTable roomTable) {
-        return HallTableDetails.builder()
+    public static RoomTable mapFromRoomTable(RoomTableEntity roomTable) {
+        return RoomTable.builder()
             .id(roomTable.getId())
             .build();
     }

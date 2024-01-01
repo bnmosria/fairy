@@ -1,8 +1,8 @@
 package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.interfaces.RoomServiceInterface;
-import com.bopera.pointofsales.domain.model.RoomDetails;
-import com.bopera.pointofsales.persistence.entity.Room;
+import com.bopera.pointofsales.domain.model.Room;
+import com.bopera.pointofsales.persistence.entity.RoomEntity;
 import com.bopera.pointofsales.persistence.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +18,21 @@ public class PersistenceRoomService implements RoomServiceInterface {
     }
 
     @Override
-    public List<RoomDetails> retrieveAllRooms() {
+    public List<Room> retrieveAllRooms() {
         return roomRepository.findAllByOrderBySortingDesc()
-            .stream().map(RoomDetails::mapFromRoom)
+            .stream().map(Room::mapFromRoom)
             .collect(Collectors.toList());
     }
 
     @Override
-    public RoomDetails addRoom(RoomDetails roomDetails) {
+    public Room addRoom(Room roomDetails) {
         roomRepository.findTopByOrderBySortingDesc()
             .ifPresentOrElse(
                 top -> roomDetails.setSorting(top.getSorting() + 1),
                 () -> roomDetails.setSorting(0)
             );
 
-        Room room = roomRepository.save(RoomDetails.mapToRoom(roomDetails));
+        RoomEntity room = roomRepository.save(Room.mapToRoom(roomDetails));
         roomDetails.setId(room.getId());
 
         return roomDetails;
@@ -44,7 +44,7 @@ public class PersistenceRoomService implements RoomServiceInterface {
     }
 
     @Override
-    public RoomDetails updateRoom(RoomDetails roomDetails) {
+    public Room updateRoom(Room roomDetails) {
         return roomRepository.findById(roomDetails.getId()).map(
             room -> {
                 room.setRoomName(roomDetails.getName());

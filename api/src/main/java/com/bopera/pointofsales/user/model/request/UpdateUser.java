@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.user.model.request;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import lombok.*;
 
 @Data
@@ -11,8 +11,8 @@ public class UpdateUser extends CreateUser implements RequestUser {
     private long id;
 
     @Override
-    public UserDetails mapToUserDetails() {
-        return UserDetails.builder()
+    public User mapToUserDetails() {
+        return User.builder()
             .username(getUsername())
             .active(getActive())
             .id(getId())

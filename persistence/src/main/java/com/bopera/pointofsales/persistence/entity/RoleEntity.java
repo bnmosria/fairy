@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor
-public class Role {
+public class RoleEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -28,6 +28,6 @@ public class Role {
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions = new HashSet<>();;
+    private Set<PermissionEntity> permissions = new HashSet<>();;
 
 }

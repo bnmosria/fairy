@@ -2,7 +2,7 @@ package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.request.AuthRequest;
 import com.bopera.pointofsales.auth.model.response.AuthResponse;
-import com.bopera.pointofsales.domain.model.UserInfoDetails;
+import com.bopera.pointofsales.domain.model.UserInfo;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +29,6 @@ public class AuthService {
             throw new BadCredentialsException("invalid user request!");
         }
 
-        return jwtService.generateToken((UserInfoDetails) authentication.getPrincipal());
+        return jwtService.generateToken((UserInfo) authentication.getPrincipal());
     }
 }

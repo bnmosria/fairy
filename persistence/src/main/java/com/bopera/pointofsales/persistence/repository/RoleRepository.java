@@ -1,9 +1,9 @@
 package com.bopera.pointofsales.persistence.repository;
 
-import com.bopera.pointofsales.persistence.entity.Role;
+import com.bopera.pointofsales.persistence.entity.RoleEntity;
 
 import java.util.Optional;
 
-public interface RoleRepository extends BaseRepository<Role, Long> {
-    Optional<Role> findByRoleName(String roleAdmin);
+public interface RoleRepository extends BaseRepository<RoleEntity, Long> {
+    Optional<RoleEntity> findByRoleName(String roleAdmin);
 }

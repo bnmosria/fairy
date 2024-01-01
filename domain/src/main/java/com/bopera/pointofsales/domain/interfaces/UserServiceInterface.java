@@ -1,19 +1,19 @@
 package com.bopera.pointofsales.domain.interfaces;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserServiceInterface {
 
-    List<UserDetails> getUserList();
+    List<User> getUserList();
 
     void delete(Long id);
 
-    UserDetails save(UserDetails userDetails);
+    User save(User userDetails);
 
-    Optional<UserDetails> findById(long id);
+    Optional<User> findById(long id);
 
     void updatePassword(String currentPassword, String newPassword);
 

@@ -1,8 +1,8 @@
 package com.bopera.pointofsales.domain.service;
 
-import com.bopera.pointofsales.persistence.entity.Role;
-import com.bopera.pointofsales.persistence.entity.User;
-import com.bopera.pointofsales.domain.model.UserInfoDetails;
+import com.bopera.pointofsales.persistence.entity.RoleEntity;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
+import com.bopera.pointofsales.domain.model.UserInfo;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,20 +27,20 @@ public class UserInfoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User userInfo = repository.findByUsername(username)
+        UserEntity userInfo = repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
 
-        return UserInfoDetails.builder()
+        return UserInfo.builder()
                 .name(userInfo.getUsername())
                 .password(userInfo.getPassword())
                 .authorities(buildAuthorities(userInfo))
                 .build();
     }
 
-    private List<GrantedAuthority> buildAuthorities(User userInfo) {
+    private List<GrantedAuthority> buildAuthorities(UserEntity userInfo) {
 
         return userInfo.getRoles().stream()
-            .map(Role::getRoleName)
+            .map(RoleEntity::getRoleName)
             .takeWhile(Predicate.not(String::isBlank))
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());

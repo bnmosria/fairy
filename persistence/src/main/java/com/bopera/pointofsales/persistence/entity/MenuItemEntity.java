@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "menu_items")
-public class MenuItem {
+public class MenuItemEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -33,7 +33,7 @@ public class MenuItem {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity category;
 
     @OneToMany(mappedBy = "menuItem")
     private Set<OrderItem> orderItems = new HashSet<>();

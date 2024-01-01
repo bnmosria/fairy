@@ -1,6 +1,6 @@
 package com.bopera.pointofsales.user.model.response;
 
-import com.bopera.pointofsales.domain.model.UserDetails;
+import com.bopera.pointofsales.domain.model.User;
 import lombok.*;
 
 import java.util.Set;
@@ -14,7 +14,7 @@ public class UserResponse {
     private int active;
     private Set<String> roles;
 
-    public UserResponse(UserDetails user) {
+    public UserResponse(User user) {
         id = user.getId();
         userName = user.getUsername();
         active = user.getActive();
