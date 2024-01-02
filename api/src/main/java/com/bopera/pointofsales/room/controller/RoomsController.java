@@ -31,7 +31,7 @@ public class RoomsController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Room> addNewHall(@Valid @RequestBody SaveRoomRequest hallRequest) {
+    public ResponseEntity<Room> addNewRoom(@Valid @RequestBody SaveRoomRequest hallRequest) {
 
         Room roomDetails = this.roomService.addRoom(
             Room.builder()

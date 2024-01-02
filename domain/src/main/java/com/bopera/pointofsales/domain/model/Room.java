@@ -22,10 +22,10 @@ public class Room {
             .build();
     }
 
-    public static RoomEntity mapToRoom(Room hallDetails) {
+    public static RoomEntity mapToRoom(Room roomDetails) {
         RoomEntity room = new RoomEntity();
-        room.setRoomName(hallDetails.getName());
-        room.setSorting(hallDetails.getSorting());
+        room.setRoomName(roomDetails.getName());
+        room.setSorting(roomDetails.getSorting());
 
         return room;
     }

@@ -48,6 +48,7 @@ public class PersistenceRoomService implements RoomServiceInterface {
         return roomRepository.findById(roomDetails.getId()).map(
             room -> {
                 room.setRoomName(roomDetails.getName());
+                room.setSorting(roomDetails.getSorting());
 
                 roomRepository.save(room);
 
