@@ -1,16 +1,19 @@
 package com.bopera.pointofsales.room.controller;
 
 import com.bopera.pointofsales.domain.interfaces.RoomServiceInterface;
+import com.bopera.pointofsales.domain.model.Room;
 import com.bopera.pointofsales.room.model.request.EditRoomRequest;
 import com.bopera.pointofsales.room.model.request.SaveRoomRequest;
-import com.bopera.pointofsales.domain.model.Room;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@Slf4j
 @RestController
 @RequestMapping("/api/rooms")
 public class RoomsController {
@@ -31,7 +34,7 @@ public class RoomsController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Room> addNewRoom(@Valid @RequestBody SaveRoomRequest hallRequest) {
+    public ResponseEntity<?> addNewRoom(@Valid @RequestBody SaveRoomRequest hallRequest) {
 
         Room roomDetails = this.roomService.addRoom(
             Room.builder()
@@ -39,10 +42,6 @@ public class RoomsController {
                 .sorting(hallRequest.getSorting())
                 .build()
         );
-
-        if (0 == roomDetails.getId()) {
-            return ResponseEntity.internalServerError().build();
-        }
 
         return ResponseEntity.ok(roomDetails);
     }

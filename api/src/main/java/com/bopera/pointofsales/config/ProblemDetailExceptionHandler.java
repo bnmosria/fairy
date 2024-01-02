@@ -38,6 +38,8 @@ public class ProblemDetailExceptionHandler {
     }
 
     private ResponseEntity<ProblemDetail> createProblemDetailResponseEntity(ProblemDetail problemDetail) {
+        log.error("An error occurred: {}", problemDetail.getDetail());
+
         return ResponseEntity.status(problemDetail.getStatus())
             .contentType(MediaType.APPLICATION_JSON)
             .body(problemDetail);
