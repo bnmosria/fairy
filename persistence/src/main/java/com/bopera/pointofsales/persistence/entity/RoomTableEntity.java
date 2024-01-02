@@ -13,20 +13,20 @@ public class RoomTableEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "table_number", nullable = false)
-    private String tableNumber;
-
     @Column(name = "table_name", nullable = false)
     private String name;
 
-    @Column(name = "active", nullable = false)
-    private Integer active;
+    @Column(name = "table_number")
+    private String tableNumber;
 
-    @Column(name = "sorting", nullable = false)
-    private Integer sorting;
+    @Column(name = "active")
+    private int active;
+
+    @Column(name = "sorting")
+    private int sorting;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", nullable = false)
     private RoomEntity room;
 
 }

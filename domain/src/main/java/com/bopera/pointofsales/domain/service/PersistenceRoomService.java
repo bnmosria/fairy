@@ -20,7 +20,7 @@ public class PersistenceRoomService implements RoomServiceInterface {
     @Override
     public List<Room> retrieveAllRooms() {
         return roomRepository.findAllByOrderBySortingDesc()
-            .stream().map(Room::mapFromRoom)
+            .stream().map(Room::mapFromRoomEntity)
             .collect(Collectors.toList());
     }
 
@@ -32,7 +32,7 @@ public class PersistenceRoomService implements RoomServiceInterface {
                 () -> roomDetails.setSorting(0)
             );
 
-        RoomEntity room = roomRepository.save(Room.mapToRoom(roomDetails));
+        RoomEntity room = roomRepository.save(Room.mapToRoomEntity(roomDetails));
         roomDetails.setId(room.getId());
 
         return roomDetails;

@@ -18,7 +18,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 class PersistenceRoomTablesServiceTest {
 
@@ -81,17 +80,19 @@ class PersistenceRoomTablesServiceTest {
     @Test
     void ShouldSaveNewRoomTable_WhenValidRoomId() {
         Long roomId = 1L;
-        RoomTable roomTable = RoomTable.builder().build();
         RoomEntity roomEntity = new RoomEntity();
         roomEntity.setId(roomId);
 
+        final RoomTable spyRoomTable = spy(RoomTable.builder().build());
+        doReturn(roomId).when(spyRoomTable).getRoomId();
+
         when(roomRepository.findById(roomId)).thenReturn(Optional.of(roomEntity));
 
-        RoomEntity savedRoomEntity = roomTableService.saveNewRoomTable(roomTable, roomId);
-        assertNotNull(savedRoomEntity);
-        assertEquals(roomEntity, savedRoomEntity);
+        RoomTable newRoomTable = roomTableService.saveNewRoomTable(spyRoomTable);
+        assertNotNull(newRoomTable);
+        assertEquals(spyRoomTable, newRoomTable);
         verify(roomTablesRepository, times(1)).save(any(RoomTableEntity.class));
-        verify(roomRepository, times(1)).save(any(RoomEntity.class));
+
     }
 
 
@@ -103,13 +104,11 @@ class PersistenceRoomTablesServiceTest {
         roomTableEntity.setId(roomTableId);
 
         when(roomTablesRepository.findById(roomTableId)).thenReturn(Optional.of(roomTableEntity));
-        when(roomRepository.save(any())).thenReturn(new RoomEntity());
 
-        RoomEntity updatedRoomEntity = roomTableService.updateRoomTable(roomTable);
+        RoomTable updatedRoomTable = roomTableService.updateRoomTable(roomTable);
 
-        assertNotNull(updatedRoomEntity);
+        assertNotNull(updatedRoomTable);
         verify(roomTablesRepository, times(1)).findById(roomTableId);
-        verify(roomRepository, times(1)).save(any());
     }
 
     @Test

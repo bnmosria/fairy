@@ -1,6 +1,7 @@
 package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.exception.EntityNotFoundException;
+import com.bopera.pointofsales.domain.interfaces.RoomTablesServiceInterface;
 import com.bopera.pointofsales.domain.model.RoomTable;
 import com.bopera.pointofsales.persistence.entity.RoomEntity;
 import com.bopera.pointofsales.persistence.entity.RoomTableEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PersistenceRoomTableService {
+public class PersistenceRoomTableService implements RoomTablesServiceInterface {
     private final RoomTablesRepository roomTablesRepository;
     private final RoomRepository roomRepository;
 
@@ -41,32 +42,35 @@ public class PersistenceRoomTableService {
     }
 
     @Transactional
-    public RoomEntity saveNewRoomTable(RoomTable roomTable, Long roomId) {
-        return roomRepository.findById(roomId)
+    public RoomTable saveNewRoomTable(RoomTable roomTable) {
+        return roomRepository.findById(roomTable.getRoomId())
             .map(roomEntity -> {
                 RoomTableEntity roomTableEntity = RoomTable.mapToRoomTableEntity(roomTable);
                 roomTableEntity.setRoom(roomEntity);
 
                 roomTablesRepository.save(roomTableEntity);
-                roomEntity.getTables().add(roomTableEntity);
+                roomTable.setId(roomTableEntity.getId());
 
-                roomRepository.save(roomEntity);
-
-                return roomEntity;
+                return roomTable;
             })
-            .orElseThrow(() -> new EntityNotFoundException("Room not found with ID: " + roomId));
+            .orElseThrow(() -> new EntityNotFoundException("Room not found with ID: " + roomTable.getRoomId()));
     }
 
     @Transactional
-    public RoomEntity updateRoomTable(RoomTable roomTable) {
-        RoomTableEntity roomTableEntity = roomTablesRepository.findById(roomTable.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Room table not found with ID: " + roomTable.getId()));
+    public RoomTable updateRoomTable(RoomTable roomTable) {
+        return roomTablesRepository.findById(roomTable.getId())
+            .map(roomTableEntity -> {
+                roomTableEntity.setName(roomTable.getName());
+                roomTableEntity.setTableNumber(roomTable.getTableNumber());
+                roomTableEntity.setActive(roomTable.getActive());
 
-        roomTableEntity.setName(roomTable.getName());
-        roomTableEntity.setTableNumber(roomTable.getTableNumber());
-        roomTableEntity.setActive(roomTable.getActive());
+                roomTablesRepository.save(roomTableEntity);
 
-        return roomRepository.save(roomTableEntity.getRoom());
+                return roomTable;
+            })
+            .orElseThrow(
+                () -> new EntityNotFoundException("Room table not found with ID: " + roomTable.getId())
+            );
     }
 
     @Transactional
@@ -80,7 +84,8 @@ public class PersistenceRoomTableService {
 
                 return roomTableEntity;
             })
-            .orElseThrow(() -> new EntityNotFoundException("Room table not found with ID: " + roomTableId));
-
+            .orElseThrow(
+                () -> new EntityNotFoundException("Room table not found with ID: " + roomTableId)
+            );
     }
 }
