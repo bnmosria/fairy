@@ -14,10 +14,16 @@ public class RoomTableEntity {
     private Long id;
 
     @Column(name = "table_number", nullable = false)
-    private Integer tableNumber;
+    private String tableNumber;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Column(name = "table_name", nullable = false)
+    private String name;
+
+    @Column(name = "active", nullable = false)
+    private Integer active;
+
+    @Column(name = "sorting", nullable = false)
+    private Integer sorting;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

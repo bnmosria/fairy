@@ -8,16 +8,28 @@ import lombok.Data;
 @Builder
 public class RoomTable {
     private Long id;
-    private String title;
-    private String code;
+    private String tableNumber;
     private String name;
     private Long roomId;
     private Integer active;
     private Integer sorting;
 
-    public static RoomTable mapFromRoomTable(RoomTableEntity roomTable) {
+    public static RoomTable mapFromRoomTableEntity(RoomTableEntity roomTableEntity) {
         return RoomTable.builder()
-            .id(roomTable.getId())
+            .id(roomTableEntity.getId())
+            .name(roomTableEntity.getName())
+            .tableNumber(roomTableEntity.getTableNumber())
+            .active(roomTableEntity.getActive())
+            .sorting(roomTableEntity.getSorting())
             .build();
+    }
+
+    public static RoomTableEntity mapToRoomTableEntity(RoomTable roomTable) {
+        RoomTableEntity roomTableEntity = new RoomTableEntity();
+        roomTableEntity.setName(roomTable.getName());
+        roomTableEntity.setActive(roomTable.getActive());
+        roomTableEntity.setTableNumber(roomTable.getTableNumber());
+
+        return roomTableEntity;
     }
 }
