@@ -1,10 +1,12 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.exception.DuplicatedUserNameException;
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.domain.model.User;
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
 import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -47,9 +49,19 @@ public class PersistenceUserService implements UserServiceInterface {
     }
 
     public User save(User userDetails) {
+
+        Optional<UserEntity> existingUser = userRepository
+            .findByUsername(userDetails.getUsername());
+
+        if (existingUser.isPresent()) {
+            throw new DuplicatedUserNameException(
+                "User with the same username already exists"
+            );
+        }
+
         UserEntity userEntity = UserEntity.builder()
             .username(userDetails.getUsername())
-            .password(userDetails.getUsername())
+            .password(passwordEncoder.encode(userDetails.getPassword()))
             .active(userDetails.getActive())
             .build();
 

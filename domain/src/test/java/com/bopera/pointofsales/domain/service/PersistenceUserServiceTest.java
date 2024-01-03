@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.exception.DuplicatedUserNameException;
 import com.bopera.pointofsales.domain.model.User;
 import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
@@ -50,6 +51,23 @@ public class PersistenceUserServiceTest {
 
         assertEquals(expectedUserDetails, actualUserDetails);
         verify(userRepository, times(1)).findLoginUserList();
+    }
+
+    @Test
+    public void ShouldThrowsDuplicatedUserNameException_WhenUserWithSameUsernameExists() {
+        User userDetails = new User();
+        userDetails.setUsername("existingUser");
+        userDetails.setPassword("password");
+        userDetails.setActive(1);
+
+        UserEntity existingUserEntity = new UserEntity();
+        existingUserEntity.setUsername("existingUser");
+
+        when(userRepository.findByUsername("existingUser")).thenReturn(Optional.of(existingUserEntity));
+        assertThrows(DuplicatedUserNameException.class, () -> userService.save(userDetails));
+
+        verify(userRepository, times(1))
+            .findByUsername("existingUser");
     }
 
     @Test
