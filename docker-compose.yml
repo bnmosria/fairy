@@ -16,6 +16,14 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/fairy_pos
       - SPRING_DATASOURCE_USERNAME=os
       - SPRING_DATASOURCE_PASSWORD=secret
+  crdb:
+    image: cockroachdb/cockroach:v23.1.13
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    command: start-single-node --insecure
+    volumes:
+      - ./docker/cockroach-data/crdb:/cockroach/cockroach-data
   mysql:
     container_name: fairy-mysql
     image: bitnami/mysql:5.7
