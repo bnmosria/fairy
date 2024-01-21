@@ -1,8 +1,9 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.model.RoomTable;
 import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 import com.bopera.pointofsales.persistence.entity.OrderEntity;
-import com.bopera.pointofsales.persistence.entity.OrderItem;
+import com.bopera.pointofsales.persistence.entity.OrderItemEntity;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,19 +32,20 @@ class PersistenceOrderServiceTest {
         OrderEntity order = new OrderEntity();
         MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
+        RoomTable roomTable = RoomTable.builder().id(1L).build();
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
         persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
-        assertEquals(1, orderItems.size());
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>(order.getOrderItemEntities());
+        assertEquals(1, orderItemEntities.size());
 
-        OrderItem orderItem = orderItems.get(0);
-        assertEquals(order, orderItem.getOrder());
-        assertEquals(menuItem, orderItem.getMenuItem());
-        assertEquals(quantity - 1, orderItem.getQuantity());
-        assertEquals(BigDecimal.valueOf(10), orderItem.getSubtotal());
+        OrderItemEntity orderItemEntity = orderItemEntities.get(0);
+        assertEquals(order, orderItemEntity.getOrder());
+        assertEquals(menuItem, orderItemEntity.getMenuItem());
+        assertEquals(quantity - 1, orderItemEntity.getQuantity());
+        assertEquals(BigDecimal.valueOf(10), orderItemEntity.getSubtotal());
 
         verify(ordersRepository, times(2)).save(order);
     }
@@ -52,13 +54,14 @@ class PersistenceOrderServiceTest {
     void testRemoveMenuItemFromOrderWhenQuantityIsOneThenRemoveItem() {
         OrderEntity order = new OrderEntity();
         MenuItemEntity menuItem = new MenuItemEntity();
+        RoomTable roomTable = RoomTable.builder().id(1L).build();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 1;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
         persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
 
-        assertEquals(0, order.getOrderItems().size());
+        assertEquals(0, order.getOrderItemEntities().size());
 
         verify(ordersRepository, times(2)).save(order);
     }
@@ -71,8 +74,8 @@ class PersistenceOrderServiceTest {
 
         persistenceOrderService.removeMenuItemFromOrder(order, menuItem);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
-        assertEquals(0, orderItems.size());
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>(order.getOrderItemEntities());
+        assertEquals(0, orderItemEntities.size());
 
         verify(ordersRepository, times(0)).save(order);
     }
@@ -81,19 +84,20 @@ class PersistenceOrderServiceTest {
     void shouldAddTheOrderItemsToTheOrderCorrectly() {
         OrderEntity order = new OrderEntity();
         MenuItemEntity menuItem = new MenuItemEntity();
+        RoomTable roomTable = RoomTable.builder().id(1L).build();
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
-        assertEquals(1, orderItems.size());
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>(order.getOrderItemEntities());
+        assertEquals(1, orderItemEntities.size());
 
-        OrderItem orderItem = orderItems.get(0);
-        assertEquals(order, orderItem.getOrder());
-        assertEquals(menuItem, orderItem.getMenuItem());
-        assertEquals(quantity, orderItem.getQuantity());
-        assertEquals(BigDecimal.valueOf(20), orderItem.getSubtotal());
+        OrderItemEntity orderItemEntity = orderItemEntities.get(0);
+        assertEquals(order, orderItemEntity.getOrder());
+        assertEquals(menuItem, orderItemEntity.getMenuItem());
+        assertEquals(quantity, orderItemEntity.getQuantity());
+        assertEquals(BigDecimal.valueOf(20), orderItemEntity.getSubtotal());
 
         verify(ordersRepository).save(order);
     }
@@ -103,20 +107,21 @@ class PersistenceOrderServiceTest {
         OrderEntity order = new OrderEntity();
         MenuItemEntity menuItem = new MenuItemEntity();
         menuItem.setPrice(BigDecimal.valueOf(10));
+        RoomTable roomTable = RoomTable.builder().id(1L).build();
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>(order.getOrderItemEntities());
 
-        assertEquals(1, orderItems.size());
+        assertEquals(1, orderItemEntities.size());
 
-        OrderItem orderItem = orderItems.get(0);
-        assertEquals(order, orderItem.getOrder());
-        assertEquals(menuItem, orderItem.getMenuItem());
-        assertEquals(quantity * 2, orderItem.getQuantity());
-        assertEquals(BigDecimal.valueOf(40), orderItem.getSubtotal());
+        OrderItemEntity orderItemEntity = orderItemEntities.get(0);
+        assertEquals(order, orderItemEntity.getOrder());
+        assertEquals(menuItem, orderItemEntity.getMenuItem());
+        assertEquals(quantity * 2, orderItemEntity.getQuantity());
+        assertEquals(BigDecimal.valueOf(40), orderItemEntity.getSubtotal());
 
         verify(ordersRepository, times(2)).save(order);
     }
@@ -129,27 +134,28 @@ class PersistenceOrderServiceTest {
 
         MenuItemEntity menuItem1 = new MenuItemEntity();
         menuItem1.setPrice(BigDecimal.valueOf(5));
+        RoomTable roomTable = RoomTable.builder().id(1L).build();
         int quantity = 2;
         int quantity1 = 3;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem1, quantity1);
-        persistenceOrderService.addMenuItemToOrder(order, menuItem1, 1);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem1, quantity1, roomTable);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem1, 1, roomTable);
 
-        assertEquals(2, order.getOrderItems().size());
+        assertEquals(2, order.getOrderItemEntities().size());
 
-        OrderItem orderItem = order.getOrderItems().get(0);
-        assertEquals(order, orderItem.getOrder());
-        assertEquals(menuItem, orderItem.getMenuItem());
-        assertEquals(quantity, orderItem.getQuantity());
-        assertEquals(BigDecimal.valueOf(20), orderItem.getSubtotal());
+        OrderItemEntity orderItemEntity = order.getOrderItemEntities().get(0);
+        assertEquals(order, orderItemEntity.getOrder());
+        assertEquals(menuItem, orderItemEntity.getMenuItem());
+        assertEquals(quantity, orderItemEntity.getQuantity());
+        assertEquals(BigDecimal.valueOf(20), orderItemEntity.getSubtotal());
 
-        OrderItem orderItem1 = order.getOrderItems().get(1);
-        assertEquals(order, orderItem1.getOrder());
-        assertEquals(menuItem1, orderItem1.getMenuItem());
-        assertEquals(4, orderItem1.getQuantity());
-        assertEquals(BigDecimal.valueOf(20), orderItem1.getSubtotal());
+        OrderItemEntity orderItemEntity1 = order.getOrderItemEntities().get(1);
+        assertEquals(order, orderItemEntity1.getOrder());
+        assertEquals(menuItem1, orderItemEntity1.getMenuItem());
+        assertEquals(4, orderItemEntity1.getQuantity());
+        assertEquals(BigDecimal.valueOf(20), orderItemEntity1.getSubtotal());
 
         verify(ordersRepository, times(3)).save(order);
 

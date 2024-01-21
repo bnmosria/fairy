@@ -1,8 +1,9 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.model.RoomTable;
 import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 import com.bopera.pointofsales.persistence.entity.OrderEntity;
-import com.bopera.pointofsales.persistence.entity.OrderItem;
+import com.bopera.pointofsales.persistence.entity.OrderItemEntity;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,24 +20,24 @@ public class OrderService {
         this.ordersRepository = ordersRepository;
     }
 
-    public void addMenuItemToOrder(OrderEntity order, MenuItemEntity menuItem, int quantity) {
-        OrderItem existingOrderItem = getOrderItemByMenuItem(order, menuItem);
+    public void addMenuItemToOrder(OrderEntity order, MenuItemEntity menuItem, int quantity, RoomTable roomTable) {
+        OrderItemEntity existingOrderItemEntity = getOrderItemByMenuItem(order, menuItem);
 
-        if (existingOrderItem != null) {
-            int newQuantity = existingOrderItem.getQuantity() + quantity;
+        if (existingOrderItemEntity != null) {
+            int newQuantity = existingOrderItemEntity.getQuantity() + quantity;
             BigDecimal newSubtotal = menuItem.getPrice().multiply(BigDecimal.valueOf(newQuantity));
 
-            existingOrderItem.setQuantity(newQuantity);
-            existingOrderItem.setSubtotal(newSubtotal);
+            existingOrderItemEntity.setQuantity(newQuantity);
+            existingOrderItemEntity.setSubtotal(newSubtotal);
         } else {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setMenuItem(menuItem);
-            orderItem.setQuantity(quantity);
-            orderItem.setSubtotal(menuItem.getPrice().multiply(BigDecimal.valueOf(quantity)));
+            OrderItemEntity orderItemEntity = new OrderItemEntity();
+            orderItemEntity.setOrder(order);
+            orderItemEntity.setMenuItem(menuItem);
+            orderItemEntity.setQuantity(quantity);
+            orderItemEntity.setSubtotal(menuItem.getPrice().multiply(BigDecimal.valueOf(quantity)));
 
-            order.getOrderItems().add(orderItem);
-            menuItem.getOrderItems().add(orderItem);
+            order.getOrderItemEntities().add(orderItemEntity);
+            menuItem.getOrderItemEntities().add(orderItemEntity);
         }
 
         order.setTotalAmount(getTotal(order));
@@ -44,19 +45,19 @@ public class OrderService {
     }
 
     public void removeMenuItemFromOrder(OrderEntity order, MenuItemEntity menuItem) {
-        OrderItem orderItem = getOrderItemByMenuItem(order, menuItem);
+        OrderItemEntity orderItemEntity = getOrderItemByMenuItem(order, menuItem);
 
-        if (orderItem == null) {
+        if (orderItemEntity == null) {
             return;
         }
 
-        int orderItemQuantity = orderItem.getQuantity();
+        int orderItemQuantity = orderItemEntity.getQuantity();
 
         if (orderItemQuantity > 1) {
-            orderItem.setQuantity(orderItemQuantity - 1);
-            orderItem.setSubtotal(
+            orderItemEntity.setQuantity(orderItemQuantity - 1);
+            orderItemEntity.setSubtotal(
                 menuItem.getPrice().multiply(
-                    BigDecimal.valueOf(orderItem.getQuantity())
+                    BigDecimal.valueOf(orderItemEntity.getQuantity())
                 )
             );
 
@@ -66,26 +67,26 @@ public class OrderService {
             return;
         }
 
-        order.getOrderItems().remove(orderItem);
-        menuItem.getOrderItems().remove(orderItem);
-        orderItem.setOrder(null);
-        orderItem.setMenuItem(null);
+        order.getOrderItemEntities().remove(orderItemEntity);
+        menuItem.getOrderItemEntities().remove(orderItemEntity);
+        orderItemEntity.setOrder(null);
+        orderItemEntity.setMenuItem(null);
         order.setTotalAmount(getTotal(order));
 
         ordersRepository.save(order);
 
     }
 
-    private OrderItem getOrderItemByMenuItem(OrderEntity order, MenuItemEntity menuItem) {
-        return order.getOrderItems().stream()
+    private OrderItemEntity getOrderItemByMenuItem(OrderEntity order, MenuItemEntity menuItem) {
+        return order.getOrderItemEntities().stream()
             .filter(orderItem -> orderItem.getMenuItem().equals(menuItem))
             .findFirst()
             .orElse(null);
     }
 
     private BigDecimal getTotal(OrderEntity order) {
-        return order.getOrderItems().stream()
-            .map(OrderItem::getSubtotal)
+        return order.getOrderItemEntities().stream()
+            .map(OrderItemEntity::getSubtotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

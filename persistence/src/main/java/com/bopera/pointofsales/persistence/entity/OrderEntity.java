@@ -39,6 +39,6 @@ public class OrderEntity {
     private Date timestamp;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItemEntity> orderItemEntities = new ArrayList<>();
 
 }

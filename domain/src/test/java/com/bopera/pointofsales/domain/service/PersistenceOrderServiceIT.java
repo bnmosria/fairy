@@ -1,22 +1,16 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.BasePersistenceTest;
+import com.bopera.pointofsales.domain.model.RoomTable;
 import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 import com.bopera.pointofsales.persistence.entity.OrderEntity;
-import com.bopera.pointofsales.persistence.entity.OrderItem;
+import com.bopera.pointofsales.persistence.entity.OrderItemEntity;
 import com.bopera.pointofsales.persistence.repository.OrdersRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.CockroachContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,28 +18,25 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ActiveProfiles("test")
 @DataJpaTest
-@EnableJpaRepositories("com.bopera.pointofsales.persistence.repository")
-@EntityScan("com.bopera.pointofsales.persistence.entity")
-@Testcontainers
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PersistenceOrderServiceIT {
-
-    @Container
-    @ServiceConnection
-    private static final CockroachContainer cockroachContainer = new CockroachContainer(
-        DockerImageName.parse("cockroachdb/cockroach:v22.2.3")
-    );
+class PersistenceOrderServiceIT extends BasePersistenceTest {
 
     private OrderService persistenceOrderService;
 
     @Autowired
     private OrdersRepository ordersRepository;
 
+    private RoomTable roomTable;
+
     @BeforeEach
     public void setup() {
         persistenceOrderService = new OrderService(ordersRepository);
+
+        this.roomTable = RoomTable.builder().id(1L).build();
+    }
+
+    @AfterEach
+    void shutDown() {
         ordersRepository.deleteAll();
     }
 
@@ -56,16 +47,16 @@ class PersistenceOrderServiceIT {
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
 
-        List<OrderItem> orderItems = new ArrayList<>(order.getOrderItems());
-        assertEquals(1, orderItems.size());
+        List<OrderItemEntity> orderItemEntities = new ArrayList<>(order.getOrderItemEntities());
+        assertEquals(1, orderItemEntities.size());
 
-        OrderItem orderItem = orderItems.get(0);
-        assertEquals(order, orderItem.getOrder());
-        assertEquals(menuItem, orderItem.getMenuItem());
-        assertEquals(quantity, orderItem.getQuantity());
-        assertEquals(BigDecimal.valueOf(20), orderItem.getSubtotal());
+        OrderItemEntity orderItemEntity = orderItemEntities.get(0);
+        assertEquals(order, orderItemEntity.getOrder());
+        assertEquals(menuItem, orderItemEntity.getMenuItem());
+        assertEquals(quantity, orderItemEntity.getQuantity());
+        assertEquals(BigDecimal.valueOf(20), orderItemEntity.getSubtotal());
     }
 
     @Test
@@ -75,7 +66,7 @@ class PersistenceOrderServiceIT {
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
         assertEquals(BigDecimal.valueOf(20), order.getTotalAmount());
     }
 
@@ -86,10 +77,10 @@ class PersistenceOrderServiceIT {
         menuItem.setPrice(BigDecimal.valueOf(10));
         int quantity = 2;
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, quantity, roomTable);
 
-        assertEquals(1, order.getOrderItems().size());
+        assertEquals(1, order.getOrderItemEntities().size());
         assertEquals(BigDecimal.valueOf(40), order.getTotalAmount());
     }
 
@@ -102,10 +93,10 @@ class PersistenceOrderServiceIT {
         menuItem.setPrice(BigDecimal.valueOf(10));
         menuItem1.setPrice(BigDecimal.valueOf(5));
 
-        persistenceOrderService.addMenuItemToOrder(order, menuItem, 2);
-        persistenceOrderService.addMenuItemToOrder(order, menuItem1, 3);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem, 2, roomTable);
+        persistenceOrderService.addMenuItemToOrder(order, menuItem1, 3, roomTable);
 
-        assertEquals(2, order.getOrderItems().size());
+        assertEquals(2, order.getOrderItemEntities().size());
         assertEquals(BigDecimal.valueOf(35), order.getTotalAmount());
     }
 }

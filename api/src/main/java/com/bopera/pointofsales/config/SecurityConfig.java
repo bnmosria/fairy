@@ -40,7 +40,12 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
-                    .requestMatchers("/api/auth/token", "/api/users/nameList").permitAll()
+                    .requestMatchers(
+                        "/api/auth/token",
+                        "/api/users/nameList",
+                        "/api/swagger-ui/**",
+                        "/v3/api-docs/**"
+                    ).permitAll()
                     .requestMatchers(
                         "/api/users/**",
                         "/api/admin/**",

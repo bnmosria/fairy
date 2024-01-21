@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.model.MenuItem;
 import com.bopera.pointofsales.persistence.entity.MenuItemEntity;
 import com.bopera.pointofsales.persistence.repository.MenuItemsRepository;
 import org.junit.jupiter.api.Assertions;
@@ -27,32 +28,45 @@ class PersistenceMenuItemServiceTest {
 
     @Test
     void shouldSaveMenuItemAndReturnItem() {
-        MenuItemEntity menuItem = new MenuItemEntity();
-        menuItem.setId(2345L);
-        menuItem.setName("Test Item");
-        menuItem.setPrice(BigDecimal.valueOf(10.99));
+        MenuItem menuItem = MenuItem.builder()
+            .name("Test Item")
+            .description("Test Item description")
+            .price(BigDecimal.valueOf(10.99))
+            .build();
 
-        when(menuItemsRepository.save(any())).thenReturn(menuItem);
+        MenuItemEntity menuItemEntity = new MenuItemEntity();
+        menuItemEntity.setId(2345L);
+        menuItemEntity.setName("Test Item");
+        menuItemEntity.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItemEntity savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
+        doReturn(menuItemEntity).when(menuItemsRepository).save(any());
+        MenuItem savedMenuItem = persistenceMenuItemService.saveMenuItem(menuItem);
 
-        Assertions.assertNotNull(savedMenuItem.getId());
-        verify(menuItemsRepository, times(1)).save(menuItem);
+        Assertions.assertEquals(2345L, savedMenuItem.getId());
+        verify(menuItemsRepository, times(1)).save(any());
     }
 
     @Test
     void shouldUpdateMenuItem() {
-        MenuItemEntity menuItem = new MenuItemEntity();
-        menuItem.setId(1L);
-        menuItem.setName("Test Item");
-        menuItem.setPrice(BigDecimal.valueOf(10.99));
+        MenuItem menuItem = MenuItem.builder()
+            .id(1L)
+            .name("Test Item")
+            .description("Test Item description")
+            .price(BigDecimal.valueOf(10.99))
+            .build();
 
-        when(menuItemsRepository.save(menuItem)).thenReturn(menuItem);
+        MenuItemEntity menuItemEntity = new MenuItemEntity();
+        menuItemEntity.setId(1L);
+        menuItemEntity.setName("Test Item");
+        menuItemEntity.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItemEntity updatedMenuItem = persistenceMenuItemService.updateMenuItem(menuItem);
+
+        when(menuItemsRepository.findById(1L)).thenReturn(Optional.of(menuItemEntity));
+        when(menuItemsRepository.save(any())).thenReturn(menuItemEntity);
+        MenuItem updatedMenuItem = persistenceMenuItemService.updateMenuItem(menuItem);
 
         Assertions.assertEquals("Test Item", updatedMenuItem.getName());
-        verify(menuItemsRepository, times(1)).save(menuItem);
+        verify(menuItemsRepository, times(1)).save(menuItemEntity);
     }
 
     @Test
@@ -68,42 +82,49 @@ class PersistenceMenuItemServiceTest {
 
     @Test
     void shouldFindMenuItemById() {
+        MenuItem menuItem = MenuItem.builder()
+            .id(1L)
+            .name("Test Item 1")
+            .price(BigDecimal.valueOf(10.99))
+            .build();
+
         Long id = 1L;
-        MenuItemEntity menuItem = new MenuItemEntity();
-        menuItem.setId(id);
-        menuItem.setName("Test Item");
-        menuItem.setPrice(BigDecimal.valueOf(10.99));
+        MenuItemEntity menuItemEntity = new MenuItemEntity();
+        menuItemEntity.setId(id);
+        menuItemEntity.setName("Test Item 1");
+        menuItemEntity.setPrice(BigDecimal.valueOf(10.99));
 
-        when(menuItemsRepository.findById(id)).thenReturn(Optional.of(menuItem));
+        when(menuItemsRepository.findById(id)).thenReturn(Optional.of(menuItemEntity));
 
-        Optional<MenuItemEntity> foundMenuItem = persistenceMenuItemService.findMenuItemById(id);
+        Optional<MenuItem> foundMenuItem = persistenceMenuItemService.findMenuItemById(id);
 
         Assertions.assertTrue(foundMenuItem.isPresent());
-        Assertions.assertEquals("Test Item", foundMenuItem.get().getName());
+        Assertions.assertEquals("Test Item 1", foundMenuItem.get().getName());
         verify(menuItemsRepository, times(1)).findById(id);
     }
 
     @Test
     void shouldFindAllMenuItems() {
-        MenuItemEntity menuItem1 = new MenuItemEntity();
-        menuItem1.setId(1L);
-        menuItem1.setName("Item 1");
-        menuItem1.setPrice(BigDecimal.valueOf(10.99));
+        MenuItemEntity menuItemEntity1 = new MenuItemEntity();
+        menuItemEntity1.setId(1L);
+        menuItemEntity1.setName("Item 1");
+        menuItemEntity1.setPrice(BigDecimal.valueOf(10.99));
 
-        MenuItemEntity menuItem2 = new MenuItemEntity();
-        menuItem2.setId(2L);
-        menuItem2.setName("Item 2");
-        menuItem2.setPrice(BigDecimal.valueOf(15.99));
+        MenuItemEntity menuItemEntity2 = new MenuItemEntity();
+        menuItemEntity2.setId(2L);
+        menuItemEntity2.setName("Item 2");
+        menuItemEntity2.setPrice(BigDecimal.valueOf(15.99));
 
-        List<MenuItemEntity> menuItems = new ArrayList<>();
-        menuItems.add(menuItem1);
-        menuItems.add(menuItem2);
+        List<MenuItemEntity> menuItemEntities = new ArrayList<>();
+        menuItemEntities.add(menuItemEntity1);
+        menuItemEntities.add(menuItemEntity2);
 
-        when(menuItemsRepository.findAll()).thenReturn(menuItems);
+        when(menuItemsRepository.findAll()).thenReturn(menuItemEntities);
 
-        List<MenuItemEntity> foundMenuItems = persistenceMenuItemService.findAllMenuItems();
+        List<MenuItem> foundMenuItems = persistenceMenuItemService.findAllMenuItems();
 
         Assertions.assertEquals(2, foundMenuItems.size());
+        Assertions.assertEquals("Item 1", foundMenuItems.get(0).getName());
         verify(menuItemsRepository, times(1)).findAll();
     }
 }

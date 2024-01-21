@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "order_items")
-public class OrderItem {
+public class OrderItemEntity {
 
     @Id
     @Column(name = "id", nullable = false)
