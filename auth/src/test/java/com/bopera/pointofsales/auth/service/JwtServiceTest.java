@@ -1,7 +1,8 @@
 package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.response.AuthResponse;
-import com.bopera.pointofsales.domain.model.UserInfo;
+import com.bopera.pointofsales.auth.model.UserInfo;
+import com.bopera.pointofsales.auth.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

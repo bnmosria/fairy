@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.auth.filter;
 
+import com.bopera.pointofsales.auth.filter.JwtAuthFilter;
 import com.bopera.pointofsales.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

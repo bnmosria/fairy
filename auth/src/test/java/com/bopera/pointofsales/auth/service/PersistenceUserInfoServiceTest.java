@@ -1,54 +1,59 @@
-package com.bopera.pointofsales.domain.service;
+package com.bopera.pointofsales.auth.service;
 
-import com.bopera.pointofsales.domain.BasePersistenceTest;
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
 import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest
-class PersistenceUserInfoServiceIT extends BasePersistenceTest {
+@ExtendWith(MockitoExtension.class)
+public class PersistenceUserInfoServiceTest {
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
     private UserInfoService userInfoService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         userInfoService = new UserInfoService(userRepository);
     }
 
-    @AfterEach
-    void shutDown() {
-        userRepository.deleteAll();
+    @Test
+    public void shouldThrowsExceptionWhenUserNotFound() {
+        String username = "testUser";
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(UsernameNotFoundException.class, () -> userInfoService.loadUserByUsername(username));
+        verify(userRepository, times(1)).findByUsername(username);
     }
 
     @Test
-    void shouldReturnsUserDetailsByUsernameWithExistingUser() {
-        String username = "user";
-        String password = "password";
+    void ShouldLoadUserByUsername_WhenUserExists() {
+        String username = "testUser";
+        String password = "testPassword";
         RoleEntity role = new RoleEntity();
         role.setRoleName("ROLE_USER");
 
-        UserEntity user = UserEntity.builder().username(username)
+        UserEntity user = UserEntity.builder()
+            .username(username)
             .password(password)
-            .active(1)
             .build();
 
         Set.of(role).forEach(user::addRole);
 
-        userRepository.save(user);
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
         UserDetails userDetails = userInfoService.loadUserByUsername(username);
 
@@ -57,11 +62,8 @@ class PersistenceUserInfoServiceIT extends BasePersistenceTest {
         assertEquals(password, userDetails.getPassword());
         assertEquals(1, userDetails.getAuthorities().size());
         assertEquals(role.getRoleName(), userDetails.getAuthorities().iterator().next().getAuthority());
+
+        verify(userRepository, times(1)).findByUsername(username);
     }
 
-    @Test
-    void shouldThrowsUsernameNotFoundExceptionWithNonExistingUser() {
-        String username = "nonExistingUser";
-        assertThrows(UsernameNotFoundException.class, () -> userInfoService.loadUserByUsername(username));
-    }
 }

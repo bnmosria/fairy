@@ -1,4 +1,4 @@
-package com.bopera.pointofsales.domain.model;
+package com.bopera.pointofsales.auth.model;
 
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;

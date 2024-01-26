@@ -1,8 +1,8 @@
-package com.bopera.pointofsales.domain.service;
+package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
 import com.bopera.pointofsales.persistence.entity.UserEntity;
-import com.bopera.pointofsales.domain.model.UserInfo;
+import com.bopera.pointofsales.auth.model.UserInfo;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

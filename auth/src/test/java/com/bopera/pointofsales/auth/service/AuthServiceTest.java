@@ -2,7 +2,8 @@ package com.bopera.pointofsales.auth.service;
 
 import com.bopera.pointofsales.auth.model.request.AuthRequest;
 import com.bopera.pointofsales.auth.model.response.AuthResponse;
-import org.junit.jupiter.api.BeforeEach;
+import com.bopera.pointofsales.auth.service.AuthService;
+import com.bopera.pointofsales.auth.service.JwtService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
