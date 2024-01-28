@@ -9,8 +9,6 @@ plugins {
 rootProject.name = 'fairy'
 
 include 'api'
-include 'domain'
-include 'utilities'
-include 'persistence'
-include 'problem-detail'
 include 'auth'
+include 'domain'
+include 'persistence'

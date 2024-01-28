@@ -8,7 +8,6 @@ buildscript {
 }
 
 allprojects {
-
     apply plugin: 'org.owasp.dependencycheck'
 
     group = 'com.bopera'
