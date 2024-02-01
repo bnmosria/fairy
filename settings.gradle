@@ -8,6 +8,7 @@ plugins {
 }
 rootProject.name = 'fairy'
 
+include 'app'
 include 'api'
 include 'auth'
 include 'domain'
