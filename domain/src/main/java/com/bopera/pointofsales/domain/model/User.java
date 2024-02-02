@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -20,18 +21,39 @@ public class User {
     private Integer active;
     private final Set<Role> roles = new HashSet<>();
 
-    public User(UserEntity user) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
-        this.active = user.getActive();
-
-        user.getRoles().forEach(role -> {
-                Role newRole = Role.builder()
-                    .name(role.getRoleName())
-                    .build();
-
-                this.roles.add(newRole);
-            });
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+    }
+    public User withRolesAndPermissions(UserEntity userEntity) {
+        User user = new User();
+
+        this.id = userEntity.getId();
+        this.username = userEntity.getUsername();
+        this.password = userEntity.getPassword();
+        this.active = userEntity.getActive();
+
+        userEntity.getRoles().forEach(role -> {
+            Role newRole = Role.builder()
+                .name(role.getRoleName())
+                .permissions(
+                    role.getPermissions().stream().map(
+                        permission ->
+                            Permission.builder()
+                                .name(permission.getPermissionName())
+                                .build()
+                        ).collect(Collectors.toSet()
+                    )
+                )
+                .build();
+
+            this.addRole(newRole);
+        });
+
+        return user;
+    }
+
 }

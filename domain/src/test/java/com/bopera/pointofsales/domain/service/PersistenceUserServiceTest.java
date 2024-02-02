@@ -41,8 +41,8 @@ public class PersistenceUserServiceTest {
         List<UserEntity> returnedUsers = Arrays.asList(user1, user2);
 
         List<User> expectedUserDetails = Arrays.asList(
-            new User(user1),
-            new User(user2)
+            User.builder().build().withRolesAndPermissions(user1),
+            User.builder().build().withRolesAndPermissions(user2)
         );
 
         when(userRepository.findLoginUserList()).thenReturn(Optional.of(returnedUsers));

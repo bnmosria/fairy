@@ -6,7 +6,6 @@ import com.bopera.pointofsales.domain.model.User;
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
 import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.UserRepository;
-import com.sun.jdi.request.DuplicateRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,7 +37,10 @@ public class PersistenceUserService implements UserServiceInterface {
         return userRepository.findLoginUserList()
             .map(
                 users -> users.stream()
-                    .map(User::new).collect(Collectors.toList())
+                    .map(userEntity -> User.builder().build()
+                        .withRolesAndPermissions(userEntity)
+                    )
+                    .collect(Collectors.toList())
             )
             .orElseThrow();
     }
@@ -48,10 +49,10 @@ public class PersistenceUserService implements UserServiceInterface {
         userRepository.deleteById(id);
     }
 
-    public User save(User userDetails) {
+    public User save(User user) {
 
         Optional<UserEntity> existingUser = userRepository
-            .findByUsername(userDetails.getUsername());
+            .findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
             throw new DuplicatedUserNameException(
@@ -60,24 +61,27 @@ public class PersistenceUserService implements UserServiceInterface {
         }
 
         UserEntity userEntity = UserEntity.builder()
-            .username(userDetails.getUsername())
-            .password(passwordEncoder.encode(userDetails.getPassword()))
-            .active(userDetails.getActive())
+            .username(user.getUsername())
+            .password(passwordEncoder.encode(user.getPassword()))
+            .active(user.getActive())
             .build();
 
-        userDetails.getRoles().forEach(role -> {
+        user.getRoles().forEach(role -> {
             RoleEntity persistenceRole = new RoleEntity();
             persistenceRole.setRoleName(role.getName());
 
             userEntity.addRole(persistenceRole);
         });
 
-        return new User(userRepository.save(userEntity));
+        return User.builder().build()
+            .withRolesAndPermissions(userEntity);
     }
 
     public Optional<User> findById(long id) {
         return userRepository.findById(id)
-            .map(User::new);
+            .map(userEntity -> User.builder().build()
+                .withRolesAndPermissions(userEntity)
+            );
     }
 
     public void updatePassword(String currentPassword, String newPassword) {
