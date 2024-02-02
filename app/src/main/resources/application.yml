@@ -12,7 +12,6 @@ spring:
     import:
       - api.yml
       - auth.yml
-      - domain.yml
       - persistence.yml
   mvc:
     static-path-pattern: /swagger*

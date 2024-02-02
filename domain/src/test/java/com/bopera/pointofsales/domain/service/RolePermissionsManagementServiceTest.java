@@ -20,7 +20,7 @@ import static org.mockito.Mockito.times;
 class RolePermissionsManagementServiceTest {
 
     @Mock
-    private RolePersistenceService rolePersistenceService;
+    private RolePersistence rolePersistenceService;
 
     private RolePermissionsManagementService rolePermissionsManagementService;
 
@@ -44,7 +44,7 @@ class RolePermissionsManagementServiceTest {
     void ShouldAddPermissionAndSaveRole_WhenPermissionAddedToRole() {
         rolePermissionsManagementService.addPermissionToRole(role, permission);
 
-        verify(rolePersistenceService, times(1)).saveRole(role);
+        verify(rolePersistenceService, times(1)).addRole(role);
         assertEquals(1, role.getPermissions().size());
         assertTrue(role.getPermissions().contains(permission));
     }
@@ -54,7 +54,7 @@ class RolePermissionsManagementServiceTest {
         role.addPermission(permission);
 
         rolePermissionsManagementService.removePermissionFromRole(role, permission);
-        verify(rolePersistenceService, times(1)).saveRole(role);
+        verify(rolePersistenceService, times(1)).addRole(role);
         assertEquals(0, role.getPermissions().size());
     }
 

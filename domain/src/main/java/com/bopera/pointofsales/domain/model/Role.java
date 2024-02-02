@@ -9,6 +9,7 @@ import java.util.Set;
 @Data
 @Builder
 public class Role {
+    private long id;
     private String name;
     private Set<Permission> permissions;
 

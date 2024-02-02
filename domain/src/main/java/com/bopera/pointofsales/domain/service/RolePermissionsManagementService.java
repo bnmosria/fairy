@@ -8,20 +8,20 @@ import java.util.Set;
 
 @Service
 public class RolePermissionsManagementService {
-    private final RolePersistenceService rolePersistenceService;
+    private final RolePersistence rolePersistenceService;
 
-    public RolePermissionsManagementService(RolePersistenceService rolePersistenceService) {
+    public RolePermissionsManagementService(RolePersistence rolePersistenceService) {
         this.rolePersistenceService = rolePersistenceService;
     }
 
     public void addPermissionToRole(Role role, Permission permission) {
         role.addPermission(permission);
-        rolePersistenceService.saveRole(role);
+        rolePersistenceService.addRole(role);
     }
 
     public void removePermissionFromRole(Role role, Permission permission) {
         role.removePermission(permission);
-        rolePersistenceService.saveRole(role);
+        rolePersistenceService.addRole(role);
     }
 
     public Set<Permission> getRolePermissions(Role role) {

@@ -2,7 +2,6 @@ package com.bopera.pointofsales.domain.service;
 
 import com.bopera.pointofsales.domain.model.Permission;
 import com.bopera.pointofsales.domain.model.Role;
-import com.bopera.pointofsales.persistence.entity.PermissionEntity;
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
 import com.bopera.pointofsales.persistence.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +24,7 @@ class RolePersistenceServiceTest {
     private RoleRepository roleRepository;
 
     @InjectMocks
-    private RolePersistenceService rolePersistenceService;
+    private RolePersistence rolePersistenceService;
 
     private Role roleWithPermissions;
     private Role roleWithoutPermissions;
@@ -35,6 +34,12 @@ class RolePersistenceServiceTest {
         Set<Permission> permissions = new HashSet<>();
         permissions.add(Permission.builder().name("READ").build());
         permissions.add(Permission.builder().name("WRITE").build());
+
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(123L);
+        roleEntity.setRoleName("Fooo");
+
+        doReturn(roleEntity).when(roleRepository).save(any());
 
         roleWithPermissions = Role.builder()
                 .name("ADMIN")
@@ -48,19 +53,19 @@ class RolePersistenceServiceTest {
 
     @Test
     void ShouldSaveRoleEntity_WhenRoleWithPermissionsSaved() {
-        rolePersistenceService.saveRole(roleWithPermissions);
+        rolePersistenceService.addRole(roleWithPermissions);
         verify(roleRepository, times(1)).save(any(RoleEntity.class));
     }
 
     @Test
     void ShouldSaveRoleEntity_WhenRoleWithNoPermissionsSaved() {
-        rolePersistenceService.saveRole(roleWithoutPermissions);
+        rolePersistenceService.addRole(roleWithoutPermissions);
         verify(roleRepository, times(1)).save(any(RoleEntity.class));
     }
 
     @Test
     void ShouldSaveRoleEntityWithMultiplePermissions_WhenRoleWithMultiplePermissionsSaved() {
-        rolePersistenceService.saveRole(roleWithPermissions);
+        rolePersistenceService.addRole(roleWithPermissions);
         verify(roleRepository, times(1)).save(any(RoleEntity.class));
     }
 }
