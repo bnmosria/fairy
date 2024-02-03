@@ -8,40 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
 @ControllerAdvice
-public class ProblemDetailExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ProblemDetail> handleGlobalException(Exception exception) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-            HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage()
-        );
+public class ProblemDetailExceptionHandler extends ResponseEntityExceptionHandler {
 
-        return createProblemDetailResponseEntity(problemDetail);
-    }
-
-    @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<ProblemDetail> toProblemDetail(HttpClientErrorException exception) {
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-            exception.getStatusCode(), exception.getStatusText()
-        );
-
-        return createProblemDetailResponseEntity(problemDetail);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ProblemDetail> handleMethodArgumentNotValid(MethodArgumentNotValidException exception) {
-        return createProblemDetailResponseEntity(exception.getBody());
-    }
-
-    private ResponseEntity<ProblemDetail> createProblemDetailResponseEntity(ProblemDetail problemDetail) {
-        log.error("An error occurred: {}", problemDetail.getDetail());
-
-        return ResponseEntity.status(problemDetail.getStatus())
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(problemDetail);
-    }
 }
