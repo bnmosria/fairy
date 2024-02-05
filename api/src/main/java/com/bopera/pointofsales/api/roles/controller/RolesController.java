@@ -40,18 +40,21 @@ public class RolesController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Mono<ResponseEntity<RoleResponse>> addRole(
-        @Valid @RequestBody Mono<RoleRequest> roleRequestMono) {
+    public ResponseEntity<RoleResponse> addRole(
+        @Valid @RequestBody RoleRequest roleRequestInput) {
 
-        return roleRequestMono
-            .map(roleRequest -> this.roleService.addRole(Role.builder().build()))
+        return Optional.of(roleRequestInput)
+            .map(roleRequest -> this.roleService.addRole(
+                    Role.builder().name(roleRequest.getName()).build()
+                )
+            )
             .map(role -> ResponseEntity.ok(
                     RoleResponse.builder()
                         .id(role.getId())
                         .name(role.getName())
                         .build()
                 )
-            );
+            ).orElseThrow();
     }
 
     @PutMapping

@@ -1,10 +1,13 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.exception.DuplicatedRoleException;
+import com.bopera.pointofsales.domain.exception.DuplicatedUserNameException;
 import com.bopera.pointofsales.domain.interfaces.RoleService;
 import com.bopera.pointofsales.domain.model.Permission;
 import com.bopera.pointofsales.domain.model.Role;
 import com.bopera.pointofsales.persistence.entity.PermissionEntity;
 import com.bopera.pointofsales.persistence.entity.RoleEntity;
+import com.bopera.pointofsales.persistence.entity.UserEntity;
 import com.bopera.pointofsales.persistence.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +24,18 @@ public class RolePersistence implements RoleService {
 
     @Override
     public Role addRole(Role role) {
-        return Optional.of(
-            roleRepository.save(mapToRoleEntity(role))
-        ).map(
-            savedRoleEntity -> Role.builder()
-                .id(savedRoleEntity.getId())
-                .name(savedRoleEntity.getRoleName())
-                .build()
-        ).orElseThrow();
+        if (roleRepository.findByRoleName(role.getName()).isPresent()) {
+            throw new DuplicatedRoleException(
+                "The role already exists"
+            );
+        }
+
+        RoleEntity savedRoleEntity = roleRepository.save(mapToRoleEntity(role));
+
+        return Role.builder()
+            .id(savedRoleEntity.getId())
+            .name(savedRoleEntity.getRoleName())
+            .build();
     }
 
 

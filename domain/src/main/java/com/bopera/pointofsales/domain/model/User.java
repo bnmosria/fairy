@@ -29,13 +29,6 @@ public class User {
         this.roles.remove(role);
     }
     public User withRolesAndPermissions(UserEntity userEntity) {
-        User user = new User();
-
-        this.id = userEntity.getId();
-        this.username = userEntity.getUsername();
-        this.password = userEntity.getPassword();
-        this.active = userEntity.getActive();
-
         userEntity.getRoles().forEach(role -> {
             Role newRole = Role.builder()
                 .name(role.getRoleName())
@@ -53,7 +46,7 @@ public class User {
             this.addRole(newRole);
         });
 
-        return user;
+        return this;
     }
 
 }

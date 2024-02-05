@@ -50,6 +50,7 @@ public class SecurityConfig {
                         "/api/users/**",
                         "/api/admin/**",
                         "/api/rooms/**",
+                        "/api/roles/**",
                         "/api/room-tables/**"
                     ).authenticated()
             )

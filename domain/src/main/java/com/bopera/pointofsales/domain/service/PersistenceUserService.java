@@ -1,5 +1,6 @@
 package com.bopera.pointofsales.domain.service;
 
+import com.bopera.pointofsales.domain.exception.DuplicatedRoleException;
 import com.bopera.pointofsales.domain.exception.DuplicatedUserNameException;
 import com.bopera.pointofsales.domain.interfaces.UserServiceInterface;
 import com.bopera.pointofsales.domain.model.User;
@@ -66,15 +67,15 @@ public class PersistenceUserService implements UserServiceInterface {
             .active(user.getActive())
             .build();
 
-        user.getRoles().forEach(role -> {
-            RoleEntity persistenceRole = new RoleEntity();
-            persistenceRole.setRoleName(role.getName());
+        UserEntity savedUserEntity = userRepository.save(userEntity);
 
-            userEntity.addRole(persistenceRole);
-        });
+        User mappedUser = User.builder()
+            .id(savedUserEntity.getId())
+            .username(savedUserEntity.getUsername())
+            .active(savedUserEntity.getActive())
+            .build();
 
-        return User.builder().build()
-            .withRolesAndPermissions(userEntity);
+        return mappedUser.withRolesAndPermissions(savedUserEntity);
     }
 
     public Optional<User> findById(long id) {
